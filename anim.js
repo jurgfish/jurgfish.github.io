@@ -12,17 +12,45 @@ document.documentElement.scrollTop = 0;
 
 var body = document.getElementsByTagName("body")[0];
 var elems = body.getElementsByClassName("anim");
-var elemIdx = 0;
 var logoPos = 12;
 var logoSpeed = 5;
 var typespeed = 20;
 var loadBound = 0.93;
 var titleTypespeed = 50;
 var titleTimeout = 1500;
+
 var animTimeout = 500;
 var entryTimeout = 500;
 
+var animRunning = true;
+var elemRunning = true;
+
 animateLogo()
+
+document.getElementById("tend").onclick = function() {
+    
+    skipAnim();
+    setTimeout("goToBottom()", 100);
+}
+
+function goToBottom (){
+    var elem = document.getElementById("end");
+    var pos = 0;
+    do {
+        pos += elem.offsetTop;
+    } while (elem = elem.offsetParent);
+    window.scroll(0,pos);
+}
+
+function findPos(obj) {
+    var curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+        return [curtop];
+    }
+}
 
 function animateLogo() {
     var elem = document.getElementById("logo");
@@ -65,19 +93,57 @@ function wipeheaderin() {
 } 
 
 function animateEntries() {
-    setTimeout(function () {
+    var elemIdx = 0;
+    var animator = setInterval(frame, entryTimeout);
+
+    function frame() {
         var elem = elems[elemIdx];
         var bound = elem.getBoundingClientRect();
         if (bound.top < (window.innerHeight * loadBound || 
                 document.documentElement.clientHeight * loadBound)) {
-            elem = elems[elemIdx]
+            // elem = elems[elemIdx]
             slideUp(elem);
             typeWords(elem);
             elemIdx++;
-        } if (elemIdx < elems.length) {
-            animateEntries();
+        } if (elemIdx == elems.length || !animRunning) {
+            clearInterval(animator);
         }
-    }, entryTimeout)
+        console.log("running animator");
+    }
+}
+
+function skipAnim() {
+    // clearTimeout(animEntries);
+    
+
+    // elemRunning = true;
+
+    // running = true;
+
+    displayEntries();
+    setTimeout("revealEnd()", 500);
+}
+
+function displayEntries() {
+    animRunning = false;
+    elemRunning = false;
+
+    var marginTop = 100;
+    var elemIdx = 0;
+    var elem;
+
+    while (elemIdx < elems.length - 1) {
+        elem = elems[elemIdx];
+        elem.style.marginTop = "0%"; 
+        elem.style.visibility = "visible";
+        elemIdx++;
+    }
+}
+
+function revealEnd() {
+    elemRunning = true;
+    slideUp(elems[elems.length - 1]);
+    typeWords(elems[elems.length - 1]);
 }
 
 function slideUp(elem) {
@@ -85,8 +151,10 @@ function slideUp(elem) {
     var slider = setInterval(frame, 1);
 
     function frame() {
-        if (marginTop == 0) {
+        if (marginTop == 0 || !elemRunning) {
             clearInterval(slider);
+            // elem.style.marginTop = marginTop + "%"; 
+            // elem.style.visibility = "visible";
             return;
         } else if (marginTop == 90) {
             elem.style.visibility = "visible";
@@ -105,7 +173,7 @@ function typeWords(elem) {
 
     function frame() {
         currentOffset++;
-        if (currentOffset == wordSet.length) {
+        if (currentOffset == wordSet.length || !elemRunning) {
             clearInterval(typer);
             typer = null;
             elem.innerHTML = fullText;

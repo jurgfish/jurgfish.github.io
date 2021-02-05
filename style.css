@@ -6,21 +6,27 @@ img {
 }
 
 h4 {
-    font-family: Monaco, monospace;
-    font-size: 24px;
+    font-family: Georgia;
+    font-size: 25px;
+    font-weight: normal;
     text-align: center;
     visibility: hidden;
 }
 
 p {
-    font-family: Monaco, monospace;
-    font-size: 16px;
+    font-family: Georgia;
+    font-size: 18px;
+    line-height: 26px;
     margin-left: auto;
     margin-right: auto;
     overflow: hidden;
     visibility: hidden;
 }
 
+.links a {
+    color: gray;
+    text-decoration: none;
+}
 .links a:link {
     color: lightskyblue;
     text-decoration: none;
@@ -43,10 +49,9 @@ p {
 @media (max-width: 630px) {
     p {
         width:95vw;
-        text-align: left;
+        text-align: justify;
     }
 }
 
-div.space {
-    height: 21vh;
-}
+div.space { height: 12vh; }
+div.halfspace { height: 50vh; }
