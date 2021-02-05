@@ -1,5 +1,5 @@
 /**
- * 
+ * (message)
  *
  */
 
@@ -15,10 +15,11 @@ var elems = body.getElementsByClassName("anim");
 var elemIdx = 0;
 var logoPos = 10;
 var typespeed = 20;
+var loadBound = 0.90;
 var titleTypespeed = 50;
-var titleTimeout = 2000;
+var titleTimeout = 1500;
 var animTimeout = 500;
-var entryTimeout = 100;
+var entryTimeout = 500;
 
 animateLogo()
 
@@ -35,7 +36,7 @@ function animateLogo() {
             elem.style.visibility = "visible";
         } if (marginTop != logoPos) {
             marginTop++; 
-            elem.style.marginTop = marginTop + "%"; 
+            elem.style.marginTop = marginTop + "%";
         }
     }
 
@@ -66,8 +67,8 @@ function animateEntries() {
     setTimeout(function () {
         var elem = elems[elemIdx];
         var bound = elem.getBoundingClientRect();
-        if (bound.top < (window.innerHeight * 0.80 || 
-                document.documentElement.clientHeight * 0.80)) {
+        if (bound.top < (window.innerHeight * loadBound || 
+                document.documentElement.clientHeight * loadBound)) {
             elem = elems[elemIdx]
             slideUp(elem);
             typeWords(elem);

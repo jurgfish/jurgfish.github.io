@@ -21,21 +21,14 @@ p {
     visibility: hidden;
 }
 
-div > p {
-    color: gray;
-    font-size: 11px;
-}
-
 .links a:link {
-    color: darkgray;
+    color: lightskyblue;
     text-decoration: none;
 }
-
 .links a:hover {
-    color: lightblue;
+    color: mediumturquoise;
     text-decoration: underline;
 }
-
 .links a:visited {
     color: gray;
     text-decoration: none;
@@ -47,7 +40,6 @@ div > p {
         text-align: justify;   
     }
 }
-
 @media (max-width: 630px) {
     p {
         width:95vw;
