@@ -14,8 +14,9 @@ var body = document.getElementsByTagName("body")[0];
 var elems = body.getElementsByClassName("anim");
 var elemIdx = 0;
 var logoPos = 10;
+var logoSpeed = 5;
 var typespeed = 20;
-var loadBound = 0.90;
+var loadBound = 0.93;
 var titleTypespeed = 50;
 var titleTimeout = 1500;
 var animTimeout = 500;
@@ -26,7 +27,7 @@ animateLogo()
 function animateLogo() {
     var elem = document.getElementById("logo");
     var marginTop = -100;
-    var slider = setInterval(frame, 10);
+    var slider = setInterval(frame, logoSpeed);
 
     function frame() {
         if (marginTop == logoPos) {
