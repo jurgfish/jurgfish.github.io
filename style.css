@@ -1,8 +1,11 @@
+/* jurgfish */
+
 img {
     display: block; 
     margin-left: auto;
     margin-right: auto;
     visibility: hidden;
+    cursor: pointer;
 }
 
 h4 {
@@ -12,17 +15,20 @@ h4 {
     font-weight: normal;
     text-align: center;
     visibility: hidden;
+    cursor: default;
 }
 
 p {
     font-family: Roboto Slab;
     font-size: 18px;
-    line-height: 28px;
     color: #555555;
+    text-align: justify;
+    line-height: 28px;
     margin-left: auto;
     margin-right: auto;
     overflow: hidden;
     visibility: hidden;
+    cursor: default;
 }
 
 .links a, a:visited {
@@ -36,33 +42,14 @@ p {
 .links a:hover {
     color: #48d1cc;
     text-decoration: underline;
+    cursor: pointer;
 }
 
-.reload a, a:visited {
-    color: #aaaaaa;
-    text-decoration: none;
-}
-.reload a:link {
-    color: #87cefa;
-    text-decoration: none;
-}
-.reload a:hover {
-    color: #48d1cc;
-    text-decoration: underline;
-}
-
-@media (min-width: 0px) {
-    p {
-        width:600px; 
-        text-align: justify;   
-    }
-}
-@media (max-width: 630px) {
-    p {
-        width:95vw;
-        text-align: justify;
-    }
-}
+@media (min-width: 0px) { p { width:600px; } }
+@media (max-width: 630px) { p { width:95vw; } }
 
 div.space { height: 12vh; }
 div.halfspace { height: 50vh; }
+
+
+

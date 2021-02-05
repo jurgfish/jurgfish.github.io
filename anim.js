@@ -1,7 +1,6 @@
-/**
- * (message)
- *
- */
+// jurgfish
+
+////////////////////////////////////////////////////////////////
 
 // reset position when refreshing page
 if ('scrollRestoration' in history) {
@@ -10,9 +9,14 @@ if ('scrollRestoration' in history) {
 document.body.scrollTop = 0;
 document.documentElement.scrollTop = 0;
 
+////////////////////////////////////////////////////////////////
+
+// text elements
 var body = document.getElementsByTagName("body")[0];
+var links = document.getElementsByClassName("links");
 var elems = body.getElementsByClassName("anim");
 
+// animation settings
 var logoPos = 12;
 var logoSpeed = 5;
 var typeSpeed = 20;
@@ -29,7 +33,10 @@ var elemRunning = true;
 
 var revealEndCnt = 1;
 
+// begin routine
 animateLogo()
+
+////////////////////////////////////////////////////////////////
 
 function animateLogo() {
     var elem = document.getElementById("logo");
@@ -48,10 +55,10 @@ function animateLogo() {
         }
     }
 
-    setTimeout("wipeheaderin()", titleTimeout);
+    setTimeout("typeTitle()", titleTimeout);
 }
 
-function wipeheaderin() {
+function typeTitle() {
     var elem = document.getElementById("title");
     var word = elem.textContent;
     var c = 0;
@@ -71,8 +78,11 @@ function wipeheaderin() {
     setTimeout("animateEntries()", elemTimeout);
 }
 
+////////////////////////////////////////////////////////////////
+
 function animateEntries() {
-    slideUp(document.getElementsByClassName("links")[0]);
+    slideUp(links[0]);
+
     var elemIdx = 0;
     var animator = setInterval(frame, elemTimeout);
 
@@ -112,6 +122,8 @@ function snapEntries() {
     setTimeout("goToBottom()", elemTimeout);
 }
 
+////////////////////////////////////////////////////////////////
+
 function goToBottom (){
     var elem = document.getElementById("end");
     var pos = 0;
@@ -141,8 +153,10 @@ function revealEnd() {
 }
 
 function revealReload() {
-    slideUp(document.getElementsByClassName("links")[1]);
+    slideUp(links[1]);
 }
+
+////////////////////////////////////////////////////////////////
 
 function slideUp(elem) {
     var marginTop = 100;
