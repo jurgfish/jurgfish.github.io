@@ -13,7 +13,7 @@ document.documentElement.scrollTop = 0;
 var body = document.getElementsByTagName("body")[0];
 var elems = body.getElementsByClassName("anim");
 var elemIdx = 0;
-var logoPos = 10;
+var logoPos = 20;
 var logoSpeed = 5;
 var typespeed = 20;
 var loadBound = 0.93;
@@ -37,7 +37,7 @@ function animateLogo() {
             elem.style.visibility = "visible";
         } if (marginTop != logoPos) {
             marginTop++; 
-            elem.style.marginTop = marginTop + "%";
+            elem.style.marginTop = marginTop + "vh";
         }
     }
 
