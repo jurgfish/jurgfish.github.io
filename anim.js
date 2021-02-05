@@ -12,45 +12,24 @@ document.documentElement.scrollTop = 0;
 
 var body = document.getElementsByTagName("body")[0];
 var elems = body.getElementsByClassName("anim");
+
 var logoPos = 12;
 var logoSpeed = 5;
-var typespeed = 20;
-var loadBound = 0.93;
-var titleTypespeed = 50;
-var titleTimeout = 1500;
+var typeSpeed = 20;
+var titleTypeSpeed = 50;
 
-var animTimeout = 500;
-var entryTimeout = 500;
+var loadBound = 0.93;
+var visibleBound = 90;
+
+var titleTimeout = 1000;
+var elemTimeout = 500;
 
 var animRunning = true;
 var elemRunning = true;
 
+var revealEndCnt = 1;
+
 animateLogo()
-
-document.getElementById("tend").onclick = function() {
-    
-    skipAnim();
-    setTimeout("goToBottom()", 100);
-}
-
-function goToBottom (){
-    var elem = document.getElementById("end");
-    var pos = 0;
-    do {
-        pos += elem.offsetTop;
-    } while (elem = elem.offsetParent);
-    window.scroll(0,pos);
-}
-
-function findPos(obj) {
-    var curtop = 0;
-    if (obj.offsetParent) {
-        do {
-            curtop += obj.offsetTop;
-        } while (obj = obj.offsetParent);
-        return [curtop];
-    }
-}
 
 function animateLogo() {
     var elem = document.getElementById("logo");
@@ -61,7 +40,7 @@ function animateLogo() {
         if (marginTop == logoPos) {
             clearInterval(slider);
             return;
-        } else if (marginTop == -90) {
+        } else if (marginTop == -visibleBound) {
             elem.style.visibility = "visible";
         } if (marginTop != logoPos) {
             marginTop++; 
@@ -76,7 +55,7 @@ function wipeheaderin() {
     var elem = document.getElementById("title");
     var word = elem.textContent;
     var c = 0;
-    var wiper = setInterval(frame, titleTypespeed);
+    var wiper = setInterval(frame, titleTypeSpeed);
 
     function frame() {
         elem.innerHTML = word.substring(0, c);
@@ -85,46 +64,37 @@ function wipeheaderin() {
             elem.style.visibility = "visible";
         } else if (c == word.length) {
             clearInterval(wiper);
+            wiper = null;
         }
     }
 
-    slideUp(document.getElementsByClassName("links")[0]);
-    setTimeout("animateEntries()", animTimeout);
-} 
+    setTimeout("animateEntries()", elemTimeout);
+}
 
 function animateEntries() {
+    slideUp(document.getElementsByClassName("links")[0]);
     var elemIdx = 0;
-    var animator = setInterval(frame, entryTimeout);
+    var animator = setInterval(frame, elemTimeout);
 
     function frame() {
         var elem = elems[elemIdx];
         var bound = elem.getBoundingClientRect();
         if (bound.top < (window.innerHeight * loadBound || 
                 document.documentElement.clientHeight * loadBound)) {
-            // elem = elems[elemIdx]
             slideUp(elem);
             typeWords(elem);
             elemIdx++;
         } if (elemIdx == elems.length || !animRunning) {
             clearInterval(animator);
+            animator = null;
+            if (animRunning) { setTimeout("revealReload()", elemTimeout); }
         }
-        console.log("running animator");
     }
 }
 
-function skipAnim() {
-    // clearTimeout(animEntries);
-    
+document.getElementById("tend").onclick = function() { snapEntries(); }
 
-    // elemRunning = true;
-
-    // running = true;
-
-    displayEntries();
-    setTimeout("revealEnd()", 500);
-}
-
-function displayEntries() {
+function snapEntries() {
     animRunning = false;
     elemRunning = false;
 
@@ -132,18 +102,46 @@ function displayEntries() {
     var elemIdx = 0;
     var elem;
 
-    while (elemIdx < elems.length - 1) {
+    while (elemIdx < elems.length - revealEndCnt) {
         elem = elems[elemIdx];
         elem.style.marginTop = "0%"; 
         elem.style.visibility = "visible";
         elemIdx++;
     }
+
+    setTimeout("goToBottom()", elemTimeout);
+}
+
+function goToBottom (){
+    var elem = document.getElementById("end");
+    var pos = 0;
+    do {
+        pos += elem.offsetTop;
+    } while (elem = elem.offsetParent);
+    window.scroll(0,pos);
+    setTimeout("revealEnd()", elemTimeout);
 }
 
 function revealEnd() {
+    var elemIdx = elems.length - revealEndCnt;
+    var endAnimator = setInterval(frame, elemTimeout);
     elemRunning = true;
-    slideUp(elems[elems.length - 1]);
-    typeWords(elems[elems.length - 1]);
+
+    function frame() {
+        var elem = elems[elemIdx];
+        slideUp(elem);
+        typeWords(elem);
+        elemIdx++;
+        if (elemIdx == elems.length) {
+            clearInterval(endAnimator);
+            endAnimator = null;
+            setTimeout("revealReload()", elemTimeout);
+        }
+    }
+}
+
+function revealReload() {
+    slideUp(document.getElementsByClassName("links")[1]);
 }
 
 function slideUp(elem) {
@@ -153,10 +151,9 @@ function slideUp(elem) {
     function frame() {
         if (marginTop == 0 || !elemRunning) {
             clearInterval(slider);
-            // elem.style.marginTop = marginTop + "%"; 
-            // elem.style.visibility = "visible";
+            slider = null;
             return;
-        } else if (marginTop == 90) {
+        } else if (marginTop == visibleBound) {
             elem.style.visibility = "visible";
         } if (marginTop != 0) {
             marginTop -= 1;
@@ -168,23 +165,20 @@ function slideUp(elem) {
 function typeWords(elem) {
     var fullText = elem.textContent;
     var wordSet = fullText.split(" ");
-    var currentOffset = 0;
-    var typer = setInterval(frame, typespeed);
+    var wordSetIdx = 0;
+    var text = "";
+    var typer = setInterval(frame, typeSpeed);
 
     function frame() {
-        currentOffset++;
-        if (currentOffset == wordSet.length || !elemRunning) {
+        wordSetIdx++;
+        if (wordSetIdx == wordSet.length || !elemRunning) {
             clearInterval(typer);
             typer = null;
             elem.innerHTML = fullText;
             return;
         }
-        var text = "";
-        for(var i = 0; i < currentOffset; i++){
-            text += wordSet[i] + " ";
-        }
-        text.trim();
-        elem.innerHTML = text;
+        text += wordSet[wordSetIdx] + " ";
+        elem.innerHTML = text.trim();
     }
 }
 

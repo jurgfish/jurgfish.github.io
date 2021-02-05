@@ -6,38 +6,49 @@ img {
 }
 
 h4 {
-    font-family: Georgia;
-    font-size: 25px;
+    font-family: Roboto Slab;
+    font-size: 28px;
+    color: #000000;
     font-weight: normal;
     text-align: center;
     visibility: hidden;
 }
 
 p {
-    font-family: Georgia;
+    font-family: Roboto Slab;
     font-size: 18px;
-    line-height: 26px;
+    line-height: 28px;
+    color: #555555;
     margin-left: auto;
     margin-right: auto;
     overflow: hidden;
     visibility: hidden;
 }
 
-.links a {
-    color: gray;
+.links a, a:visited {
+    color: #aaaaaa;
     text-decoration: none;
 }
 .links a:link {
-    color: lightskyblue;
+    color: #87cefa;
     text-decoration: none;
 }
 .links a:hover {
-    color: mediumturquoise;
+    color: #48d1cc;
     text-decoration: underline;
 }
-.links a:visited {
-    color: gray;
+
+.reload a, a:visited {
+    color: #aaaaaa;
     text-decoration: none;
+}
+.reload a:link {
+    color: #87cefa;
+    text-decoration: none;
+}
+.reload a:hover {
+    color: #48d1cc;
+    text-decoration: underline;
 }
 
 @media (min-width: 0px) {
