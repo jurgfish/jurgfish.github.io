@@ -87,9 +87,9 @@ a:hover {
 }
 @media print { a, a:visited, alink { color: #555555; } }
 
-div.space { height: 12vh; }
-div.lastspace { height: 24vh; }
-div.littlespace { height: 20px; }
+div.space { background-color: #dddddd; height: 12vh; }
+div.lastspace { background-color: #dddddd; height: 24vh; }
+div.littlespace { background-color: #dddddd; height: 20px; }
 
 
 
