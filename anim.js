@@ -19,7 +19,7 @@ var noanimIdx = 0;
 
 var loadBound = 0.93;
 var visibleBound = 90;
-var scrollOffset = 20;
+var scrollOffset = 10;
 
 var titleTimeout = 1000;
 var elemTimeout = 500;
@@ -48,7 +48,7 @@ document.getElementById("showjump").onclick = function() {
     showInput = !showInput;
     if (showInput) {
         document.getElementById("showjump").innerHTML = "(hide jump)"
-        document.getElementById("form").style.display = "inline-block";
+        document.getElementById("form").style.display = "block";
     } else {
         document.getElementById("showjump").innerHTML = "jump"
         document.getElementById("form").style.display = "none";
