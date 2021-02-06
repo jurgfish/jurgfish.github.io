@@ -77,8 +77,8 @@ a:hover {
     p { width: 600px; text-align: justify; }
 }
 @media (max-width: 630px) {
-    h4, form, .space { width: 95vw; }
-    p { width: 95vw; text-align: left; }
+    h4, form, .space { width: 100%; }
+    p { width: 100%; text-align: left; }
 }
 @media print { a, a:visited, alink { color: #555555; } }
 
