@@ -19,10 +19,10 @@ var noanimIdx = 0;
 
 var loadBound = 0.93;
 var visibleBound = 90;
+var scrollOffset = 20;
 
 var titleTimeout = 1000;
 var elemTimeout = 500;
-var endTimeout = 100;
 
 var animRunning = true;
 var elemRunning = true;
@@ -46,8 +46,10 @@ document.getElementById("tend").onclick = function() {
 document.getElementById("showjump").onclick = function() {
     showInput = !showInput;
     if (showInput) {
+        document.getElementById("showjump").innerHTML = "(hide jump)"
         document.getElementById("form").style.display = "inline-block";
     } else {
+        document.getElementById("showjump").innerHTML = "jump"
         document.getElementById("form").style.display = "none";
     }
 }
@@ -126,7 +128,7 @@ function jumpToEntryIdx() {
     for (j = 1; j < noanim.length; j++) {
         noanim[j].style.visibility = "hidden";
     }
-
+    
     setTimeout("scrollToEntryIdx()", elemTimeout);
 }
 
@@ -136,7 +138,7 @@ function scrollToEntryIdx() {
     do {
         pos += elem.offsetTop;
     } while (elem = elem.offsetParent);
-    window.scroll(0,pos);
+    window.scroll(0, pos - scrollOffset);
 
     if (elemIdx >= elems.length) {
         revealEnd();
@@ -163,7 +165,7 @@ function animateEntries() {
 
 function revealEnd() {
     elemRunning = true;
-    var endAnimator = setInterval(frame, endTimeout);
+    var endAnimator = setInterval(frame, elemTimeout);
     noanimIdx = 1;
 
     function frame() {
