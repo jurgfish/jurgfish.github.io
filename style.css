@@ -77,7 +77,7 @@ a:hover {
 @media print { a, a:visited, alink { color: #555555; } }
 
 div.space { height: 12vh; }
-div.lastspace { height: 40vh; }
+div.lastspace { height: 24vh; }
 div.formspace { height: 14px; }
 
 
