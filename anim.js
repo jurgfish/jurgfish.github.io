@@ -1,6 +1,6 @@
 // jurgfish
 
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // reset position when refreshing page
 if ('scrollRestoration' in history) {
@@ -9,11 +9,11 @@ if ('scrollRestoration' in history) {
 document.body.scrollTop = 0;
 document.documentElement.scrollTop = 0;
 
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // text elements
 var body = document.getElementsByTagName("body")[0];
-var links = document.getElementsByClassName("links");
+var links = body.getElementsByClassName("links");
 var elems = body.getElementsByClassName("anim");
 
 // animation settings
@@ -30,13 +30,18 @@ var elemTimeout = 500;
 
 var animRunning = true;
 var elemRunning = true;
-
 var revealEndCnt = 1;
+
+////////////////////////////////////////////////////////////////////////////////
 
 // begin routine
 animateLogo()
 
-////////////////////////////////////////////////////////////////
+document.getElementById("tend").onclick = function() { snapEntries(); }
+document.getElementById("logo").onclick = function() { location.reload(); }
+document.getElementById("copyright").onclick = function() { location.reload(); }
+
+////////////////////////////////////////////////////////////////////////////////
 
 function animateLogo() {
     var elem = document.getElementById("logo");
@@ -78,7 +83,7 @@ function typeTitle() {
     setTimeout("animateEntries()", elemTimeout);
 }
 
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 function animateEntries() {
     slideUp(links[0]);
@@ -97,12 +102,10 @@ function animateEntries() {
         } if (elemIdx == elems.length || !animRunning) {
             clearInterval(animator);
             animator = null;
-            if (animRunning) { setTimeout("revealReload()", elemTimeout); }
+            if (animRunning) { setTimeout(slideUp(links[1]), elemTimeout); }
         }
     }
 }
-
-document.getElementById("tend").onclick = function() { snapEntries(); }
 
 function snapEntries() {
     animRunning = false;
@@ -122,7 +125,7 @@ function snapEntries() {
     setTimeout("goToBottom()", elemTimeout);
 }
 
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 function goToBottom (){
     var elem = document.getElementById("end");
@@ -131,6 +134,7 @@ function goToBottom (){
         pos += elem.offsetTop;
     } while (elem = elem.offsetParent);
     window.scroll(0,pos);
+
     setTimeout("revealEnd()", elemTimeout);
 }
 
@@ -147,16 +151,12 @@ function revealEnd() {
         if (elemIdx == elems.length) {
             clearInterval(endAnimator);
             endAnimator = null;
-            setTimeout("revealReload()", elemTimeout);
+            setTimeout(slideUp(links[1]), elemTimeout);
         }
     }
 }
 
-function revealReload() {
-    slideUp(links[1]);
-}
-
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 function slideUp(elem) {
     var marginTop = 100;
@@ -195,6 +195,10 @@ function typeWords(elem) {
         elem.innerHTML = text.trim();
     }
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+
 
 
 
