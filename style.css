@@ -15,7 +15,7 @@ h4 {
     font-weight: normal;
     text-align: center;
     visibility: hidden;
-    cursor: default;
+    cursor: pointer;
 }
 
 p {
@@ -31,15 +31,15 @@ p {
     cursor: default;
 }
 
-.links a, a:visited {
+a, a:visited {
     color: #aaaaaa;
     text-decoration: none;
 }
-.links a:link {
+a:link {
     color: #87cefa;
     text-decoration: none;
 }
-.links a:hover {
+a:hover {
     color: #48d1cc;
     text-decoration: underline;
     cursor: pointer;
@@ -47,9 +47,10 @@ p {
 
 @media (min-width: 0px) { p { width:600px; } }
 @media (max-width: 630px) { p { width:95vw; } }
+@media print { .links a { color: #555555;; } }
 
 div.space { height: 12vh; }
-div.halfspace { height: 50vh; }
+div.lastspace { height: 40vh; }
 
 
 

@@ -2,18 +2,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// reset position when refreshing page
-if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-}
-document.body.scrollTop = 0;
-document.documentElement.scrollTop = 0;
-
-////////////////////////////////////////////////////////////////////////////////
-
 // text elements
 var body = document.getElementsByTagName("body")[0];
-var links = body.getElementsByClassName("links");
+var noanim = body.getElementsByClassName("noanim");
 var elems = body.getElementsByClassName("anim");
 
 // animation settings
@@ -21,6 +12,9 @@ var logoPos = 12;
 var logoSpeed = 5;
 var typeSpeed = 20;
 var titleTypeSpeed = 50;
+
+var elemIdx = 0;
+var noanimIdx = 0;
 
 var loadBound = 0.93;
 var visibleBound = 90;
@@ -30,15 +24,19 @@ var elemTimeout = 500;
 
 var animRunning = true;
 var elemRunning = true;
-var revealEndCnt = 1;
 
 ////////////////////////////////////////////////////////////////////////////////
 
 // begin routine
+resetPosition()
 animateLogo()
 
-document.getElementById("tend").onclick = function() { snapEntries(); }
+document.getElementById("tend").onclick = function() {
+    elemIdx = elems.length;
+    jumpToEntryIdx();
+}
 document.getElementById("logo").onclick = function() { location.reload(); }
+document.getElementById("title").onclick = function() { location.reload(); }
 document.getElementById("copyright").onclick = function() { location.reload(); }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -80,87 +78,159 @@ function typeTitle() {
         }
     }
 
-    setTimeout("animateEntries()", elemTimeout);
+    setTimeout( function() {
+        slideUp(noanim[noanimIdx++]);
+        animateEntries();
+    }, elemTimeout);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-function animateEntries() {
-    slideUp(links[0]);
+function jumpToEntryIdx() {
+    // animRunning = false;
+    // elemRunning = false;
 
-    var elemIdx = 0;
-    var animator = setInterval(frame, elemTimeout);
+    // var marginTop = 100;
+    // var elemIdx = 0;
+    // var elem;
 
-    function frame() {
-        var elem = elems[elemIdx];
-        var bound = elem.getBoundingClientRect();
-        if (bound.top < (window.innerHeight * loadBound || 
-                document.documentElement.clientHeight * loadBound)) {
-            slideUp(elem);
-            typeWords(elem);
-            elemIdx++;
-        } if (elemIdx == elems.length || !animRunning) {
-            clearInterval(animator);
-            animator = null;
-            if (animRunning) { setTimeout(slideUp(links[1]), elemTimeout); }
-        }
-    }
-}
+    // while (elemIdx < elemIdx) {
+    //     elem = elems[elemIdx];
+    //     elem.style.marginTop = "0%"; 
+    //     elem.style.visibility = "visible";
+    //     elemIdx++;
+    // }
 
-function snapEntries() {
+    // setTimeout("snapBottom()", elemTimeout);
+
+    console.log("jump to idx: ", elemIdx);
+
     animRunning = false;
     elemRunning = false;
 
-    var marginTop = 100;
-    var elemIdx = 0;
-    var elem;
-
-    while (elemIdx < elems.length - revealEndCnt) {
-        elem = elems[elemIdx];
-        elem.style.marginTop = "0%"; 
-        elem.style.visibility = "visible";
-        elemIdx++;
+    var j;
+    for (j = 0; j < elems.length; j++) {
+        if (j < elemIdx) {
+            elems[j].style.marginTop = "0%"; 
+            elems[j].style.visibility = "visible";
+        } else {
+            elems[j].style.visibility = "hidden";
+        }
+    }
+    for (j = 1; j < noanim.length; j++) {
+        noanim[j].style.visibility = "hidden";
     }
 
-    setTimeout("goToBottom()", elemTimeout);
+    setTimeout("scrollToEntryIdx()", elemTimeout);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
-function goToBottom (){
-    var elem = document.getElementById("end");
+function scrollToEntryIdx() {
+    var elem = elems[elemIdx - 1];
     var pos = 0;
     do {
         pos += elem.offsetTop;
     } while (elem = elem.offsetParent);
     window.scroll(0,pos);
 
-    setTimeout("revealEnd()", elemTimeout);
+    setTimeout("animateEntries()", elemTimeout);
+}
+
+function animateEntries() {
+    animRunning = true;
+    elemRunning = true;
+
+    console.log("animating...");
+    
+    // var elemIdx = 0;
+    var animator = setInterval(frame, elemTimeout);
+
+    function frame() {
+        if (elemIdx == elems.length || !animRunning) {
+            console.log("ending animate");
+            clearInterval(animator);
+            animator = null;
+            if (animRunning) {
+                setTimeout("revealEnd()", elemTimeout);
+                // setTimeout(function(){
+                //     slideUp(noanim[1]);
+                //     slideUp(noanim[2]);
+                // }, elemTimeout);
+            }
+            return;
+        }
+
+        // var elem = elems[elemIdx];
+        // var bound = elem.getBoundingClientRect();
+        // if (bound.top < (window.innerHeight * loadBound ||
+        //         document.documentElement.clientHeight * loadBound)) {
+        //     slideUp(elem);
+        //     typeWords(elem);
+        //     elemIdx++;
+        // }
+
+        if (animateEntry(true, elems[elemIdx])) { elemIdx++; }
+        console.log("idx: ", elemIdx, " len: ", elems.length);
+    }
 }
 
 function revealEnd() {
-    var elemIdx = elems.length - revealEndCnt;
     var endAnimator = setInterval(frame, elemTimeout);
-    elemRunning = true;
 
     function frame() {
-        var elem = elems[elemIdx];
-        slideUp(elem);
-        typeWords(elem);
-        elemIdx++;
-        if (elemIdx == elems.length) {
+        if (noanimIdx >= noanim.length) {
             clearInterval(endAnimator);
             endAnimator = null;
-            setTimeout(slideUp(links[1]), elemTimeout);
+            return;
         }
+        // var elem = noanim[noanimIdx];
+        // var bound = elem.getBoundingClientRect();
+        // if (bound.top < (window.innerHeight * loadBound ||
+        //         document.documentElement.clientHeight * loadBound)) {
+        //     slideUp(elem);
+        //     noanimIdx++;
+        // }
+        if (animateEntry(false, noanim[noanimIdx])) { noanimIdx++; }
+
+        
+        console.log("end noanim: ", noanimIdx, " noanim len: ", noanim.length);
     }
 }
+
+function animateEntry(typeFlag, elem) {
+
+    console.log("entry animating...")
+    var bound = elem.getBoundingClientRect();
+    if (bound.top < (window.innerHeight * loadBound ||
+            document.documentElement.clientHeight * loadBound)) {
+        slideUp(elem);
+        if (typeFlag) { typeWords(elem); }
+        return true;
+    }
+    return false;
+}
+
+// function snapBottom() {
+//     elems[elems.length - 1].style.visibility = "hidden";
+//     links[1].style.visibility = "hidden";
+
+//     window.scroll(0, document.body.scrollHeight ||
+//         document.documentElement.scrollHeight);
+
+//     elemRunning = true;
+//     slideUp(elems[elems.length - 1]);
+//     setTimeout(function() { slideUp(links[1]); }, elemTimeout);
+// }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 function slideUp(elem) {
     var marginTop = 100;
     var slider = setInterval(frame, 1);
+
+    if (!elem) {
+        console.log("error");
+        return;
+    }
 
     function frame() {
         if (marginTop == 0 || !elemRunning) {
@@ -196,10 +266,15 @@ function typeWords(elem) {
     }
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
 
-
+function resetPosition() {
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
 
 
 
