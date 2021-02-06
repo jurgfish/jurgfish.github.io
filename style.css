@@ -13,9 +13,12 @@ h4 {
     font-size: 28px;
     color: #000000;
     font-weight: normal;
-    text-align: center;
     visibility: hidden;
     cursor: default;
+    text-align: center; 
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #dddddd;
 }
 
 body {
@@ -23,12 +26,14 @@ body {
     font-size: 18px;
     color: #555555;
     text-align: center;
+    background-color: #eeeeee;
 }
 
 form {
     display: none;
     margin-left: auto;
     margin-right: auto;
+    background-color: #dddddd;
 }
 
 input {
@@ -49,6 +54,7 @@ input:focus {
 }
 
 p {
+    background-color: #dddddd;
     line-height: 28px;
     margin-left: auto;
     margin-right: auto;
@@ -71,8 +77,14 @@ a:hover {
     cursor: pointer;
 }
 
-@media (min-width: 0px) { p { width:600px; text-align: justify; } }
-@media (max-width: 630px) { p { width:95vw; text-align: left; } }
+@media (min-width: 0px) {
+    h4 { width:600px; }
+    p { width:600px; text-align: justify; }
+}
+@media (max-width: 630px) {
+    h4 { width:95vw; }
+    p { width:95vw; text-align: left; }
+}
 @media print { a, a:visited, alink { color: #555555; } }
 
 div.space { height: 12vh; }
