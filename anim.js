@@ -19,7 +19,7 @@ var noanimIdx = 0;
 
 var loadBound = 0.93;
 var visibleBound = 90;
-var scrollOffset = 10;
+var scrollOffset = 20;
 
 var titleTimeout = 1000;
 var elemTimeout = 500;
