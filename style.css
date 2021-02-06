@@ -36,7 +36,7 @@ input {
     font-size: 18px;
     background-color: #dddddd;
     border: none;
-    color: #48d1cc;
+    color: #58d1dc;
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -62,11 +62,11 @@ a, a:visited {
     text-decoration: none;
 }
 a:link {
-    color: #87cefa;
+    color: #58d1dc; /* #87cefa; */
     text-decoration: none;
 }
 a:hover {
-    color: #48d1cc;
+    color: #48c1cc;
     text-decoration: underline;
     cursor: pointer;
 }

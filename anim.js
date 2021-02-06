@@ -23,6 +23,7 @@ var scrollOffset = 20;
 
 var titleTimeout = 1000;
 var elemTimeout = 500;
+var endTimeout = 1500;
 
 var animRunning = true;
 var elemRunning = true;
@@ -156,7 +157,7 @@ function animateEntries() {
         if (elemIdx >= elems.length || !animRunning) {
             clearInterval(animator);
             animator = null;
-            if (animRunning) { setTimeout("revealEnd()", elemTimeout); }
+            if (animRunning) { setTimeout("revealEnd()", endTimeout); }
             return;
         }
         if (animateEntry(true, elems[elemIdx])) { elemIdx++; }
