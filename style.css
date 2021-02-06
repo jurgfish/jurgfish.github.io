@@ -45,7 +45,7 @@ input {
 
 input:focus {
     outline: none;
-    background-color: #efefef;
+    background-color: #f5f5f5;
 }
 
 p {
