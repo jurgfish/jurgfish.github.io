@@ -13,6 +13,7 @@ var logoSpeed = 5;
 var typeSpeed = 20;
 var titleTypeSpeed = 50;
 
+var showInput = false;
 var elemIdx = 0;
 var noanimIdx = 0;
 
@@ -21,6 +22,7 @@ var visibleBound = 90;
 
 var titleTimeout = 1000;
 var elemTimeout = 500;
+var endTimeout = 100;
 
 var animRunning = true;
 var elemRunning = true;
@@ -28,20 +30,50 @@ var elemRunning = true;
 ////////////////////////////////////////////////////////////////////////////////
 
 // begin routine
-resetPosition()
-animateLogo()
+resetPosition();
+revealLogo();
 
-document.getElementById("tend").onclick = function() {
-    elemIdx = elems.length;
-    jumpToEntryIdx();
-}
 document.getElementById("logo").onclick = function() { location.reload(); }
 document.getElementById("title").onclick = function() { location.reload(); }
 document.getElementById("copyright").onclick = function() { location.reload(); }
 
+// entry jumping
+document.getElementById("tend").onclick = function() {
+    elemIdx = elems.length;
+    jumpToEntryIdx();
+}
+
+document.getElementById("showjump").onclick = function() {
+    showInput = !showInput;
+    if (showInput) {
+        document.getElementById("form").style.display = "inline-block";
+    } else {
+        document.getElementById("form").style.display = "none";
+    }
+}
+
+var inputEntry = document.getElementById("entry");
+document.onkeydown = handleKeyDown;
+
+function handleKeyDown(event) {
+    if (event.key === "Enter" || event.keyCode === 13 || event.which === 13) {
+        event.preventDefault();
+        document.getElementById("jump").click();
+    }
+}
+
+document.getElementById("jump").onclick = function () {
+    var inputEntryVal = parseInt(inputEntry.value);
+    if (!(isNaN(inputEntryVal))) {
+        elemIdx = inputEntryVal;
+        inputEntry.value = "";
+        jumpToEntryIdx();
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
-function animateLogo() {
+function revealLogo() {
     var elem = document.getElementById("logo");
     var marginTop = -100;
     var slider = setInterval(frame, logoSpeed);
@@ -58,26 +90,12 @@ function animateLogo() {
         }
     }
 
-    setTimeout("typeTitle()", titleTimeout);
+    setTimeout("revealStart()", titleTimeout);
 }
 
-function typeTitle() {
-    var elem = document.getElementById("title");
-    var word = elem.textContent;
-    var c = 0;
-    var wiper = setInterval(frame, titleTypeSpeed);
-
-    function frame() {
-        elem.innerHTML = word.substring(0, c);
-        c++;
-        if (c == 1) {
-            elem.style.visibility = "visible";
-        } else if (c == word.length) {
-            clearInterval(wiper);
-            wiper = null;
-        }
-    }
-
+function revealStart() {
+    typeLetters(document.getElementById("title"));
+    
     setTimeout( function() {
         slideUp(noanim[noanimIdx++]);
         animateEntries();
@@ -87,26 +105,14 @@ function typeTitle() {
 ////////////////////////////////////////////////////////////////////////////////
 
 function jumpToEntryIdx() {
-    // animRunning = false;
-    // elemRunning = false;
-
-    // var marginTop = 100;
-    // var elemIdx = 0;
-    // var elem;
-
-    // while (elemIdx < elemIdx) {
-    //     elem = elems[elemIdx];
-    //     elem.style.marginTop = "0%"; 
-    //     elem.style.visibility = "visible";
-    //     elemIdx++;
-    // }
-
-    // setTimeout("snapBottom()", elemTimeout);
-
-    console.log("jump to idx: ", elemIdx);
-
     animRunning = false;
     elemRunning = false;
+
+    if (elemIdx < 1) {
+        elemIdx = 1;
+    } else if (elemIdx > elems.length) {
+        elemIdx = elems.length;
+    }
 
     var j;
     for (j = 0; j < elems.length; j++) {
@@ -132,49 +138,33 @@ function scrollToEntryIdx() {
     } while (elem = elem.offsetParent);
     window.scroll(0,pos);
 
-    setTimeout("animateEntries()", elemTimeout);
+    if (elemIdx >= elems.length) {
+        revealEnd();
+    } else {
+        setTimeout("animateEntries()", elemTimeout);
+    }
 }
 
 function animateEntries() {
     animRunning = true;
     elemRunning = true;
-
-    console.log("animating...");
-    
-    // var elemIdx = 0;
     var animator = setInterval(frame, elemTimeout);
 
     function frame() {
-        if (elemIdx == elems.length || !animRunning) {
-            console.log("ending animate");
+        if (elemIdx >= elems.length || !animRunning) {
             clearInterval(animator);
             animator = null;
-            if (animRunning) {
-                setTimeout("revealEnd()", elemTimeout);
-                // setTimeout(function(){
-                //     slideUp(noanim[1]);
-                //     slideUp(noanim[2]);
-                // }, elemTimeout);
-            }
+            if (animRunning) { setTimeout("revealEnd()", elemTimeout); }
             return;
         }
-
-        // var elem = elems[elemIdx];
-        // var bound = elem.getBoundingClientRect();
-        // if (bound.top < (window.innerHeight * loadBound ||
-        //         document.documentElement.clientHeight * loadBound)) {
-        //     slideUp(elem);
-        //     typeWords(elem);
-        //     elemIdx++;
-        // }
-
         if (animateEntry(true, elems[elemIdx])) { elemIdx++; }
-        console.log("idx: ", elemIdx, " len: ", elems.length);
     }
 }
 
 function revealEnd() {
-    var endAnimator = setInterval(frame, elemTimeout);
+    elemRunning = true;
+    var endAnimator = setInterval(frame, endTimeout);
+    noanimIdx = 1;
 
     function frame() {
         if (noanimIdx >= noanim.length) {
@@ -182,23 +172,11 @@ function revealEnd() {
             endAnimator = null;
             return;
         }
-        // var elem = noanim[noanimIdx];
-        // var bound = elem.getBoundingClientRect();
-        // if (bound.top < (window.innerHeight * loadBound ||
-        //         document.documentElement.clientHeight * loadBound)) {
-        //     slideUp(elem);
-        //     noanimIdx++;
-        // }
         if (animateEntry(false, noanim[noanimIdx])) { noanimIdx++; }
-
-        
-        console.log("end noanim: ", noanimIdx, " noanim len: ", noanim.length);
     }
 }
 
 function animateEntry(typeFlag, elem) {
-
-    console.log("entry animating...")
     var bound = elem.getBoundingClientRect();
     if (bound.top < (window.innerHeight * loadBound ||
             document.documentElement.clientHeight * loadBound)) {
@@ -209,28 +187,11 @@ function animateEntry(typeFlag, elem) {
     return false;
 }
 
-// function snapBottom() {
-//     elems[elems.length - 1].style.visibility = "hidden";
-//     links[1].style.visibility = "hidden";
-
-//     window.scroll(0, document.body.scrollHeight ||
-//         document.documentElement.scrollHeight);
-
-//     elemRunning = true;
-//     slideUp(elems[elems.length - 1]);
-//     setTimeout(function() { slideUp(links[1]); }, elemTimeout);
-// }
-
 ////////////////////////////////////////////////////////////////////////////////
 
 function slideUp(elem) {
     var marginTop = 100;
     var slider = setInterval(frame, 1);
-
-    if (!elem) {
-        console.log("error");
-        return;
-    }
 
     function frame() {
         if (marginTop == 0 || !elemRunning) {
@@ -242,6 +203,24 @@ function slideUp(elem) {
         } if (marginTop != 0) {
             marginTop -= 1;
             elem.style.marginTop = marginTop + "%"; 
+        }
+    }
+}
+
+function typeLetters(elem) {
+    var word = elem.textContent;
+    var c = 0;
+    var wiper = setInterval(frame, titleTypeSpeed);
+
+    function frame() {
+        elem.innerHTML = word.substring(0, c);
+        c++;
+        if (c == 1) {
+            elem.style.visibility = "visible";
+        } else if (c == word.length) {
+            clearInterval(wiper);
+            wiper = null;
+            return;
         }
     }
 }

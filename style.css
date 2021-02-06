@@ -18,14 +18,41 @@ h4 {
     cursor: pointer;
 }
 
-p {
+body {
     font-family: Roboto Slab;
     font-size: 18px;
     color: #555555;
-    text-align: justify;
+    text-align: center;
+}
+
+form {
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input {
+    font-family: Roboto Slab;
+    font-size: 18px;
+    background-color: #dddddd;
+    border: none;
+    color: #48d1cc;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: none;
+    background-color: #efefef;
+}
+
+p {
     line-height: 28px;
     margin-left: auto;
     margin-right: auto;
+    text-align: justify;
     overflow: hidden;
     visibility: hidden;
     cursor: default;
@@ -47,10 +74,11 @@ a:hover {
 
 @media (min-width: 0px) { p { width:600px; } }
 @media (max-width: 630px) { p { width:95vw; } }
-@media print { .links a { color: #555555;; } }
+@media print { a, a:visited, alink { color: #555555; } }
 
 div.space { height: 12vh; }
 div.lastspace { height: 40vh; }
+div.formspace { height: 5vh; }
 
 
 
