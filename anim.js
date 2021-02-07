@@ -46,11 +46,9 @@ revealLogo();
 
 logoElem.onclick = function() { location.reload(); }
 titleElem.onclick = function() { location.reload(); }
+cpyrElem.onclick = function() { location.reload(); }
 
 // entry jumping
-cpyrElem.onclick = function() {  elemIdx = 0; jumpToEntryIdx(); }
-tendElem.onclick = function() { elemIdx = elems.length; jumpToEntryIdx(); }
-
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 || event.which === 13) {
         event.preventDefault();
@@ -76,6 +74,11 @@ jumpGo.onclick = function() {
         inputEntry.value = "";
         jumpToEntryIdx();
     }
+}
+
+tendElem.onclick = function() {
+    elemIdx = elems.length;
+    jumpToEntryIdx();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
