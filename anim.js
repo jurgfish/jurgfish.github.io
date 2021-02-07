@@ -18,7 +18,7 @@ var divForm = document.getElementById("form");
 var tendElem = document.getElementById("tend");
 
 // animation settings
-var logoPos = 12;
+var logoPos = 25;
 var logoSpeed = 5;
 var typeSpeed = 20;
 var titleTypeSpeed = 50;
@@ -31,7 +31,7 @@ var loadBound = 0.93;
 var visibleBound = 90;
 var scrollOffset = 20;
 
-var titleTimeout = 1000;
+var titleTimeout = 1500;
 var elemTimeout = 500;
 var endTimeout = 1500;
 
