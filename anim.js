@@ -9,6 +9,8 @@ var elems = body.getElementsByClassName("anim");
 var logoElem = document.getElementById("logo");
 var titleElem = document.getElementById("title");
 var cpyrElem = document.getElementById("copyright");
+var lastEntry = document.getElementById("end");
+var verElem = document.getElementById("version");
 
 // jump elements
 var jumpGo = document.getElementById("jump");
@@ -23,6 +25,7 @@ var logoSpeed = 5;
 var typeSpeed = 20;
 var titleTypeSpeed = 50;
 
+var showVer = false;
 var showInput = false;
 var elemIdx = 0;
 var noanimIdx = 0;
@@ -42,11 +45,20 @@ var elemRunning = true;
 
 // begin routine
 resetPosition();
+setLastEntry();
 revealLogo();
 
 logoElem.onclick = function() { location.reload(); }
-titleElem.onclick = function() { location.reload(); }
 cpyrElem.onclick = function() { location.reload(); }
+
+titleElem.onclick = function() {
+    showVer = !showVer;
+    if (showVer) {
+        verElem.style.display = "block";
+    } else {
+        verElem.style.display = "none";
+    }
+}
 
 // entry jumping
 document.onkeydown = function(event) {
@@ -62,7 +74,7 @@ toggleJump.onclick = function() {
         toggleJump.innerHTML = "(hide jump)"
         divForm.style.display = "block";
     } else {
-        toggleJump.innerHTML = "jump"
+        toggleJump.innerHTML = "click this"
         divForm.style.display = "none";
     }
 }
@@ -79,6 +91,24 @@ jumpGo.onclick = function() {
 tendElem.onclick = function() {
     elemIdx = elems.length;
     jumpToEntryIdx();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+function setLastEntry() {
+    var s = "000" + elems.length;
+    s = s.substring(s.length - 3);
+
+    lastEntry.innerHTML = "[Island of Mind " + s + "+] will update when ready";
+    verElem.innerHTML += elems.length - 1;
+}
+
+function resetPosition() {
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -253,15 +283,7 @@ function typeWords(elem) {
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
 
-function resetPosition() {
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-    }
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-}
 
 
 
