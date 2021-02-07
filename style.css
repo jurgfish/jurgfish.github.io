@@ -24,6 +24,7 @@ h4 {
     text-align: center;
     visibility: hidden;
     cursor: default;
+    margin-bottom: 64px;
 }
 
 form {
@@ -70,7 +71,7 @@ a:hover { color: #48c1cc; text-decoration: underline; cursor: pointer; }
 }
 @media print { a, a:visited, alink { color: #555555; } }
 
-.space { height: 20vh; }
+.space { height: 42px; }
 
 
 
