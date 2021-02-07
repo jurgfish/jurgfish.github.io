@@ -18,7 +18,7 @@ var divForm = document.getElementById("form");
 var tendElem = document.getElementById("tend");
 
 // animation settings
-var logoPos = 25;
+var logoPos = 15;
 var logoSpeed = 5;
 var typeSpeed = 20;
 var titleTypeSpeed = 50;
@@ -96,7 +96,7 @@ function revealLogo() {
         }
         if (marginTop != logoPos) {
             marginTop++; 
-            logoElem.style.marginTop = marginTop + "vh";
+            logoElem.style.marginTop = marginTop + "%";
         }
     }
 
