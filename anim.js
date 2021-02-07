@@ -203,7 +203,7 @@ function revealEnd() {
     var endAnimator = setInterval(frame, elemTimeout);
     
     function frame() {
-        if (noanimIdx >= noanim.length) {
+        if (noanimIdx >= noanim.length || !animRunning) {
             clearInterval(endAnimator);
             endAnimator = null;
             return;
