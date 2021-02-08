@@ -39,6 +39,9 @@ var elemTimeout = 500;
 var animRunning = true;
 var elemRunning = true;
 
+var entryIdxLen = 3;
+var entryIdxBuf = "0000";
+
 ////////////////////////////////////////////////////////////////////////////////
 
 function slideUp(elem) {
@@ -100,11 +103,13 @@ function typeWords(elem) {
 ////////////////////////////////////////////////////////////////////////////////
 
 function setLastEntry() {
-    var s = "000" + elems.length;
-    s = s.substring(s.length - 3);
+    var s = entryIdxBuf + elems.length;
+    var r = entryIdxBuf + (elems.length - 1);
+    s = s.substring(s.length - entryIdxLen);
+    r = r.substring(r.length - entryIdxLen);
 
     lastEntry.innerHTML = "[Island of Mind " + s + "+] will appear when ready";
-    verElem.innerHTML += elems.length - 1;
+    verElem.innerHTML += r;
 }
 
 function resetPosition() {
