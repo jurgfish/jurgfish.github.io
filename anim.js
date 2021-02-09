@@ -248,7 +248,7 @@ toggleJump.onclick = function() {
         toggleJump.textContent = "(hide jump)"
         divForm.style.display = "block";
     } else {
-        toggleJump.textContent = "click this"
+        toggleJump.textContent = "use jump"
         divForm.style.display = "none";
     }
 }
