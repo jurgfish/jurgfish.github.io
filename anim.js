@@ -69,11 +69,11 @@ function typeLetters(elem) {
     var typer = setInterval(frame, titleTypeSpeed);
 
     function frame() {
-        elem.innerHTML = word.substring(0, c);
+        elem.textContent = word.substring(0, c);
         c++;
         if (c == 1) {
             elem.style.visibility = "visible";
-        } else if (c == word.length) {
+        } else if (c >= word.length) {
             clearInterval(typer);
             typer = null;
             return;
@@ -85,7 +85,8 @@ function typeWords(elem) {
     var fullText = elem.textContent;
     var wordSet = fullText.split(" ");
     var wordSetIdx = 0;
-    elem.innerHTML = "";
+    var currText = "";
+    elem.textContent = "";
     var typer = setInterval(frame, typeSpeed);
 
     function frame() {
@@ -93,10 +94,11 @@ function typeWords(elem) {
         if (wordSetIdx >= wordSet.length - 1 || !elemRunning) {
             clearInterval(typer);
             typer = null;
-            elem.innerHTML = fullText;
+            elem.textContent = fullText;
             return;
         }
-        elem.innerHTML += wordSet[wordSetIdx] + " ";
+        currText += wordSet[wordSetIdx] + " ";
+        elem.textContent = currText;
     }
 }
 
@@ -108,8 +110,8 @@ function setLastEntry() {
     s = s.substring(s.length - entryIdxLen);
     r = r.substring(r.length - entryIdxLen);
 
-    lastEntry.innerHTML = "[Island of Mind " + s + "+] will appear when ready";
-    verElem.innerHTML += r;
+    lastEntry.textContent = "[Island of Mind " + s + "+] will appear when ready";
+    verElem.textContent += r;
 }
 
 function resetPosition() {
@@ -243,10 +245,10 @@ tendElem.onclick = function() {
 toggleJump.onclick = function() {
     showInput = !showInput;
     if (showInput) {
-        toggleJump.innerHTML = "(hide jump)"
+        toggleJump.textContent = "(hide jump)"
         divForm.style.display = "block";
     } else {
-        toggleJump.innerHTML = "click this"
+        toggleJump.textContent = "click this"
         divForm.style.display = "none";
     }
 }
