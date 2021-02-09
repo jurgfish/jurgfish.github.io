@@ -3,20 +3,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // text elements
+var logoElem = document.getElementById("logo");
+var titleElem = document.getElementById("title");
+var verElem = document.getElementById("version");
+var lastEntry = document.getElementById("end");
+var cpyrElem = document.getElementById("copyright");
 var body = document.getElementsByTagName("body")[0];
 var noanim = body.getElementsByClassName("noanim");
 var elems = body.getElementsByClassName("anim");
-var logoElem = document.getElementById("logo");
-var titleElem = document.getElementById("title");
-var cpyrElem = document.getElementById("copyright");
-var lastEntry = document.getElementById("end");
-var verElem = document.getElementById("version");
 
 // jump elements
 var jumpGo = document.getElementById("jump");
 var toggleJump = document.getElementById("showjump");
 var inputEntry = document.getElementById("entry");
 var divForm = document.getElementById("form");
+var tbeginElem = document.getElementById("tbegin");
 var tendElem = document.getElementById("tend");
 
 // animation settings
@@ -28,6 +29,7 @@ var titleTypeSpeed = 50;
 var showVer = false;
 var showInput = false;
 var elemIdx = 0;
+var noanimIdx = 0;
 
 var loadBound = 0.93;
 var visibleBound = 90;
@@ -41,6 +43,7 @@ var elemRunning = true;
 
 var entryIdxLen = 3;
 var entryIdxBuf = "0000";
+var noanimEntryCnt = 1;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -83,9 +86,9 @@ function typeLetters(elem) {
 
 function typeWords(elem) {
     var fullText = elem.textContent;
+    var currText = "";
     var wordSet = fullText.split(" ");
     var wordSetIdx = 0;
-    var currText = "";
     elem.textContent = "";
     var typer = setInterval(frame, typeSpeed);
 
@@ -110,45 +113,43 @@ function setLastEntry() {
     s = s.substring(s.length - entryIdxLen);
     r = r.substring(r.length - entryIdxLen);
 
-    lastEntry.textContent = "[Island of Mind " + s + "+] will appear when ready";
+    lastEntry.textContent = "[Island of Mind "+ s +"+] will appear when ready";
     verElem.textContent += r;
 }
 
 function resetPosition() {
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-    }
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// returns false if entry was not animated
 function animateEntry(typeFlag, elem) {
     var bound = elem.getBoundingClientRect();
+    var validBound = (bound.top < (window.innerHeight * loadBound ||
+        document.documentElement.clientHeight * loadBound));
 
-    if (bound.top < (window.innerHeight * loadBound ||
-            document.documentElement.clientHeight * loadBound)) {
+    if (validBound) {
         slideUp(elem);
         if (typeFlag) typeWords(elem);
-        return true;
     }
-    return false;
+    return validBound;
 }
 
 function animateEntries() {
     animRunning = true;
     elemRunning = true;
-    var noanimIdx = 1;
-
     var animator = setInterval(frame, elemTimeout);
 
     function frame() {
-        if (elemIdx < elems.length && animRunning) {
-            if (animateEntry(true, elems[elemIdx])) elemIdx++;
-        } else if (noanimIdx < noanim.length && animRunning) {
+        if (animRunning && (noanimIdx < noanimEntryCnt ||
+                (elemIdx >= elems.length && noanimIdx < noanim.length))) {
             if (animateEntry(false, noanim[noanimIdx])) noanimIdx++;
+
+        } else if (animRunning && elemIdx < elems.length) {
+            if (animateEntry(true, elems[elemIdx])) elemIdx++;
+
         } else {
             clearInterval(animator);
             animator = null;
@@ -174,6 +175,7 @@ function jumpToEntryIdx() {
     } else if (elemIdx > elems.length) {
         elemIdx = elems.length;
     }
+    noanimIdx = noanimEntryCnt;
 
     for (var j = 0; j < elems.length; j++) {
         if (j < elemIdx) {
@@ -184,7 +186,7 @@ function jumpToEntryIdx() {
         }
     }
 
-    for (var j = 1; j < noanim.length; j++) {
+    for (var j = noanimEntryCnt; j < noanim.length; j++) {
         noanim[j].style.visibility = "hidden";
     }
     
@@ -195,11 +197,7 @@ function jumpToEntryIdx() {
 
 function revealStart() {
     typeLetters(titleElem);
-    
-    setTimeout( function() {
-        slideUp(noanim[0]);
-        animateEntries();
-    }, elemTimeout);
+    setTimeout("animateEntries()", elemTimeout);
 }
 
 function revealLogo() {
@@ -229,16 +227,18 @@ cpyrElem.onclick = function() { location.reload(); }
 
 titleElem.onclick = function() {
     showVer = !showVer;
-    if (showVer) {
-        verElem.style.display = "block";
-    } else {
-        verElem.style.display = "none";
-    }
+    if (showVer) verElem.style.display = "block";
+    else verElem.style.display = "none";
 }
 
 // entry jumping
 tendElem.onclick = function() {
     elemIdx = elems.length;
+    jumpToEntryIdx();
+}
+
+tbeginElem.onclick = function() {
+    elemIdx = 0;
     jumpToEntryIdx();
 }
 
