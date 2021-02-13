@@ -49,14 +49,14 @@ var noanimEntryCnt = 1;
 ////////////////////////////////////////////////////////////////////////////
 
 function slideUp(elem) {
-    var marginTop = 100;
+    var marginTop = 300;
     var slider = setInterval(frame, 1);
 
     function frame() {
-        marginTop--;
+        marginTop -= 3;
         elem.style.marginTop = marginTop + "%"; 
         
-        if (marginTop == 0 || !elemRunning) {
+        if (marginTop <= 0 || !elemRunning) {
             clearInterval(slider);
             slider = null;
             elem.style.marginTop = "0%"; 
