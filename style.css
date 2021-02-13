@@ -87,10 +87,9 @@ a:hover { color: #78e1ec; text-decoration: underline; cursor: pointer; }
 }
 @media print { a, a:visited, alink { color: #555555; } }
 
-/*#bottom { text-align: center; }*/
+#endspace { height: 24em; }
 
-#endspace { height: 69em; }
-/*.smallspace { height: 5em; }*/
+
 
 
 

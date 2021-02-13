@@ -39,7 +39,6 @@ var scrollOffset = 20;
 
 var titleTimeout = 1500;
 var elemTimeout = 100;
-var endTimeout = 3000;
 
 var animRunning = true;
 var elemRunning = true;
@@ -48,9 +47,9 @@ var entryIdxLen = 3;
 var entryIdxBuf = "0000";
 var noanimEntryCnt = 1;
 
-var endspaceStartHeight = 100;
+var endspaceStartHeight = 200;
 var endspaceEndHeight = 24; 
-var endspaceSpeed = 10;
+var endspaceSpeed = 1;
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -126,6 +125,9 @@ function setLastEntry() {
     lastEntry.textContent = "[Island of Mind " + formatNum(elems.length) +
         "+] will appear when ready";
     verElem.textContent += formatNum(elems.length - 1);
+    endspace.style.height = endspaceStartHeight + "em";
+    console.log("was set");
+    console.log(endspace.style.height);
 }
 
 function resetPosition() {
@@ -139,13 +141,14 @@ function reduceEndSpace() {
     var h = endspaceStartHeight; 
     var hs;
     var reducer = setInterval(frame, endspaceSpeed);
+    console.log("recieved");
+    console.log(endspace.style.height);
 
     function frame() {
         h--;
         hs = h + "em"
         //endspace.setAttribute("style", "height:" + hs);
         endspace.style.height = hs;
-        console.log("running");
 
         if (h == endspaceEndHeight) {
             clearInterval(reducer);
@@ -153,7 +156,7 @@ function reduceEndSpace() {
             //endspace.setAttribute("style", "height:" + 
             //    endspaceEndHeight + "em");
             endspace.style.height = endspaceEndHeight + "em";
-            console.log("end");
+            console.log("done");
             return;
         } 
     }
@@ -189,7 +192,11 @@ function animateEntries() {
         } else {
             clearInterval(animator);
             animator = null;
-            if (animRunning) setTimeout("reduceEndSpace()", endTimeout);
+            if (animRunning) {
+                setTimeout("reduceEndSpace()", elemTimeout);
+                console.log("call...");
+            }
+            console.log("anim");
             return;
         }
     }
@@ -323,6 +330,8 @@ setLastEntry();
 revealLogo();
 
 ////////////////////////////////////////////////////////////////////////////
+
+
 
 
 
