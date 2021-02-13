@@ -228,9 +228,11 @@ logoElem.onclick = function() { location.reload(); }
 cpyrElem.onclick = function() { location.reload(); }
 
 titleElem.onclick = function() {
-    showVer = !showVer;
-    if (showVer) verElem.style.display = "block";
-    else verElem.style.display = "none";
+    if (noanim[0].style.visibility === "visible") {
+        showVer = !showVer;
+        if (showVer) verElem.style.display = "block";
+        else verElem.style.display = "none";
+    }
 }
 
 // entry jumping
