@@ -52,16 +52,16 @@ function slideUp(elem) {
     var slider = setInterval(frame, 1);
 
     function frame() {
-        if (marginTop <= 0 || !elemRunning) {
+        marginTop--;
+        elem.style.marginTop = marginTop + "%"; 
+        
+        if (marginTop == 0 || !elemRunning) {
             clearInterval(slider);
             slider = null;
+            elem.style.marginTop = "0%"; 
             return;
         } else if (marginTop == visibleBound) {
             elem.style.visibility = "visible";
-        }
-        if (marginTop != 0) {
-            marginTop -= 1;
-            elem.style.marginTop = marginTop + "%"; 
         }
     }
 }
@@ -72,14 +72,16 @@ function typeLetters(elem) {
     var typer = setInterval(frame, titleTypeSpeed);
 
     function frame() {
-        elem.textContent = word.substring(0, c);
         c++;
-        if (c == 1) {
-            elem.style.visibility = "visible";
-        } else if (c >= word.length) {
+        elem.textContent = word.substring(0, c);
+
+        if (c == word.length) {
             clearInterval(typer);
             typer = null;
+            elem.textContent = word;
             return;
+        } else if (c == 1) {
+            elem.style.visibility = "visible";
         }
     }
 }
@@ -89,33 +91,34 @@ function typeWords(elem) {
     var currText = "";
     var wordSet = fullText.split(" ");
     var wordSetIdx = 0;
-    elem.textContent = "";
     var typer = setInterval(frame, typeSpeed);
+    elem.textContent = "";
 
     function frame() {
         wordSetIdx++;
+        currText += wordSet[wordSetIdx] + " ";
+        elem.textContent = currText;
+
         if (wordSetIdx >= wordSet.length - 1 || !elemRunning) {
             clearInterval(typer);
             typer = null;
             elem.textContent = fullText;
             return;
         }
-        currText += wordSet[wordSetIdx] + " ";
-        elem.textContent = currText;
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////
 
-function setLastEntry() {
-    var s = entryIdxBuf + elems.length;
-    var r = entryIdxBuf + (elems.length - 1);
-    s = s.substring(s.length - entryIdxLen);
-    r = r.substring(r.length - entryIdxLen);
+function formatNum(n) {
+    var res = entryIdxBuf + n;
+    return res.substring(res.length - entryIdxLen);
+}
 
-    lastEntry.textContent = "[Island of Mind " + s +
+function setLastEntry() {
+    lastEntry.textContent = "[Island of Mind " + formatNum(elems.length) +
         "+] will appear when ready";
-    verElem.textContent += r;
+    verElem.textContent += formatNum(elems.length - 1);
 }
 
 function resetPosition() {
@@ -207,15 +210,15 @@ function revealLogo() {
     var slider = setInterval(frame, logoSpeed);
 
     function frame() {
+        marginTop++; 
+        logoElem.style.marginTop = marginTop + "%";
+
         if (marginTop == logoPos) {
             clearInterval(slider);
+            slider = null;
             return;
         } else if (marginTop == -visibleBound) {
             logoElem.style.visibility = "visible";
-        }
-        if (marginTop != logoPos) {
-            marginTop++; 
-            logoElem.style.marginTop = marginTop + "%";
         }
     }
 
