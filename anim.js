@@ -19,6 +19,7 @@ var inputEntry = document.getElementById("entry");
 var divForm = document.getElementById("form");
 var tbeginElem = document.getElementById("tbegin");
 var tendElem = document.getElementById("tend");
+var returnElem = document.getElementById("return");
 
 // animation settings
 var logoPos = 15;
@@ -245,6 +246,11 @@ tendElem.onclick = function() {
 }
 
 tbeginElem.onclick = function() {
+    elemIdx = 0;
+    jumpToEntryIdx();
+}
+
+returnElem.onclick = function() {
     elemIdx = 0;
     jumpToEntryIdx();
 }
