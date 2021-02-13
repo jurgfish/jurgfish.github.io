@@ -48,9 +48,9 @@ var entryIdxLen = 3;
 var entryIdxBuf = "0000";
 var noanimEntryCnt = 1;
 
-var endspaceStartHeight = 69;
-var endspaceEndHeight = 30; 
-var endspaceSpeed = 50;
+var endspaceStartHeight = 100;
+var endspaceEndHeight = 24; 
+var endspaceSpeed = 10;
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -136,8 +136,7 @@ function resetPosition() {
 }
 
 function reduceEndSpace() {
-    var h = endspaceStartHeight; //endspace.clientHeight;
-    //var h = endspace.style.height;
+    var h = endspaceStartHeight; 
     var hs;
     var reducer = setInterval(frame, endspaceSpeed);
 
