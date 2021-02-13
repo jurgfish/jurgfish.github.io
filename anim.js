@@ -20,25 +20,23 @@ var inputEntry = document.getElementById("entry");
 var divForm = document.getElementById("form");
 var tbeginElem = document.getElementById("tbegin");
 var tendElem = document.getElementById("tend");
-// var returnElem = document.getElementById("return");
 
 // animation settings
 var logoPos = 15;
 var logoSpeed = 5;
 var typeSpeed = 20;
 var titleTypeSpeed = 50;
+var titleTimeout = 1500;
 
 var showVer = false;
 var showInput = false;
 var elemIdx = 0;
 var noanimIdx = 0;
 
-var loadBound = 0.93;
-var visibleBound = 99;
-var scrollOffset = 20;
-
-var titleTimeout = 1500;
 var elemTimeout = 100;
+var loadBound = 0.93;
+var slideSpeed = 2;
+var scrollOffset = 20;
 
 var animRunning = true;
 var elemRunning = true;
@@ -54,11 +52,13 @@ var endspaceSpeed = 1;
 ////////////////////////////////////////////////////////////////////////////
 
 function slideUp(elem) {
-    var marginTop = 300;
-    var slider = setInterval(frame, 1);
+    var marginTop = 200;
+    var slider = setInterval(frame, slideSpeed);
+    elem.style.marginTop = marginTop + "%"; 
+    elem.style.visibility = "visible";
 
     function frame() {
-        marginTop -= 3;
+        marginTop -= slideSpeed;
         elem.style.marginTop = marginTop + "%"; 
         
         if (marginTop <= 0 || !elemRunning) {
@@ -66,8 +66,6 @@ function slideUp(elem) {
             slider = null;
             elem.style.marginTop = "0%"; 
             return;
-        } else if (marginTop == visibleBound) {
-            elem.style.visibility = "visible";
         }
     }
 }
@@ -76,6 +74,8 @@ function typeLetters(elem) {
     var word = elem.textContent;
     var c = 0;
     var typer = setInterval(frame, titleTypeSpeed);
+    elem.textContent = "";
+    elem.style.visibility = "visible";
 
     function frame() {
         c++;
@@ -84,10 +84,7 @@ function typeLetters(elem) {
         if (c == word.length) {
             clearInterval(typer);
             typer = null;
-            elem.textContent = word;
             return;
-        } else if (c == 1) {
-            elem.style.visibility = "visible";
         }
     }
 }
@@ -126,8 +123,6 @@ function setLastEntry() {
         "+] will appear when ready";
     verElem.textContent += formatNum(elems.length - 1);
     endspace.style.height = endspaceStartHeight + "em";
-    console.log("was set");
-    console.log(endspace.style.height);
 }
 
 function resetPosition() {
@@ -139,24 +134,15 @@ function resetPosition() {
 
 function reduceEndSpace() {
     var h = endspaceStartHeight; 
-    var hs;
     var reducer = setInterval(frame, endspaceSpeed);
-    console.log("recieved");
-    console.log(endspace.style.height);
 
     function frame() {
         h--;
-        hs = h + "em"
-        //endspace.setAttribute("style", "height:" + hs);
-        endspace.style.height = hs;
+        endspace.style.height = h + "em";
 
         if (h == endspaceEndHeight) {
             clearInterval(reducer);
             reducer = null;
-            //endspace.setAttribute("style", "height:" + 
-            //    endspaceEndHeight + "em");
-            endspace.style.height = endspaceEndHeight + "em";
-            console.log("done");
             return;
         } 
     }
@@ -192,11 +178,7 @@ function animateEntries() {
         } else {
             clearInterval(animator);
             animator = null;
-            if (animRunning) {
-                setTimeout("reduceEndSpace()", elemTimeout);
-                console.log("call...");
-            }
-            console.log("anim");
+            if (animRunning) setTimeout("reduceEndSpace()", elemTimeout);
             return;
         }
     }
@@ -247,6 +229,8 @@ function revealStart() {
 function revealLogo() {
     var marginTop = -100;
     var slider = setInterval(frame, logoSpeed);
+    logoElem.style.marginTop = "-100%";
+    logoElem.style.visibility = "visible";
 
     function frame() {
         marginTop++; 
@@ -256,8 +240,6 @@ function revealLogo() {
             clearInterval(slider);
             slider = null;
             return;
-        } else if (marginTop == -visibleBound) {
-            logoElem.style.visibility = "visible";
         }
     }
 
@@ -287,12 +269,6 @@ tbeginElem.onclick = function() {
     elemIdx = 0;
     jumpToEntryIdx();
 }
-
-/*
-returnElem.onclick = function() {
-    elemIdx = 0;
-    jumpToEntryIdx();
-} */
 
 toggleJump.onclick = function() {
     showInput = !showInput;
@@ -330,19 +306,6 @@ setLastEntry();
 revealLogo();
 
 ////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
