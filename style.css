@@ -87,7 +87,7 @@ a:hover { color: #78e1ec; text-decoration: underline; cursor: pointer; }
 }
 @media print { a, a:visited, alink { color: #555555; } }
 
-.space { height: 42em; }
+.space { height: 36em; }
 
 
 
