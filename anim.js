@@ -9,6 +9,7 @@ var verElem = document.getElementById("version");
 var lastEntry = document.getElementById("end");
 var cpyrElem = document.getElementById("copyright");
 var body = document.getElementsByTagName("body")[0];
+var endspace = document.getElementById("endspace");
 var noanim = body.getElementsByClassName("noanim");
 var elems = body.getElementsByClassName("anim");
 
@@ -19,7 +20,7 @@ var inputEntry = document.getElementById("entry");
 var divForm = document.getElementById("form");
 var tbeginElem = document.getElementById("tbegin");
 var tendElem = document.getElementById("tend");
-var returnElem = document.getElementById("return");
+// var returnElem = document.getElementById("return");
 
 // animation settings
 var logoPos = 15;
@@ -37,7 +38,8 @@ var visibleBound = 99;
 var scrollOffset = 20;
 
 var titleTimeout = 1500;
-var elemTimeout = 500;
+var elemTimeout = 100;
+var endTimeout = 3000;
 
 var animRunning = true;
 var elemRunning = true;
@@ -45,6 +47,10 @@ var elemRunning = true;
 var entryIdxLen = 3;
 var entryIdxBuf = "0000";
 var noanimEntryCnt = 1;
+
+var endspaceStartHeight = 69;
+var endspaceEndHeight = 30; 
+var endspaceSpeed = 50;
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -129,6 +135,31 @@ function resetPosition() {
     document.documentElement.scrollTop = 0;
 }
 
+function reduceEndSpace() {
+    var h = endspaceStartHeight; //endspace.clientHeight;
+    //var h = endspace.style.height;
+    var hs;
+    var reducer = setInterval(frame, endspaceSpeed);
+
+    function frame() {
+        h--;
+        hs = h + "em"
+        //endspace.setAttribute("style", "height:" + hs);
+        endspace.style.height = hs;
+        console.log("running");
+
+        if (h == endspaceEndHeight) {
+            clearInterval(reducer);
+            reducer = null;
+            //endspace.setAttribute("style", "height:" + 
+            //    endspaceEndHeight + "em");
+            endspace.style.height = endspaceEndHeight + "em";
+            console.log("end");
+            return;
+        } 
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////
 
 function animateEntry(typeFlag, elem) {
@@ -159,6 +190,7 @@ function animateEntries() {
         } else {
             clearInterval(animator);
             animator = null;
+            if (animRunning) setTimeout("reduceEndSpace()", endTimeout);
             return;
         }
     }
@@ -250,10 +282,11 @@ tbeginElem.onclick = function() {
     jumpToEntryIdx();
 }
 
+/*
 returnElem.onclick = function() {
     elemIdx = 0;
     jumpToEntryIdx();
-}
+} */
 
 toggleJump.onclick = function() {
     showInput = !showInput;
