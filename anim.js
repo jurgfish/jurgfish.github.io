@@ -276,6 +276,7 @@ toggleJump.onclick = function() {
     if (showInput) {
         toggleJump.textContent = "(hide jump)"
         divForm.style.display = "block";
+        setTimeout(function() { inputEntry.focus(); }, elemTimeout);
     } else {
         toggleJump.textContent = "use jump"
         divForm.style.display = "none";
@@ -303,14 +304,15 @@ document.onkeydown = function(event) {
             tendElem.click();
         } else if (document.activeElement === toggleJump) {
             event.preventDefault();
-            toggleJump.click()
+            toggleJump.click();
         } else if ((document.activeElement === inputEntry) || 
                  (document.activeElement === jumpGo)) {
             event.preventDefault();
+            jumpGo.focus();
             jumpGo.click();
         } else if (document.activeElement === cpyrElem) {
             event.preventDefault();
-            cpyrElem.click()
+            cpyrElem.click();
         }
     } 
 }
