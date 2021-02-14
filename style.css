@@ -85,7 +85,7 @@ a:hover { color: #78e1ec; text-decoration: underline; cursor: pointer; }
     h4, form, .space { width: 100%; }
     p { width: 100%; text-align: left; }
 }
-@media print { a, a:visited, alink { color: #555555; } }
+@media print { a, a:visited, a:link { color: #555555; } }
 
 #endspace { height: 24em; }
 
