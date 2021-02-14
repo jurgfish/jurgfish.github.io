@@ -2,10 +2,11 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
+var version = "j099."
+
 // text elements
 var logoElem = document.getElementById("logo");
 var titleElem = document.getElementById("title");
-var verElem = document.getElementById("version");
 var lastEntry = document.getElementById("end");
 var cpyrElem = document.getElementById("copyright");
 var body = document.getElementsByTagName("body")[0];
@@ -28,7 +29,7 @@ var typeSpeed = 20;
 var titleTypeSpeed = 50;
 var titleTimeout = 1500;
 
-var showVer = false;
+var showVer = true;
 var showInput = false;
 var elemIdx = 0;
 var noanimIdx = 0;
@@ -121,7 +122,7 @@ function formatNum(n) {
 function setLastEntry() {
     lastEntry.textContent = "[Island of Mind " + formatNum(elems.length) +
         "+] will appear when ready";
-    verElem.textContent += formatNum(elems.length - 1);
+    version += formatNum(elems.length - 1);
     endspace.style.height = endspaceStartHeight + "em";
 }
 
@@ -253,10 +254,13 @@ logoElem.onclick = function() { location.reload(); }
 cpyrElem.onclick = function() { location.reload(); }
 
 titleElem.onclick = function() {
-    if (noanim[0].style.visibility === "visible") {
-        showVer = !showVer;
-        if (showVer) verElem.style.display = "block";
-        else verElem.style.display = "none";
+    if (showVer && (noanim[0].style.visibility === "visible")) {
+        showVer = false;
+        titleElem.textContent = version;
+        setTimeout(function() {
+            titleElem.textContent = "jurgfish";
+            showVer = true;
+        }, titleTimeout);
     }
 }
 
