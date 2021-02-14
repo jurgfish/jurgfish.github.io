@@ -216,6 +216,7 @@ function jumpToEntryIdx() {
         noanim[j].style.visibility = "hidden";
     }
     
+    endspace.style.height = endspaceStartHeight + "em";
     setTimeout("scrollToEntryIdx()", elemTimeout);
 }
 
