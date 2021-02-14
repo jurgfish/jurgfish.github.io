@@ -294,9 +294,25 @@ jumpGo.onclick = function() {
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 ||
             event.which === 13) {
-        event.preventDefault();
-        jumpGo.click();
-    }
+
+        if (document.activeElement === tbeginElem) {
+            event.preventDefault();
+            tbeginElem.click();
+        } else if (document.activeElement === tendElem) {
+            event.preventDefault();
+            tendElem.click();
+        } else if (document.activeElement === toggleJump) {
+            event.preventDefault();
+            toggleJump.click()
+        } else if ((document.activeElement === inputEntry) || 
+                 (document.activeElement === jumpGo)) {
+            event.preventDefault();
+            jumpGo.click();
+        } else if (document.activeElement === cpyrElem) {
+            event.preventDefault();
+            cpyrElem.click()
+        }
+    } 
 }
 
 ////////////////////////////////////////////////////////////////////////////

@@ -60,7 +60,6 @@ input {
     padding: 12px 8px;
     margin: 8px 8px;
 }
-
 input:focus {
     outline: none;
     background-color: #ffffff;
@@ -73,9 +72,16 @@ p {
     cursor: default;
 }
 
-a, a:visited { color: #48c1cc; text-decoration: none; }
-a:link { color: #48c1cc; text-decoration: none; }
-a:hover { color: #78e1ec; text-decoration: underline; cursor: pointer; }
+a, a:visited, a:link {
+    color: #48c1cc;
+    text-decoration: none;
+}
+a:hover, a:focus { 
+    outline: none;
+    color: #28a1ac;
+    text-decoration: underline;
+    cursor: pointer;
+}
 
 @media (min-width: 0px) {
     h4, form, .space { width: 600px; }
@@ -85,7 +91,7 @@ a:hover { color: #78e1ec; text-decoration: underline; cursor: pointer; }
     h4, form, .space { width: 100%; }
     p { width: 100%; text-align: left; }
 }
-@media print { a, a:visited, a:link { color: #555555; } }
+@media print { a, a:visited, a:link, a:focus { color: #555555; } }
 
 #endspace { height: 24em; }
 
