@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j103."
+var version = "j104."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -29,7 +29,7 @@ var typeSpeed = 20;
 var titleTypeSpeed = 50;
 var titleTimeout = 1500;
 
-var showVer = true;
+var showVer = false;
 var showInput = false;
 var elemIdx = 0;
 var noanimIdx = 0;
@@ -225,6 +225,7 @@ function jumpToEntryIdx() {
 
 function revealStart() {
     typeLetters(titleElem);
+    showVer = true;
     setTimeout("animateEntries()", elemTimeout);
 }
 
@@ -254,7 +255,7 @@ logoElem.onclick = function() { location.reload(); }
 cpyrElem.onclick = function() { location.reload(); }
 
 titleElem.onclick = function() {
-    if (showVer && (noanim[0].style.visibility === "visible")) {
+    if (showVer) {
         showVer = false;
         titleElem.textContent = version;
         setTimeout(function() {
