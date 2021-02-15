@@ -44,12 +44,12 @@ form {
 input {
     font-family: "Roboto Slab";
     font-size: 18px;
-    color: #48c1cc; 
+    color: #28a1ac; 
     background-color: #ffffff;
     text-align: left;
     border: 2px;
     border-style: solid;
-    border-color: #cccccc;
+    border-color: #48c1cc;
     border-radius: 6px;
     outline: none;
     width: 80px;
@@ -59,7 +59,7 @@ input {
 }
 input:focus {
     outline: none;
-    border-color: #48c1cc;
+    border-color: #28a1ac;
 }
 
 p {
