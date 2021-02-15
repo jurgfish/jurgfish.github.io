@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j104."
+var version = "j105."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -85,6 +85,7 @@ function typeLetters(elem) {
         if (c == word.length) {
             clearInterval(typer);
             typer = null;
+            showVer = true;
             return;
         }
     }
@@ -225,7 +226,6 @@ function jumpToEntryIdx() {
 
 function revealStart() {
     typeLetters(titleElem);
-    showVer = true;
     setTimeout("animateEntries()", elemTimeout);
 }
 
