@@ -38,7 +38,7 @@ h4 {
 form {
     display: none;
     text-align: center;
-    margin-bottom: 22px;
+    margin-bottom: 28px;
 }
 
 input {
@@ -56,7 +56,7 @@ input {
 
     width: 80px;
     padding: 8px 2px 8px 22px;
-    margin: 8px 8px;
+    margin-right: 8px;
     box-sizing: border-box;
 }
 input:focus {
@@ -69,6 +69,7 @@ p {
     overflow: hidden;
     visibility: hidden;
     cursor: default;
+    margin-bottom: 28px;
 }
 
 a, a:link, a:visited {
@@ -92,9 +93,9 @@ a:active {
     h4, form, .space { width: 600px; }
     p { width: 600px; text-align: justify; }
 }
-@media (max-width: 630px) {
-    h4, form, .space { width: 100%; }
-    p { width: 100%; text-align: left; }
+@media (max-width: 660px) {
+    h4, form, .space { width: 93%; }
+    p { width: 93%; text-align: left; }
 }
 @media print { a, a:link, a:visited, a:focus { color: #555555; } }
 

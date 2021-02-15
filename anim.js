@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j106."
+var version = "j107."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -37,7 +37,7 @@ var noanimIdx = 0;
 var elemTimeout = 100;
 var loadBound = 0.93;
 var slideSpeed = 2;
-var scrollOffset = 20;
+var scrollOffset = 30;
 
 var animRunning = true;
 var elemRunning = true;
