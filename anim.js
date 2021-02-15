@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j101."
+var version = "j102."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -268,13 +268,11 @@ titleElem.onclick = function() {
 tendElem.onclick = function() {
     elemIdx = elems.length;
     jumpToEntryIdx();
-    document.activeElement.blur()
 }
 
 tbeginElem.onclick = function() {
     elemIdx = 0;
     jumpToEntryIdx();
-    document.activeElement.blur()
 }
 
 toggleJump.onclick = function() {
@@ -286,7 +284,6 @@ toggleJump.onclick = function() {
     } else {
         toggleJump.textContent = "use jump"
         divForm.style.display = "none";
-        document.activeElement.blur()
     }
 }
 
@@ -295,8 +292,8 @@ jumpGo.onclick = function() {
     if (!(isNaN(inputEntryVal))) {
         elemIdx = inputEntryVal;
         inputEntry.value = "";
+        jumpGo.focus();
         jumpToEntryIdx();
-        document.activeElement.blur()
     }
 }
 
