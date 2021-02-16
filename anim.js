@@ -21,6 +21,7 @@ var inputEntry = document.getElementById("entry");
 var divForm = document.getElementById("form");
 var tbeginElem = document.getElementById("tbegin");
 var tendElem = document.getElementById("tend");
+var buttElem = document.getElementById("butt");
 
 // animation settings
 var logoStartPos = 2;
@@ -49,6 +50,7 @@ var elemRunning = true;
 
 var scrollOffset = 30;
 var jumpTimeout = 200;
+var buttScroll = 1000;
 var endspaceStartHeight = 200;
 var endspaceEndHeight = 24; 
 var endspaceSpeed = 1;
@@ -252,6 +254,20 @@ function revealLogo() {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+
+window.onscroll = function() {
+    if (document.body.scrollTop > buttScroll ||
+            document.documentElement.scrollTop > buttScroll) {
+        buttElem.style.display = "block";
+    } else {
+        buttElem.style.display = "none";
+    }
+}
+
+buttElem.onclick = function() {
+    buttElem.style.display = "none";
+    resetPosition();
+}
 
 logoElem.onclick = function() { location.reload(); }
 cpyrElem.onclick = function() { location.reload(); }
