@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j112."
+var version = "j113."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -286,6 +286,7 @@ toggleJump.onclick = function() {
         toggleJump.textContent = "use jump"
         divForm.style.display = "none";
         inputEntry.value = "";
+        document.activeElement.blur();
     }
 }
 
