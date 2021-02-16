@@ -44,6 +44,7 @@ form {
 input {
     font-family: "Roboto Slab";
     font-size: 18px;
+    color: #48c1cc;
     background-color: #ffffff;
     text-align: left;
 
@@ -63,10 +64,15 @@ input:focus {
     color: #28a1ac; 
     border-color: #28a1ac;
 }
-input:invalid {
+input:focus:invalid {
     outline: none;
     color: #cd5c5c; 
     border-color: #cd5c5c;
+}
+input:invalid {
+    outline: none;
+    color: #ed7c7c; 
+    border-color: #eeeeee;
 }
 
 p {

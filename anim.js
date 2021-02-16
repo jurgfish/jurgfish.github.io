@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j109."
+var version = "j110."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -285,6 +285,7 @@ toggleJump.onclick = function() {
     } else {
         toggleJump.textContent = "use jump"
         divForm.style.display = "none";
+        inputEntry.value = "";
     }
 }
 
@@ -292,7 +293,6 @@ jumpGo.onclick = function() {
     var inputEntryVal = parseInt(inputEntry.value);
     if (!(isNaN(inputEntryVal))) {
         elemIdx = inputEntryVal;
-        inputEntry.value = "";
         jumpGo.focus();
         jumpToEntryIdx();
     }
