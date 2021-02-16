@@ -55,7 +55,7 @@ input {
     border-color: #eeeeee;
 
     width: 80px;
-    padding: 8px 2px 8px 22px;
+    padding: 12px 2px 12px 22px;
     margin-right: 8px;
     box-sizing: border-box;
 }
@@ -103,8 +103,8 @@ a:active {
 #butt {
     display: none;
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 42px;
+    right: 28px;
     z-index: 99;
 
     font-family: "Roboto Slab";
@@ -119,7 +119,7 @@ a:active {
     border-style: solid;
     border-color: #eeeeee;
     
-    padding: 8px 15px 8px 15px;
+    padding: 12px 15px 12px 15px;
     cursor: pointer;
 }
 
