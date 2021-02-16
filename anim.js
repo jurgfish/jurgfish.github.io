@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j110."
+var version = "j111."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -293,6 +293,7 @@ jumpGo.onclick = function() {
     var inputEntryVal = parseInt(inputEntry.value);
     if (!(isNaN(inputEntryVal))) {
         elemIdx = inputEntryVal;
+        inputEntry.value = "";
         jumpGo.focus();
         jumpToEntryIdx();
     }
