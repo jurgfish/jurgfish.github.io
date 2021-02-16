@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j111."
+var version = "j112."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -293,8 +293,7 @@ jumpGo.onclick = function() {
     var inputEntryVal = parseInt(inputEntry.value);
     if (!(isNaN(inputEntryVal))) {
         elemIdx = inputEntryVal;
-        inputEntry.value = "";
-        jumpGo.focus();
+        document.activeElement.blur();
         jumpToEntryIdx();
     }
 }
@@ -306,9 +305,11 @@ document.onkeydown = function(event) {
         if (document.activeElement === tbeginElem) {
             event.preventDefault();
             tbeginElem.click();
+            document.activeElement.blur();
         } else if (document.activeElement === tendElem) {
             event.preventDefault();
             tendElem.click();
+            document.activeElement.blur();
         } else if (document.activeElement === toggleJump) {
             event.preventDefault();
             toggleJump.click();
