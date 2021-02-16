@@ -52,7 +52,7 @@ var scrollOffset = 30;
 var jumpTimeout = 200;
 var buttScroll = 1000;
 var endspaceStartHeight = 200;
-var endspaceEndHeight = 42; 
+var endspaceEndHeight = 30; 
 var endspaceSpeed = 1;
 
 ////////////////////////////////////////////////////////////////////////////
