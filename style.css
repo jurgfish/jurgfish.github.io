@@ -100,22 +100,10 @@ a:active {
     cursor: pointer;
 }
 
-@media (min-width: 0px) {
-    h4, form, .space { width: 600px; }
-    p { width: 600px; text-align: justify; }
-}
-@media (max-width: 660px) {
-    h4, form, .space { width: 93%; }
-    p { width: 93%; text-align: left; }
-}
-@media print { a, a:link, a:visited, a:focus { color: #555555; } }
-
-#endspace { height: 24em; }
-
 #butt {
     display: none;
     position: fixed;
-    bottom: 20px;
+    bottom: 30px;
     right: 30px;
     z-index: 99;
 
@@ -140,5 +128,18 @@ a:active {
     color: #28a1ac; 
     border-color: #28a1ac;
 }
+
+@media (min-width: 0px) {
+    h4, form, .space { width: 600px; }
+    p { width: 600px; text-align: justify; }
+}
+@media (max-width: 660px) {
+    h4, form, .space { width: 93%; }
+    p { width: 93%; text-align: left; }
+}
+@media print { a, a:link, a:visited, a:focus { color: #555555; } }
+
+#endspace { height: 24em; }
+
 
 

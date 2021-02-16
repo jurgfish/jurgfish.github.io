@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j114."
+var version = "j116."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -45,8 +45,8 @@ var elemTimeout = 500;
 var loadBound = 0.93;
 var slideStart = 100;
 var slideSpeed = 2;
-var animRunning = true;
 var elemRunning = true;
+var animator = null;
 
 var scrollOffset = 30;
 var jumpTimeout = 200;
@@ -150,23 +150,21 @@ function animateEntry(typeFlag, elem) {
 }
 
 function animateEntries() {
-    animRunning = true;
     elemRunning = true;
-    var animator = setInterval(frame, elemTimeout);
+    animator = setInterval(frame, elemTimeout);
 
     function frame() {
-        if (animRunning && (noanimIdx < noanimEntryCnt ||
-                (elemIdx >= elems.length && noanimIdx < noanim.length))) {
+        if (noanimIdx < noanimEntryCnt ||
+                (elemIdx >= elems.length && noanimIdx < noanim.length)) {
             if (animateEntry(false, noanim[noanimIdx])) noanimIdx++;
 
-        } else if (animRunning && elemIdx < elems.length) {
+        } else if (elemIdx < elems.length) {
             if (animateEntry(true, elems[elemIdx])) elemIdx++;
 
         } else {
             clearInterval(animator);
             animator = null;
-            if (animRunning) reduceEndSpace();
-            return;
+            reduceEndSpace();
         }
     }
 }
@@ -179,8 +177,10 @@ function scrollToEntryIdx() {
     animateEntries();
 }
 
+
 function jumpToEntryIdx() {
-    animRunning = false;
+    clearInterval(animator);
+    animator = null;
     elemRunning = false;
 
     if (elemIdx < 1) {
@@ -267,6 +267,8 @@ window.onscroll = function() {
 buttElem.onclick = function() {
     buttElem.style.display = "none";
     resetPosition();
+    toggleJump.focus(); // prevents strange behavior
+    document.activeElement.blur();
 }
 
 logoElem.onclick = function() { location.reload(); }
