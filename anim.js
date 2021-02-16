@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j113."
+var version = "j114."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -23,29 +23,32 @@ var tbeginElem = document.getElementById("tbegin");
 var tendElem = document.getElementById("tend");
 
 // animation settings
-var logoPos = 15;
+var logoStartPos = 2;
+var logoEndPos = 15;
+var logoS = 0.000001;
+var logoT = 3;
 var logoSpeed = 5;
 var typeSpeed = 20;
 var titleTypeSpeed = 50;
-var titleTimeout = 1500;
-
+var titleTimeout = 400;
+var versTimeout = 1500;
 var showVer = false;
 var showInput = false;
+
 var elemIdx = 0;
 var noanimIdx = 0;
-
-var elemTimeout = 100;
-var loadBound = 0.93;
-var slideSpeed = 2;
-var scrollOffset = 30;
-
-var animRunning = true;
-var elemRunning = true;
-
 var entryIdxLen = 3;
 var entryIdxBuf = "0000";
 var noanimEntryCnt = 1;
+var elemTimeout = 500;
+var loadBound = 0.93;
+var slideStart = 100;
+var slideSpeed = 2;
+var animRunning = true;
+var elemRunning = true;
 
+var scrollOffset = 30;
+var jumpTimeout = 200;
 var endspaceStartHeight = 200;
 var endspaceEndHeight = 24; 
 var endspaceSpeed = 1;
@@ -53,46 +56,26 @@ var endspaceSpeed = 1;
 ////////////////////////////////////////////////////////////////////////////
 
 function slideUp(elem) {
-    var marginTop = 200;
+    var marginTop = slideStart;
     var slider = setInterval(frame, slideSpeed);
-    elem.style.marginTop = marginTop + "%"; 
+    elem.style.marginTop = marginTop + "px"; 
     elem.style.visibility = "visible";
 
     function frame() {
-        marginTop -= slideSpeed;
-        elem.style.marginTop = marginTop + "%"; 
+        marginTop -= slideSpeed; 
+        elem.style.marginTop = marginTop + "px"; 
         
         if (marginTop <= 0 || !elemRunning) {
             clearInterval(slider);
             slider = null;
-            elem.style.marginTop = "0%"; 
-            return;
-        }
-    }
-}
-
-function typeLetters(elem) {
-    var word = elem.textContent;
-    var c = 0;
-    var typer = setInterval(frame, titleTypeSpeed);
-    elem.textContent = "";
-    elem.style.visibility = "visible";
-
-    function frame() {
-        c++;
-        elem.textContent = word.substring(0, c);
-
-        if (c == word.length) {
-            clearInterval(typer);
-            typer = null;
-            showVer = true;
+            elem.style.marginTop = "0px"; 
             return;
         }
     }
 }
 
 function typeWords(elem) {
-    var fullText = elem.textContent;
+    var fullText = elem.textContent.trim();
     var currText = "";
     var wordSet = fullText.split(" ");
     var wordSetIdx = 0;
@@ -100,9 +83,9 @@ function typeWords(elem) {
     elem.textContent = "";
 
     function frame() {
-        wordSetIdx++;
         currText += wordSet[wordSetIdx] + " ";
         elem.textContent = currText;
+        wordSetIdx++;
 
         if (wordSetIdx >= wordSet.length - 1 || !elemRunning) {
             clearInterval(typer);
@@ -158,8 +141,8 @@ function animateEntry(typeFlag, elem) {
         document.documentElement.clientHeight * loadBound));
 
     if (validBound) {
-        slideUp(elem);
         if (typeFlag) typeWords(elem);
+        slideUp(elem);
     }
     return validBound;
 }
@@ -180,7 +163,7 @@ function animateEntries() {
         } else {
             clearInterval(animator);
             animator = null;
-            if (animRunning) setTimeout("reduceEndSpace()", elemTimeout);
+            if (animRunning) reduceEndSpace();
             return;
         }
     }
@@ -207,7 +190,7 @@ function jumpToEntryIdx() {
 
     for (var j = 0; j < elems.length; j++) {
         if (j < elemIdx) {
-            elems[j].style.marginTop = "0%"; 
+            elems[j].style.marginTop = "0px"; 
             elems[j].style.visibility = "visible";
         } else {
             elems[j].style.visibility = "hidden";
@@ -219,34 +202,53 @@ function jumpToEntryIdx() {
     }
     
     endspace.style.height = endspaceStartHeight + "em";
-    setTimeout("scrollToEntryIdx()", elemTimeout);
+    setTimeout("scrollToEntryIdx()", jumpTimeout);
 }
 
 ////////////////////////////////////////////////////////////////////////////
 
-function revealStart() {
-    typeLetters(titleElem);
-    setTimeout("animateEntries()", elemTimeout);
+function revealTitle() {
+    var word = titleElem.textContent;
+    var c = 0;
+    var typer = setInterval(frame, titleTypeSpeed);
+    titleElem.textContent = ""; 
+    titleElem.style.visibility = "visible";
+
+    function frame() {
+        c++;
+        titleElem.textContent = word.substring(0, c);
+
+        if (c == word.length) {
+            clearInterval(typer);
+            typer = null;
+            showVer = true;
+            setTimeout("animateEntries()", titleTimeout);
+            return;
+        }
+    }
 }
 
 function revealLogo() {
-    var marginTop = -100;
+    var marginTop = logoStartPos;
+    var t = 0;
     var slider = setInterval(frame, logoSpeed);
-    logoElem.style.marginTop = "-100%";
+    logoElem.style.marginTop = marginTop + "%";
     logoElem.style.visibility = "visible";
 
     function frame() {
-        marginTop++; 
+        marginTop += (logoS * (t ** logoT));
         logoElem.style.marginTop = marginTop + "%";
+        t++;
 
-        if (marginTop == logoPos) {
+        if (marginTop >= logoEndPos) {
             clearInterval(slider);
             slider = null;
+            logoElem.style.marginTop = logoEndPos + "%";
+            revealTitle();
             return;
         }
     }
 
-    setTimeout("revealStart()", titleTimeout);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -261,7 +263,7 @@ titleElem.onclick = function() {
         setTimeout(function() {
             titleElem.textContent = "jurgfish";
             showVer = true;
-        }, titleTimeout);
+        }, versTimeout);
     }
 }
 
@@ -281,7 +283,7 @@ toggleJump.onclick = function() {
     if (showInput) {
         toggleJump.textContent = "(hide jump)"
         divForm.style.display = "block";
-        setTimeout(function() { inputEntry.focus(); }, elemTimeout);
+        setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
     } else {
         toggleJump.textContent = "use jump"
         divForm.style.display = "none";
