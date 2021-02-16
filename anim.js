@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j116."
+var version = "j117."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -52,7 +52,7 @@ var scrollOffset = 30;
 var jumpTimeout = 200;
 var buttScroll = 1000;
 var endspaceStartHeight = 200;
-var endspaceEndHeight = 24; 
+var endspaceEndHeight = 42; 
 var endspaceSpeed = 1;
 
 ////////////////////////////////////////////////////////////////////////////
