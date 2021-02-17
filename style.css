@@ -9,6 +9,7 @@ body {
     font-family: "Roboto Slab";
     font-size: 18px;
     color: #555555;
+    background-color: #faf0e6;
 
     -ms-user-select:none;
     -moz-user-select:none;
@@ -45,14 +46,14 @@ input {
     font-family: "Roboto Slab";
     font-size: 18px;
     color: #48c1cc;
-    background-color: #ffffff;
+    background-color: #faf0e6;
     text-align: left;
 
     outline: none;
     border: 2px;
     border-radius: 8px;
     border-style: solid;
-    border-color: #eeeeee;
+    border-color: #eae0d6;
 
     width: 84px;
     padding: 10px 4px 10px 14px;
@@ -72,7 +73,7 @@ input:focus:invalid {
 input:invalid {
     outline: none;
     color: #ed7c7c; 
-    border-color: #eeeeee;
+    border-color: #eae0d6;
 }
 
 p {
@@ -97,14 +98,14 @@ a, a:link, a:visited {
     font-family: "Roboto Slab";
     font-size: 18px;
     color: #48c1cc;
-    background-color: #ffffff;
+    background-color: #faf0e6;
     text-align: center;
 
     outline: none;
     border: 2px;
     border-radius: 8px;
     border-style: solid;
-    border-color: #eeeeee;
+    border-color: #eae0d6;
     
     padding: 10px 20px 10px 20px;
     cursor: pointer;

@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j136."
+var version = "j137."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -297,7 +297,7 @@ window.onscroll = function() {
             buttShown = true;
         }
 
-        buttElem.style.color = "#a9a9a9";
+        buttElem.style.color = "#eae0d6";
         if (scrollTimer !== null) {
             clearTimeout(scrollTimer);
             scrollTimer = null;
