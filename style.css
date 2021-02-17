@@ -131,7 +131,7 @@ a, a:link, a:visited {
     #butt { bottom: 30px }
     #butt:hover {
         outline: none;
-        color: #28a1ac !important;
+        color: #28a1ac;
         border-color: #28a1ac;
         text-decoration: none;
     }
@@ -147,10 +147,13 @@ a, a:link, a:visited {
         cursor: pointer;
     }
     
-    #butt { bottom: 69px }
+    #butt { bottom: 69px; }
 }
  
-@media print { a, a:link, a:visited, a:focus { color: #555555; } }
+@media print {
+    a, a:link, a:visited, a:focus { color: #555555; }
+    #butt { display: none; }
+}
 
 #endspace { height: 24em; }
 
