@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j134."
+var version = "j135."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -29,7 +29,7 @@ var logoEndPos = 15;
 var logoS = 0.000001;
 var logoT = 3;
 var logoSpeed = 5;
-var typeSpeed = 20;
+var typeSpeed = 5;
 var titleTypeSpeed = 50;
 var titleTimeout = 400;
 var versTimeout = 1500;
@@ -41,6 +41,8 @@ var noanimIdx = 0;
 var entryIdxLen = 3;
 var entryIdxBuf = "0000";
 var noanimEntryCnt = 1;
+var nonNovelEndCnt = 2;
+var novelLength = elems.length - nonNovelEndCnt;
 var elemTimeout = 500;
 var loadBound = 0.93;
 var slideStart = 100;
@@ -52,7 +54,7 @@ var scrollTimer = null;
 var scrollOffset = 30;
 var buttScroll = 1000;
 var scrollTimeout = 400;
-var jumpTimeout = 200;
+var jumpTimeout = 100;
 var widthBound = 660;
 var endspaceStartHeight = 200;
 var endspaceEndHeight = 30; 
@@ -114,9 +116,9 @@ function formatNum(n) {
 }
 
 function setLastEntry() {
-    lastEntry.textContent = "[Island of Mind " + formatNum(elems.length) +
+    lastEntry.textContent = "[Island of Mind " + formatNum(novelLength + 1) +
         "+] will appear when ready";
-    version += formatNum(elems.length - 1);
+    version += formatNum(novelLength);
     endspace.style.height = endspaceStartHeight + "em";
 }
 
@@ -180,7 +182,7 @@ function animateEntries() {
 ////////////////////////////////////////////////////////////////////////////
 
 function scrollToEntryIdx() {
-    var elem = elems[elemIdx - 1];
+    var elem = elems[elemIdx];
     window.scroll(0, elem.offsetTop - scrollOffset);
     animateEntries();
 }
@@ -191,15 +193,17 @@ function jumpToEntryIdx() {
     animator = null;
     elemRunning = false;
 
-    if (elemIdx < 1) {
-        elemIdx = 1;
-    } else if (elemIdx > elems.length) {
-        elemIdx = elems.length;
+    elemIdx -= 1; // outside, everything is 1-indexed
+
+    if (elemIdx < 0) {
+        elemIdx = 0;
+    } else if (elemIdx >= elems.length) {
+        elemIdx = elems.length - 1;
     }
     noanimIdx = noanimEntryCnt;
 
     for (var j = 0; j < elems.length; j++) {
-        if (j < elemIdx) {
+        if (j <= elemIdx - 1) {
             elems[j].style.marginTop = "0px"; 
             elems[j].style.visibility = "visible";
         } else {
@@ -334,12 +338,12 @@ titleElem.onclick = function() {
 
 // entry jumping
 tendElem.onclick = function() {
-    elemIdx = elems.length;
+    elemIdx = novelLength + 1;
     jumpToEntryIdx();
 }
 
 tbeginElem.onclick = function() {
-    elemIdx = 0;
+    elemIdx = 1;
     jumpToEntryIdx();
 }
 
@@ -361,6 +365,7 @@ jumpGo.onclick = function() {
     var inputEntryVal = parseInt(inputEntry.value);
     if (!(isNaN(inputEntryVal))) {
         elemIdx = inputEntryVal;
+        if (elemIdx > novelLength) elemIdx = novelLength + 1;
         document.activeElement.blur();
         jumpToEntryIdx();
     }
