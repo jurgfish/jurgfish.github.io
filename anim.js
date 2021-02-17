@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j137."
+var version = "j138."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -51,7 +51,7 @@ var elemRunning = true;
 var animator = null;
 
 var scrollTimer = null;
-var scrollOffset = 30;
+var scrollOffset = 28;
 var buttScroll = 1000;
 var scrollTimeout = 400;
 var jumpTimeout = 100;
@@ -116,8 +116,8 @@ function formatNum(n) {
 }
 
 function setLastEntry() {
-    lastEntry.textContent = "[Island of Mind " + formatNum(novelLength + 1) +
-        "+] will appear when ready";
+    lastEntry.textContent = "[Island of Mind " +
+        formatNum(novelLength + 1) + "+] will appear when ready";
     version += formatNum(novelLength);
     endspace.style.height = endspaceStartHeight + "em";
 }
@@ -402,7 +402,7 @@ document.onkeydown = function(event) {
 // begin routine
 resetPosition();
 setLastEntry();
-revealLogo();
+window.onload = function() { revealLogo(); };
 
 ////////////////////////////////////////////////////////////////////////////
 
