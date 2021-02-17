@@ -150,10 +150,7 @@ a, a:link, a:visited {
     #butt { bottom: 69px; }
 }
  
-@media print {
-    a, a:link, a:visited, a:focus { color: #555555; }
-    #butt { display: none; }
-}
+@media print { a, a:link, a:visited, a:focus { color: #555555; } }
 
 #endspace { height: 24em; }
 
