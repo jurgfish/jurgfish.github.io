@@ -91,7 +91,6 @@ a, a:link, a:visited {
 #butt {
     display: none;
     position: fixed;
-    bottom: 60px;
     right: 30px;
     z-index: 99;
 
@@ -128,10 +127,12 @@ a, a:link, a:visited {
         cursor: pointer;
     }
 
+    #butt { bottom: 30px }
     #butt:hover {
         outline: none;
-        color: #28a1ac; 
+        color: #28a1ac;
         border-color: #28a1ac;
+        text-decoration: none;
     }
 }
 
@@ -144,6 +145,8 @@ a, a:link, a:visited {
         color: #18919c;
         cursor: pointer;
     }
+    
+    #butt { bottom: 100px }
 }
  
 @media print { a, a:link, a:visited, a:focus { color: #555555; } }
