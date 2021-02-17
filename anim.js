@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j140."
+var version = "j141."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -76,7 +76,7 @@ function slideUp(elem) {
     function frame() {
         marginTop -= slideSpeed; 
         elem.style.marginTop = marginTop + "px"; 
-        
+
         if (marginTop <= 0 || !elemRunning) {
             clearInterval(slider);
             slider = null;
@@ -92,6 +92,7 @@ function typeWords(elem) {
     var wordSet = fullText.split(" ");
     var wordSetIdx = 0;
     elem.textContent = "";
+    elem.style.opacity = "0.8";
     var typer = setInterval(frame, typeSpeed);
 
     function frame() {
@@ -103,6 +104,7 @@ function typeWords(elem) {
             clearInterval(typer);
             typer = null;
             elem.textContent = fullText;
+            elem.style.opacity = "1";
             return;
         }
     }
@@ -242,20 +244,27 @@ function revealTitle() {
 
 function revealLogo() {
     var marginTop = logoStartPos;
+    var t = 0;
+    var opa = 0;
     logoElem.style.marginTop = marginTop + "%";
     logoElem.style.visibility = "visible";
-    var t = 0;
+    logoElem.style.opacity = "0";
     var slider = setInterval(frame, logoSpeed);
     
     function frame() {
         marginTop += (logoS * (t ** logoT));
         logoElem.style.marginTop = marginTop + "%";
         t++;
+        if (opa < 1) {
+            opa += 0.001;
+            logoElem.style.opacity = opa;
+        }
 
         if (marginTop >= logoEndPos) {
             clearInterval(slider);
             slider = null;
             logoElem.style.marginTop = logoEndPos + "%";
+            logoElem.style.opacity = "1";
             revealTitle();
             return;
         }
