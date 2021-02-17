@@ -146,7 +146,7 @@ a, a:link, a:visited {
         cursor: pointer;
     }
     
-    #butt { bottom: 100px }
+    #butt { bottom: 60px }
 }
  
 @media print { a, a:link, a:visited, a:focus { color: #555555; } }
