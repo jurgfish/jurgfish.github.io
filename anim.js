@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j120."
+var version = "j121."
 
 // text elements
 var logoElem = document.getElementById("logo");
