@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j141."
+var version = "j142."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -304,13 +304,13 @@ window.onscroll = function() {
             buttShown = true;
         }
 
-        buttElem.style.color = "#eae0d6";
+        buttElem.style.opacity = "0.5";
         if (scrollTimer !== null) {
             clearTimeout(scrollTimer);
             scrollTimer = null;
         }
         scrollTimer = setTimeout(function() {
-            buttElem.style.color = "#48c1cc";
+            buttElem.style.opacity = "1";
         }, scrollTimeout);
 
     } else {
