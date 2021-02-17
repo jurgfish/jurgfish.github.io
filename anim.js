@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j129."
+var version = "j130."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -47,11 +47,12 @@ var slideStart = 100;
 var slideSpeed = 2;
 var elemRunning = true;
 var animator = null;
-var scrollTimer = null;
 
+var scrollTimer = null;
 var scrollOffset = 30;
-var jumpTimeout = 200;
 var buttScroll = 1000;
+var scrollTimeout = 400;
+var jumpTimeout = 200;
 var widthBound = 660;
 var endspaceStartHeight = 200;
 var endspaceEndHeight = 30; 
@@ -299,7 +300,7 @@ window.onscroll = function() {
         }
         scrollTimer = setTimeout(function() {
             buttElem.style.color = "#48c1cc";
-        }, 1000);
+        }, scrollTimeout);
 
     } else {
         if (buttShown && !showRunning) {
