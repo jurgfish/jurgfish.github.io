@@ -111,7 +111,7 @@ a, a:link, a:visited {
     cursor: pointer;
 }
 
-@media (min-width: 0px) {
+@media (min-width: 660px) {
     h4, form, .space { width: 600px; }
     p { width: 600px; text-align: justify; }
 
@@ -138,7 +138,20 @@ a, a:link, a:visited {
 @media (max-width: 660px) {
     h4, form, .space { width: 93%; }
     p { width: 93%; text-align: left; }
+
+    a:hover { 
+        outline: none;
+        color: #28a1ac;
+        cursor: pointer;
+    }
+    a:focus { 
+        outline: none;
+        color: #28a1ac;
+        text-decoration: underline;
+        cursor: pointer;
+    }
 }
+ 
 @media print { a, a:link, a:visited, a:focus { color: #555555; } }
 
 #endspace { height: 24em; }
