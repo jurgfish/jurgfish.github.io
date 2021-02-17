@@ -55,7 +55,7 @@ input {
     border-color: #eeeeee;
 
     width: 80px;
-    padding: 12px 2px 12px 22px;
+    padding: 10px 2px 10px 22px;
     margin-right: 8px;
     box-sizing: border-box;
 }
@@ -87,12 +87,6 @@ a, a:link, a:visited {
     color: #48c1cc;
     text-decoration: none;
 }
-a:active {
-    outline: none;
-    color: #48c1cc;
-    text-decoration: underline;
-    cursor: pointer;
-}
 
 #butt {
     display: none;
@@ -113,7 +107,7 @@ a:active {
     border-style: solid;
     border-color: #eeeeee;
     
-    padding: 12px 15px 12px 15px;
+    padding: 10px 20px 10px 20px;
     cursor: pointer;
 }
 
@@ -124,6 +118,12 @@ a:active {
     a:hover, a:focus { 
         outline: none;
         color: #28a1ac;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    a:active {
+        outline: none;
+        color: #48c1cc;
         text-decoration: underline;
         cursor: pointer;
     }
