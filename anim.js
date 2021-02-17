@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j125."
+var version = "j126."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -51,6 +51,7 @@ var animator = null;
 var scrollOffset = 30;
 var jumpTimeout = 200;
 var buttScroll = 1000;
+var widthBound = 660;
 var endspaceStartHeight = 200;
 var endspaceEndHeight = 30; 
 var endspaceSpeed = 1;
@@ -259,6 +260,10 @@ window.onscroll = function() {
     if (document.body.scrollTop > buttScroll ||
             document.documentElement.scrollTop > buttScroll) {
         buttElem.style.display = "block";
+        if (window.innerWidth < widthBound ||
+                document.documentElement.clientWidth < widthBound) {
+            buttElem.focus();
+        }
     } else {
         buttElem.style.display = "none";
     }
