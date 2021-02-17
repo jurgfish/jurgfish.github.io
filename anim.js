@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j138."
+var version = "j139."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -69,9 +69,9 @@ var buttShown = false;
 
 function slideUp(elem) {
     var marginTop = slideStart;
-    var slider = setInterval(frame, slideSpeed);
     elem.style.marginTop = marginTop + "px"; 
     elem.style.visibility = "visible";
+    var slider = setInterval(frame, slideSpeed);
 
     function frame() {
         marginTop -= slideSpeed; 
@@ -91,8 +91,8 @@ function typeWords(elem) {
     var currText = "";
     var wordSet = fullText.split(" ");
     var wordSetIdx = 0;
-    var typer = setInterval(frame, typeSpeed);
     elem.textContent = "";
+    var typer = setInterval(frame, typeSpeed);
 
     function frame() {
         currText += wordSet[wordSetIdx] + " ";
@@ -182,7 +182,7 @@ function animateEntries() {
 ////////////////////////////////////////////////////////////////////////////
 
 function scrollToEntryIdx() {
-    var elem = elems[elemIdx];
+    var elem = elems[elemIdx - 1];
     window.scroll(0, elem.offsetTop - scrollOffset);
     animateEntries();
 }
@@ -193,8 +193,6 @@ function jumpToEntryIdx() {
     animator = null;
     elemRunning = false;
 
-    elemIdx -= 1; // outside, everything is 1-indexed
-
     if (elemIdx < 0) {
         elemIdx = 0;
     } else if (elemIdx >= elems.length) {
@@ -203,7 +201,7 @@ function jumpToEntryIdx() {
     noanimIdx = noanimEntryCnt;
 
     for (var j = 0; j < elems.length; j++) {
-        if (j <= elemIdx - 1) {
+        if (j < elemIdx) {
             elems[j].style.marginTop = "0px"; 
             elems[j].style.visibility = "visible";
         } else {
@@ -224,9 +222,9 @@ function jumpToEntryIdx() {
 function revealTitle() {
     var word = titleElem.textContent;
     var c = 0;
-    var typer = setInterval(frame, titleTypeSpeed);
     titleElem.textContent = ""; 
     titleElem.style.visibility = "visible";
+    var typer = setInterval(frame, titleTypeSpeed);
 
     function frame() {
         c++;
@@ -244,11 +242,11 @@ function revealTitle() {
 
 function revealLogo() {
     var marginTop = logoStartPos;
-    var t = 0;
-    var slider = setInterval(frame, logoSpeed);
     logoElem.style.marginTop = marginTop + "%";
     logoElem.style.visibility = "visible";
-
+    var t = 0;
+    var slider = setInterval(frame, logoSpeed);
+    
     function frame() {
         marginTop += (logoS * (t ** logoT));
         logoElem.style.marginTop = marginTop + "%";
@@ -267,9 +265,9 @@ function revealLogo() {
 function moveButt(show) {
     var right = (show) ? buttHidePos : buttShowPos;
     var delta = (show) ? 2 : -2;
-    var buttSlider = setInterval(frame, buttSpeed);
     buttElem.style.right = right + "px";
     buttElem.style.display = "block";
+    var buttSlider = setInterval(frame, buttSpeed);
 
     function frame() {
         right += delta;
