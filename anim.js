@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j128."
+var version = "j129."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -24,7 +24,7 @@ var tendElem = document.getElementById("tend");
 var buttElem = document.getElementById("butt");
 
 // animation settings
-var logoStartPos = 2;
+var logoStartPos = 1;
 var logoEndPos = 15;
 var logoS = 0.000001;
 var logoT = 3;
@@ -47,6 +47,7 @@ var slideStart = 100;
 var slideSpeed = 2;
 var elemRunning = true;
 var animator = null;
+var scrollTimer = null;
 
 var scrollOffset = 30;
 var jumpTimeout = 200;
@@ -55,6 +56,11 @@ var widthBound = 660;
 var endspaceStartHeight = 200;
 var endspaceEndHeight = 30; 
 var endspaceSpeed = 1;
+var buttSpeed = 1;
+var buttShowPos = 30;
+var buttHidePos = -100;
+var showRunning = false;
+var buttShown = false;
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -251,7 +257,27 @@ function revealLogo() {
             return;
         }
     }
+}
 
+function moveButt(show) {
+    var right = (show) ? buttHidePos : buttShowPos;
+    var delta = (show) ? 2 : -2;
+    var buttSlider = setInterval(frame, buttSpeed);
+    buttElem.style.right = right + "px";
+    buttElem.style.display = "block";
+
+    function frame() {
+        right += delta;
+        buttElem.style.right = right + "px";
+
+        if ((show && right >= buttShowPos) ||
+                (!show && right <= buttHidePos)) {
+            clearInterval(buttSlider);
+            buttSlider = null;
+            showRunning = false;
+            return;
+        }
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -259,13 +285,28 @@ function revealLogo() {
 window.onscroll = function() {
     if (document.body.scrollTop > buttScroll ||
             document.documentElement.scrollTop > buttScroll) {
-        buttElem.style.display = "block";
-        if (window.innerWidth < widthBound ||
-                document.documentElement.clientWidth < widthBound) {
-            buttElem.focus();
+        
+        if (!buttShown && !showRunning) {
+            showRunning = true;
+            moveButt(true);
+            buttShown = true;
         }
+
+        buttElem.style.color = "#eeeeee";
+        if (scrollTimer !== null) {
+            clearTimeout(scrollTimer);
+            scrollTimer = null;
+        }
+        scrollTimer = setTimeout(function() {
+            buttElem.style.color = "#48c1cc";
+        }, 1000);
+
     } else {
-        buttElem.style.display = "none";
+        if (buttShown && !showRunning) {
+            showRunning = true;
+            moveButt(false);
+            buttShown = false;
+        }
     }
 }
 
