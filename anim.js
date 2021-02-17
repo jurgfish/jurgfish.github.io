@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j139."
+var version = "j140."
 
 // text elements
 var logoElem = document.getElementById("logo");
@@ -193,8 +193,8 @@ function jumpToEntryIdx() {
     animator = null;
     elemRunning = false;
 
-    if (elemIdx < 0) {
-        elemIdx = 0;
+    if (elemIdx < 1) {
+        elemIdx = 1;
     } else if (elemIdx >= elems.length) {
         elemIdx = elems.length - 1;
     }
