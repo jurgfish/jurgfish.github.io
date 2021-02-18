@@ -10,7 +10,6 @@ body {
     font-size: 18px;
     color: #555555;
     background-color: #faf0e6;
-
     -ms-user-select:none;
     -moz-user-select:none;
     -webkit-user-select:none;
@@ -48,18 +47,17 @@ input {
     color: #48c1cc;
     background-color: #faf0e6;
     text-align: left;
-
     outline: none;
     border: 2px;
     border-radius: 8px;
     border-style: solid;
     border-color: #eae0d6;
-
     width: 84px;
     padding: 10px 4px 10px 14px;
     margin-right: 8px;
     box-sizing: border-box;
 }
+
 input:focus {
     outline: none;
     color: #28a1ac; 
@@ -94,19 +92,16 @@ a, a:link, a:visited {
     position: fixed;
     right: 30px;
     z-index: 99;
-
     font-family: "Roboto Slab";
     font-size: 18px;
     color: #48c1cc;
     background-color: #faf0e6;
     text-align: center;
-
     outline: none;
     border: 2px;
     border-radius: 8px;
     border-style: solid;
     border-color: #eae0d6;
-    
     padding: 10px 20px 10px 20px;
     cursor: pointer;
 }

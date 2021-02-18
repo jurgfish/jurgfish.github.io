@@ -2,9 +2,9 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j144."
+var version = "j145."
 
-// text elements
+// elements
 var logoElem = document.getElementById("logo");
 var titleElem = document.getElementById("title");
 var lastEntry = document.getElementById("end");
@@ -14,7 +14,6 @@ var endspace = document.getElementById("endspace");
 var noanim = body.getElementsByClassName("noanim");
 var elems = body.getElementsByClassName("anim");
 
-// jump elements
 var jumpGo = document.getElementById("jump");
 var toggleJump = document.getElementById("showjump");
 var inputEntry = document.getElementById("entry");
@@ -23,18 +22,27 @@ var tbeginElem = document.getElementById("tbegin");
 var tendElem = document.getElementById("tend");
 var buttElem = document.getElementById("butt");
 
-// animation settings
-var logoStartPos = 1;
-var logoEndPos = 15;
+// settings
+var logoSpeed = 5;
 var logoS = 0.000001;
 var logoT = 3;
-var logoSpeed = 5;
-var typeSpeed = 5;
 var titleTypeSpeed = 50;
-var titleTimeout = 400;
+var typeSpeed = 5;
+var slideSpeed = 2;
+var endspaceSpeed = 1;
+var buttSpeed = 1;
+
+var titleTimeout = 100;
 var versTimeout = 1500;
+var elemTimeout = 500;
+var scrollTimeout = 400;
+var jumpTimeout = 100;
+
 var showVer = false;
 var showInput = false;
+var elemRunning = true;
+var showRunning = false;
+var buttShown = false;
 
 var elemIdx = 0;
 var noanimIdx = 0;
@@ -43,47 +51,46 @@ var entryIdxBuf = "0000";
 var noanimEntryCnt = 1;
 var nonNovelEndCnt = 2;
 var novelLength = elems.length - nonNovelEndCnt;
-var elemTimeout = 500;
-var loadBound = 0.93;
-var slideStart = 100;
-var slideSpeed = 2;
-var elemRunning = true;
-var animator = null;
 
-var scrollTimer = null;
-var scrollOffset = 28;
-var buttScroll = 1000;
-var scrollTimeout = 400;
-var jumpTimeout = 100;
+var logoStartPos = 1;
+var logoEndPos = 15;
+var slideStart = 100;
+var loadBound = 0.93;
 var widthBound = 660;
+var scrollOffset = 28;
 var endspaceStartHeight = 200;
 var endspaceEndHeight = 30; 
-var endspaceSpeed = 1;
-var buttSpeed = 1;
+var buttScroll = 1000;
 var buttShowPos = 30;
 var buttHidePos = -100;
-var showRunning = false;
-var buttShown = false;
+
+var animator = null;
+var scrollTimer = null;
 
 ////////////////////////////////////////////////////////////////////////////
 
-function slideUp(elem) {
+function slideUp(elem, opaFlag) {
     var marginTop = slideStart;
+    var opa = 0;
+    if (opaFlag) elem.style.opacity = 0;
     elem.style.marginTop = marginTop + "px"; 
     elem.style.visibility = "visible";
-    var slider = setInterval(frame, slideSpeed);
 
-    function frame() {
+    var slider = setInterval(function() {
         marginTop -= slideSpeed; 
         elem.style.marginTop = marginTop + "px"; 
-
+        if (opaFlag && opa < 1) {
+            elem.style.opacity = opa;
+            opa += 0.02;
+        }
         if (marginTop <= 0 || !elemRunning) {
             clearInterval(slider);
             slider = null;
             elem.style.marginTop = "0px"; 
+            if (opaFlag) elem.style.opacity = 1;
             return;
         }
-    }
+    }, slideSpeed);
 }
 
 function typeWords(elem) {
@@ -91,23 +98,26 @@ function typeWords(elem) {
     var currText = "";
     var wordSet = fullText.split(" ");
     var wordSetIdx = 0;
-    elem.textContent = "";
-    elem.style.opacity = "0.8";
-    var typer = setInterval(frame, typeSpeed);
+    var opa = 0.1;
+    elem.textContent = currText;
+    elem.style.opacity = opa; 
 
-    function frame() {
+    var typer = setInterval(function() {
         currText += wordSet[wordSetIdx] + " ";
         elem.textContent = currText;
         wordSetIdx++;
-
+        if (opa < 1) {
+            elem.style.opacity = opa;
+            opa += 0.01;
+        }
         if (wordSetIdx >= wordSet.length - 1 || !elemRunning) {
             clearInterval(typer);
             typer = null;
             elem.textContent = fullText;
-            elem.style.opacity = "1";
+            elem.style.opacity = 1;
             return;
         }
-    }
+    }, typeSpeed);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -125,7 +135,7 @@ function setLastEntry() {
 }
 
 function resetPosition() {
-    if ('scrollRestoration' in history)
+    if ('scrollRestoration' in history) 
         history.scrollRestoration = 'manual';
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
@@ -133,18 +143,15 @@ function resetPosition() {
 
 function reduceEndSpace() {
     var h = endspaceStartHeight; 
-    var reducer = setInterval(frame, endspaceSpeed);
-
-    function frame() {
+    var reducer = setInterval(function() {
         h--;
         endspace.style.height = h + "em";
-
         if (h == endspaceEndHeight) {
             clearInterval(reducer);
             reducer = null;
             return;
-        } 
-    }
+        }
+    }, endspaceSpeed);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -156,16 +163,14 @@ function animateEntry(typeFlag, elem) {
 
     if (validBound) {
         if (typeFlag) typeWords(elem);
-        slideUp(elem);
+        slideUp(elem, !typeFlag);
     }
     return validBound;
 }
 
 function animateEntries() {
     elemRunning = true;
-    animator = setInterval(frame, elemTimeout);
-
-    function frame() {
+    animator = setInterval(function() {
         if (noanimIdx < noanimEntryCnt ||
                 (elemIdx >= elems.length && noanimIdx < noanim.length)) {
             if (animateEntry(false, noanim[noanimIdx])) noanimIdx++;
@@ -178,7 +183,7 @@ function animateEntries() {
             animator = null;
             reduceEndSpace();
         }
-    }
+    }, elemTimeout);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -189,17 +194,12 @@ function scrollToEntryIdx() {
     animateEntries();
 }
 
-
 function jumpToEntryIdx() {
     clearInterval(animator);
     animator = null;
     elemRunning = false;
-
-    if (elemIdx < 1) {
-        elemIdx = 1;
-    } else if (elemIdx >= elems.length) {
-        elemIdx = elems.length - 1;
-    }
+    if (elemIdx < 1) elemIdx = 1;
+    else if (elemIdx >= elems.length) elemIdx = elems.length - 1;
     noanimIdx = noanimEntryCnt;
 
     for (var j = 0; j < elems.length; j++) {
@@ -210,7 +210,6 @@ function jumpToEntryIdx() {
             elems[j].style.visibility = "hidden";
         }
     }
-
     for (var j = noanimEntryCnt; j < noanim.length; j++) {
         noanim[j].style.visibility = "hidden";
     }
@@ -226,12 +225,10 @@ function revealTitle() {
     var c = 0;
     titleElem.textContent = ""; 
     titleElem.style.visibility = "visible";
-    var typer = setInterval(frame, titleTypeSpeed);
-
-    function frame() {
+    
+    var typer = setInterval(function() {
         c++;
         titleElem.textContent = word.substring(0, c);
-
         if (c == word.length) {
             clearInterval(typer);
             typer = null;
@@ -239,7 +236,7 @@ function revealTitle() {
             setTimeout("animateEntries()", titleTimeout);
             return;
         }
-    }
+    }, titleTypeSpeed);
 }
 
 function revealLogo() {
@@ -248,27 +245,25 @@ function revealLogo() {
     var opa = 0;
     logoElem.style.marginTop = marginTop + "%";
     logoElem.style.visibility = "visible";
-    logoElem.style.opacity = "0";
-    var slider = setInterval(frame, logoSpeed);
-    
-    function frame() {
+    logoElem.style.opacity = 0;
+
+    var slider = setInterval(function() {
         marginTop += (logoS * (t ** logoT));
         logoElem.style.marginTop = marginTop + "%";
         t++;
         if (opa < 1) {
-            opa += 0.001;
+            opa += 0.002;
             logoElem.style.opacity = opa;
         }
-
         if (marginTop >= logoEndPos) {
             clearInterval(slider);
             slider = null;
             logoElem.style.marginTop = logoEndPos + "%";
-            logoElem.style.opacity = "1";
+            logoElem.style.opacity = 1;
             revealTitle();
             return;
         }
-    }
+    }, logoSpeed);
 }
 
 function moveButt(show) {
@@ -276,12 +271,10 @@ function moveButt(show) {
     var delta = (show) ? 2 : -2;
     buttElem.style.right = right + "px";
     buttElem.style.display = "block";
-    var buttSlider = setInterval(frame, buttSpeed);
-
-    function frame() {
+    
+    var buttSlider = setInterval(function() {
         right += delta;
         buttElem.style.right = right + "px";
-
         if ((show && right >= buttShowPos) ||
                 (!show && right <= buttHidePos)) {
             clearInterval(buttSlider);
@@ -289,7 +282,7 @@ function moveButt(show) {
             showRunning = false;
             return;
         }
-    }
+    }, buttSpeed);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -297,30 +290,29 @@ function moveButt(show) {
 window.onscroll = function() {
     if (document.body.scrollTop > buttScroll ||
             document.documentElement.scrollTop > buttScroll) {
-        
         if (!buttShown && !showRunning) {
             showRunning = true;
             moveButt(true);
             buttShown = true;
         }
-
-        buttElem.style.opacity = "0.5";
+        buttElem.style.opacity = 0.5;
         if (scrollTimer !== null) {
             clearTimeout(scrollTimer);
             scrollTimer = null;
         }
         scrollTimer = setTimeout(function() {
-            buttElem.style.opacity = "1";
+            buttElem.style.opacity = 1;
         }, scrollTimeout);
 
-    } else {
-        if (buttShown && !showRunning) {
-            showRunning = true;
-            moveButt(false);
-            buttShown = false;
-        }
+    } else if (buttShown && !showRunning) {
+        showRunning = true;
+        moveButt(false);
+        buttShown = false;
     }
 }
+
+logoElem.onclick = function() { location.reload(); }
+cpyrElem.onclick = function() { location.reload(); }
 
 buttElem.onclick = function() {
     buttElem.style.display = "none";
@@ -328,9 +320,6 @@ buttElem.onclick = function() {
     toggleJump.focus(); // prevents strange behavior
     document.activeElement.blur();
 }
-
-logoElem.onclick = function() { location.reload(); }
-cpyrElem.onclick = function() { location.reload(); }
 
 titleElem.onclick = function() {
     if (showVer) {
