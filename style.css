@@ -92,9 +92,6 @@ a, a:link, a:visited {
     position: fixed;
     right: 30px;
     z-index: 99;
-    font-family: "Roboto Slab";
-    font-size: 18px;
-    color: #48c1cc;
     background-color: #faf0e6;
     text-align: center;
     outline: none;
