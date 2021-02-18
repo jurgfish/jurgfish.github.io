@@ -123,7 +123,7 @@ a, a:link, a:visited {
     #butt { bottom: 30px }
     #butt:hover {
         outline: none;
-        color: #28a1ac;
+        color: #28a1ac !important;
         border-color: #28a1ac;
         text-decoration: none;
     }
