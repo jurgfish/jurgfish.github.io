@@ -1,8 +1,10 @@
 // jurgfish
 
+// https://github.com/jurgfish/jurgfish.github.io
+
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j147."
+var version = "j148."
 
 // elements
 var logoElem = document.getElementById("logo");
