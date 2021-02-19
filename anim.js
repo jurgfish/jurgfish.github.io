@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j149."
+var version = "j150."
 
 // elements
 var logoElem = document.getElementById("logo");
@@ -208,6 +208,7 @@ function jumpToEntryIdx() {
         if (j < elemIdx) {
             elems[j].style.marginTop = "0px"; 
             elems[j].style.visibility = "visible";
+            elems[j].style.opacity = 1;
         } else {
             elems[j].style.visibility = "hidden";
         }
