@@ -4,11 +4,11 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j150."
+var version = "j151."
 
 // elements
 var logoElem = document.getElementById("logo");
-var titleElem = document.getElementById("title");
+var jurgfishElem = document.getElementById("jurgfish");
 var lastEntry = document.getElementById("end");
 var cpyrElem = document.getElementById("copyright");
 var body = document.getElementsByTagName("body")[0];
@@ -28,13 +28,13 @@ var buttElem = document.getElementById("butt");
 var logoSpeed = 5;
 var logoS = 0.000001;
 var logoT = 3;
-var titleTypeSpeed = 50;
+var jurgfishTypeSpeed = 50;
 var typeSpeed = 5;
 var slideSpeed = 2;
 var endspaceSpeed = 1;
 var buttSpeed = 1;
 
-var titleTimeout = 100;
+var jurgfishTimeout = 100;
 var versTimeout = 1500;
 var elemTimeout = 500;
 var scrollTimeout = 400;
@@ -223,23 +223,23 @@ function jumpToEntryIdx() {
 
 ////////////////////////////////////////////////////////////////////////////
 
-function revealTitle() {
-    var word = titleElem.textContent;
+function revealjurgfish() {
+    var word = jurgfishElem.textContent;
     var c = 0;
-    titleElem.textContent = ""; 
-    titleElem.style.visibility = "visible";
+    jurgfishElem.textContent = ""; 
+    jurgfishElem.style.visibility = "visible";
     
     var typer = setInterval(function() {
         c++;
-        titleElem.textContent = word.substring(0, c);
+        jurgfishElem.textContent = word.substring(0, c);
         if (c == word.length) {
             clearInterval(typer);
             typer = null;
             showVer = true;
-            setTimeout("animateEntries()", titleTimeout);
+            setTimeout("animateEntries()", jurgfishTimeout);
             return;
         }
-    }, titleTypeSpeed);
+    }, jurgfishTypeSpeed);
 }
 
 function revealLogo() {
@@ -263,7 +263,7 @@ function revealLogo() {
             slider = null;
             logoElem.style.marginTop = logoEndPos + "%";
             logoElem.style.opacity = 1;
-            revealTitle();
+            revealjurgfish();
             return;
         }
     }, logoSpeed);
@@ -326,12 +326,12 @@ buttElem.onclick = function() {
     document.activeElement.blur();
 }
 
-titleElem.onclick = function() {
+jurgfishElem.onclick = function() {
     if (showVer) {
         showVer = false;
-        titleElem.textContent = version;
+        jurgfishElem.textContent = version;
         setTimeout(function() {
-            titleElem.textContent = "jurgfish";
+            jurgfishElem.textContent = "jurgfish";
             showVer = true;
         }, versTimeout);
     }
