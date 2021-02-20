@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j151."
+var version = "j152."
 
 // elements
 var logoElem = document.getElementById("logo");
@@ -403,7 +403,8 @@ document.onkeydown = function(event) {
 // begin routine
 resetPosition();
 setLastEntry();
-window.onload = function() { revealLogo(); };
+//window.onload = function() { revealLogo(); };
+setTimeout("revealLogo()", 600);
 
 ////////////////////////////////////////////////////////////////////////////
 
