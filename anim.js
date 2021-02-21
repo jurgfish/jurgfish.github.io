@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 163;
+const version = 164;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -276,7 +276,8 @@ function revealLogo() {
             opa = logoOpaRate * elap;
             logoElem.style.opacity = opa;
         }
-        if (marginTop > logoEndPos) {
+        if (marginTop >= logoEndPos) {
+            logoElem.style.marginTop = logoEndPos + "%";
             logoElem.style.opacity = 1;
             revealjurgfish();
         } else {
@@ -298,9 +299,12 @@ function moveButt(show) {
         const elap = (t - t0) * animationSpeed;
         const right = p0 + (delta * elap);
         buttElem.style.right = right + "px";
-        if ((show && right >= buttShowPos) ||
-                (!show && right <= buttHidePos)) {
+        if (show && right >= buttShowPos) {
             showRunning = false;
+            buttElem.style.right = buttShowPos + "px";
+        } else if (!show && right <= buttHidePos)) {
+            showRunning = false;
+            buttElem.style.right = buttHidePos + "px";
         } else {
             window.requestAnimationFrame(frame);
         }
