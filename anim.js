@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 157;
+const version = 158;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -26,38 +26,24 @@ const buttElem = document.getElementById("butt");
 
 // settings
 const logoRate = 0.005;
-const logoOpaRate = 0.005;
-const typeSpeed = 3;
-const slideRate = 5;
+const logoOpaRate = 0.002;
+const jurgfishTypeSpeed = 0.3;
+const typeSpeed = 1.5;
+const slideRate = 3;
 const endspaceSpeed = 1;
-const buttSpeed = 7;
+const buttSpeed = 5;
 const frameRate = 1000 / 60;
+const animationSpeed = 0.1;
 
 const versTimeout = 1500;
 const elemTimeout = 500;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
 
-var showVer = false;
-var showInput = false;
-var elemRunning = true;
-var showRunning = false;
-var buttShown = false;
-
-var elemIdx = 0;
-var noanimIdx = 0;
-
-const entryIdxLen = 3;
-const entryIdxBuf = "0000";
-const noanimEntryCnt = 1;
-const nonNovelEndCnt = 2;
-const novelLength = elems.length - nonNovelEndCnt;
-
 const logoStartPos = 1;
 const logoEndPos = 15;
 const slideStart = 100;
 const loadBound = 0.93;
-const widthBound = 660;
 const scrollOffset = 28;
 const endspaceStartHeight = 100;
 const endspaceEndHeight = 30; 
@@ -65,33 +51,49 @@ const buttScroll = 1000;
 const buttShowPos = 30;
 const buttHidePos = -100;
 
+const entryIdxLen = 3;
+const entryIdxBuf = "0000";
+const noanimEntryCnt = 1;
+const nonNovelEndCnt = 2;
+const novelLength = elems.length - nonNovelEndCnt;
+
+var showVer = false;
+var showInput = false;
+var elemRunning = true;
+var showRunning = false;
+var buttShown = false;
+var elemIdx = 0;
+var noanimIdx = 0;
 var animator = null;
 var scrollTimer = null;
 
 ////////////////////////////////////////////////////////////////////////////
 
-window.requestAnimationFrame = window.requestAnimationFrame
-    || window.mozRequestAnimationFrame
-    || window.webkitRequestAnimationFrame
-    || window.msRequestAnimationFrame
-    || function(callback) { return setTimeout(callback, frameRate); }
+window.requestAnimationFrame = window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(callback) { return setTimeout(callback, frameRate); };
 
 ////////////////////////////////////////////////////////////////////////////
 
 function slideUp(elem, opaFlag) {
+    const opaRate = slideRate / slideStart;
     var marginTop = slideStart;
+    var t0 = null;
     var opa = 0;
-    var opaRate = slideRate / slideStart;
     if (opaFlag) elem.style.opacity = 0;
     elem.style.marginTop = marginTop + "px"; 
     elem.style.visibility = "visible";
 
-    function frame() {
-        marginTop -= slideRate; 
+    function frame(t) {
+        if (!t0) t0 = t;
+        const elap = (t - t0) * animationSpeed;
+        marginTop = slideStart - (slideRate * elap); 
         elem.style.marginTop = marginTop + "px"; 
         if (opaFlag && opa < 1) {
             elem.style.opacity = opa;
-            opa += opaRate;
+            opa = opaRate * elap;
         }
         if (marginTop <= 0 || !elemRunning) {
             elem.style.marginTop = "0px"; 
@@ -106,23 +108,28 @@ function slideUp(elem, opaFlag) {
 function typeWords(elem) {
     const fullText = elem.textContent.trim();
     const wordSet = fullText.split(" ");
+    const opaRate = typeSpeed / wordSet.length;
     var currText = "";
     var wordSetIdx = 0;
+    var currSetIdx = 0;
+    var t0 = null;
     var opa = 0.1;
-    var opaRate = typeSpeed / wordSet.length;
     elem.textContent = currText;
     elem.style.opacity = opa; 
 
-    function frame() {
-        for (var j = 0; j < typeSpeed; j++) {
-            if (wordSetIdx >= wordSet.length - 1) break;
-            currText += wordSet[wordSetIdx] + " ";
-            wordSetIdx++;
+    function frame(t) {
+        if (!t0) t0 = t;
+        const elap = (t - t0) * animationSpeed;
+        wordSetIdx = Math.floor(typeSpeed * elap);
+        while (currSetIdx <= wordSetIdx) {
+            if (currSetIdx >= wordSet.length - 1) break;
+            currText += wordSet[currSetIdx] + " ";
+            currSetIdx++;
         }
         elem.textContent = currText;
         if (opa < 1) {
             elem.style.opacity = opa;
-            opa += opaRate;
+            opa = opaRate * elap;
         }
         if (wordSetIdx >= wordSet.length - 1 || !elemRunning) {
             elem.textContent = fullText;
@@ -209,8 +216,9 @@ function jumpToEntryIdx() {
     if (elemIdx < 1) elemIdx = 1;
     else if (elemIdx >= elems.length) elemIdx = elems.length - 1;
     noanimIdx = noanimEntryCnt;
+    var j = 0;
 
-    for (var j = 0; j < elems.length; j++) {
+    for (j; j < elems.length; j++) {
         if (j < elemIdx) {
             elems[j].style.marginTop = "0px"; 
             elems[j].style.visibility = "visible";
@@ -219,7 +227,7 @@ function jumpToEntryIdx() {
             elems[j].style.visibility = "hidden";
         }
     }
-    for (var j = noanimEntryCnt; j < noanim.length; j++) {
+    for (j = noanimEntryCnt; j < noanim.length; j++) {
         noanim[j].style.visibility = "hidden";
     }
     
@@ -230,15 +238,19 @@ function jumpToEntryIdx() {
 ////////////////////////////////////////////////////////////////////////////
 
 function revealjurgfish() {
-    var word = jurgfishElem.textContent;
+    const word = jurgfishElem.textContent;
+    var t0 = null;
     var c = 0;
     jurgfishElem.textContent = ""; 
     jurgfishElem.style.visibility = "visible";
     
-    function frame() {
-        c++;
+    function frame(t) {
+        if (!t0) t0 = t;
+        const elap = (t - t0) * animationSpeed;
+        c = Math.floor(jurgfishTypeSpeed * elap);
         jurgfishElem.textContent = word.substring(0, c);
-        if (c == word.length) {
+        if (c >= word.length) {
+            jurgfishElem.textContent = word;
             showVer = true;
             animateEntries();
         } else {
@@ -250,18 +262,19 @@ function revealjurgfish() {
 
 function revealLogo() {
     var marginTop = logoStartPos;
-    var t = 0;
+    var t0 = null;
     var opa = 0;
     logoElem.style.marginTop = marginTop + "%";
     logoElem.style.visibility = "visible";
     logoElem.style.opacity = 0;
 
-    function frame() {
-        marginTop *= 2.718**(logoRate*t)
+    function frame(t) {
+        if (!t0) t0 = t;
+        const elap = (t - t0) * animationSpeed;
+        marginTop *= 2.718**(logoRate*elap);
         logoElem.style.marginTop = marginTop + "%";
-        t++;
         if (opa < 1) {
-            opa += logoOpaRate;
+            opa = logoOpaRate * elap;
             logoElem.style.opacity = opa;
         }
         if (marginTop >= logoEndPos) {
@@ -276,13 +289,16 @@ function revealLogo() {
 }
 
 function moveButt(show) {
-    var right = (show) ? buttHidePos : buttShowPos;
-    var delta = (show) ? buttSpeed : -buttSpeed;
-    buttElem.style.right = right + "px";
+    const p0 = (show) ? buttHidePos : buttShowPos;
+    const delta = (show) ? buttSpeed : -buttSpeed;
+    var t0 = null;
+    buttElem.style.right = p0 + "px";
     buttElem.style.display = "block";
     
-    function frame() {
-        right += delta;
+    function frame(t) {
+        if (!t0) t0 = t;
+        const elap = (t - t0) * animationSpeed;
+        const right = p0 + (delta * elap);
         buttElem.style.right = right + "px";
         if ((show && right >= buttShowPos) ||
                 (!show && right <= buttHidePos)) {
@@ -318,17 +334,17 @@ window.onscroll = function() {
         moveButt(false);
         buttShown = false;
     }
-}
+};
 
-logoElem.onclick = function() { location.reload(); }
-cpyrElem.onclick = function() { location.reload(); }
+logoElem.onclick = function() { location.reload(); };
+cpyrElem.onclick = function() { location.reload(); };
 
 buttElem.onclick = function() {
     buttElem.style.display = "none";
     resetPosition();
     toggleJump.focus(); // prevents strange behavior
     document.activeElement.blur();
-}
+};
 
 jurgfishElem.onclick = function() {
     if (showVer) {
@@ -339,32 +355,32 @@ jurgfishElem.onclick = function() {
             showVer = true;
         }, versTimeout);
     }
-}
+};
 
 // entry jumping
 tendElem.onclick = function() {
     elemIdx = novelLength + 1;
     jumpToEntryIdx();
-}
+};
 
 tbeginElem.onclick = function() {
     elemIdx = 1;
     jumpToEntryIdx();
-}
+};
 
 toggleJump.onclick = function() {
     showInput = !showInput;
     if (showInput) {
-        toggleJump.textContent = "(hide jump)"
+        toggleJump.textContent = "(hide jump)";
         divForm.style.display = "block";
         setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
     } else {
-        toggleJump.textContent = "use jump"
+        toggleJump.textContent = "use jump";
         divForm.style.display = "none";
         inputEntry.value = "";
         document.activeElement.blur();
     }
-}
+};
 
 jumpGo.onclick = function() {
     var inputEntryVal = parseInt(inputEntry.value);
@@ -374,7 +390,7 @@ jumpGo.onclick = function() {
         document.activeElement.blur();
         jumpToEntryIdx();
     }
-}
+};
 
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 ||
@@ -400,14 +416,18 @@ document.onkeydown = function(event) {
             cpyrElem.click();
         }
     } 
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////
 
 // begin routine
-resetPosition();
-setLastEntry();
-revealLogo();
+document.onreadystatechange = function () {
+    if (document.readyState === 'complete') {
+        resetPosition();
+        setLastEntry();
+        revealLogo();
+    }
+};
 
 ////////////////////////////////////////////////////////////////////////////
 
