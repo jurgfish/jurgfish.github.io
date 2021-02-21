@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 164;
+const version = 165;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -302,7 +302,7 @@ function moveButt(show) {
         if (show && right >= buttShowPos) {
             showRunning = false;
             buttElem.style.right = buttShowPos + "px";
-        } else if (!show && right <= buttHidePos)) {
+        } else if (!show && right <= buttHidePos) {
             showRunning = false;
             buttElem.style.right = buttHidePos + "px";
         } else {
