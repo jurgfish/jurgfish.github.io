@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 162;
+const version = 163;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -108,7 +108,7 @@ function slideUp(elem, opaFlag) {
 function typeWords(elem) {
     const fullText = elem.textContent.trim();
     const wordSet = fullText.split(" ");
-    const opaRate = typeSpeed / wordSet.length;
+    const opaRate = typeSpeed / (wordSet.length * 0.5);
     var currText = "";
     var wordSetIdx = 0;
     var currSetIdx = 0;
