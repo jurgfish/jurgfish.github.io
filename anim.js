@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-var version = "j152."
+var version = "j153."
 
 // elements
 var logoElem = document.getElementById("logo");
@@ -26,15 +26,15 @@ var buttElem = document.getElementById("butt");
 
 // settings
 var logoSpeed = 5;
-var logoS = 0.000001;
-var logoT = 3;
+var logoRate = 1.0005;
 var jurgfishTypeSpeed = 50;
 var typeSpeed = 5;
-var slideSpeed = 2;
+var slideSpeed = 5;
+var slideRate = 2;
 var endspaceSpeed = 1;
-var buttSpeed = 1;
+var buttSpeed = 5;
 
-var jurgfishTimeout = 100;
+var logoTimeout = 300;
 var versTimeout = 1500;
 var elemTimeout = 500;
 var scrollTimeout = 400;
@@ -79,7 +79,7 @@ function slideUp(elem, opaFlag) {
     elem.style.visibility = "visible";
 
     var slider = setInterval(function() {
-        marginTop -= slideSpeed; 
+        marginTop -= slideRate; 
         elem.style.marginTop = marginTop + "px"; 
         if (opaFlag && opa < 1) {
             elem.style.opacity = opa;
@@ -236,7 +236,7 @@ function revealjurgfish() {
             clearInterval(typer);
             typer = null;
             showVer = true;
-            setTimeout("animateEntries()", jurgfishTimeout);
+            animateEntries();
             return;
         }
     }, jurgfishTypeSpeed);
@@ -251,9 +251,10 @@ function revealLogo() {
     logoElem.style.opacity = 0;
 
     var slider = setInterval(function() {
-        marginTop += (logoS * (t ** logoT));
+        marginTop *= logoRate**t 
         logoElem.style.marginTop = marginTop + "%";
         t++;
+
         if (opa < 1) {
             opa += 0.002;
             logoElem.style.opacity = opa;
@@ -403,8 +404,7 @@ document.onkeydown = function(event) {
 // begin routine
 resetPosition();
 setLastEntry();
-//window.onload = function() { revealLogo(); };
-setTimeout("revealLogo()", 600);
+window.onload = function() { setTimeout("revealLogo()", logoTimeout); }
 
 ////////////////////////////////////////////////////////////////////////////
 
