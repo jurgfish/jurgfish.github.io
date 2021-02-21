@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 159;
+const version = 160;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -36,7 +36,7 @@ const buttSpeed = 5;
 const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
 
-const logoTimeout = 600;
+const logoTimeout = 1100;
 const versTimeout = 1500;
 const elemTimeout = 500;
 const scrollTimeout = 400;
