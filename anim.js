@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 154; 
+const version = 155; 
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -408,7 +408,7 @@ document.onkeydown = function(event) {
 // begin routine
 resetPosition();
 setLastEntry();
-window.requestAnimationFrame(revealLogo);
+window.onload = function() { setTimeout("revealLogo()", logoTimeout); }
 
 ////////////////////////////////////////////////////////////////////////////
 
