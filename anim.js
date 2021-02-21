@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 160;
+const version = 161;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -36,7 +36,7 @@ const buttSpeed = 5;
 const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
 
-const logoTimeout = 1100;
+const logoTimeout = 300;
 const versTimeout = 1500;
 const elemTimeout = 500;
 const scrollTimeout = 400;
@@ -420,13 +420,11 @@ document.onkeydown = function(event) {
 ////////////////////////////////////////////////////////////////////////////
 
 // begin routine
-document.onreadystatechange = function () {
-    if (document.readyState === 'complete') {
-        resetPosition();
-        setLastEntry();
-        setTimeout(revealLogo, logoTimeout);
-    }
-};
+window.onload = function() {
+    resetPosition();
+    setLastEntry();
+    setTimeout(revealLogo, logoTimeout);
+}
 
 ////////////////////////////////////////////////////////////////////////////
 
