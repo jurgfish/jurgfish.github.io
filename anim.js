@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 156; 
+const version = 157;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -33,7 +33,6 @@ const endspaceSpeed = 1;
 const buttSpeed = 7;
 const frameRate = 1000 / 60;
 
-const logoTimeout = 600;
 const versTimeout = 1500;
 const elemTimeout = 500;
 const scrollTimeout = 400;
@@ -225,7 +224,7 @@ function jumpToEntryIdx() {
     }
     
     endspace.style.height = endspaceStartHeight + "em";
-    setTimeout("scrollToEntryIdx()", jumpTimeout);
+    setTimeout(scrollToEntryIdx, jumpTimeout);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -408,7 +407,7 @@ document.onkeydown = function(event) {
 // begin routine
 resetPosition();
 setLastEntry();
-window.onload = function() { setTimeout("revealLogo()", logoTimeout); }
+revealLogo();
 
 ////////////////////////////////////////////////////////////////////////////
 
