@@ -144,7 +144,7 @@ a, a:link, a:visited {
  
 @media print { a, a:link, a:visited, a:focus { color: #555555; } }
 
-#endspace { height: 24em; }
+#endspace { height: 100em; }
 
 
 
