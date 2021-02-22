@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 165;
+const version = 166;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -28,11 +28,13 @@ const buttElem = document.getElementById("butt");
 const logoV = -0.3;
 const logoA = 0.006;
 const logoOpaRate = 0.004;
-const jurgfishTypeSpeed = 0.3;
-const typeSpeed = 1.5;
+const jurgfishTypeSpeed = 0.2;
+const typeSpeed = 2;
+const wordOpaLen = 0.8;
 const slideRate = 3;
 const endspaceSpeed = 1;
 const buttSpeed = 5;
+const buttOpa = 0.8;
 const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
 
@@ -48,7 +50,7 @@ const loadBound = 0.93;
 const scrollOffset = 28;
 const endspaceStartHeight = 100;
 const endspaceEndHeight = 30; 
-const buttScroll = 1000;
+const buttScroll = 540;
 const buttShowPos = 30;
 const buttHidePos = -100;
 
@@ -108,7 +110,7 @@ function slideUp(elem, opaFlag) {
 function typeWords(elem) {
     const fullText = elem.textContent.trim();
     const wordSet = fullText.split(" ");
-    const opaRate = typeSpeed / (wordSet.length * 0.5);
+    const opaRate = typeSpeed / (wordSet.length * wordOpaLen);
     var currText = "";
     var wordSetIdx = 0;
     var currSetIdx = 0;
@@ -322,7 +324,7 @@ window.onscroll = function() {
             moveButt(true);
             buttShown = true;
         }
-        buttElem.style.opacity = 0.5;
+        buttElem.style.opacity = buttOpa;
         buttElem.style.color = "#eae0d6";
 
         if (scrollTimer !== null) clearTimeout(scrollTimer);
