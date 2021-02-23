@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 166;
+const version = 167;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -25,9 +25,9 @@ const tendElem = document.getElementById("tend");
 const buttElem = document.getElementById("butt");
 
 // settings
-const logoV = -0.3;
-const logoA = 0.006;
-const logoOpaRate = 0.004;
+const logoV = -6;
+const logoA = 0.14;
+const logoOpaRate = 0.005;
 const jurgfishTypeSpeed = 0.2;
 const typeSpeed = 2;
 const wordOpaLen = 0.8;
@@ -45,7 +45,7 @@ const jumpTimeout = 100;
 
 const logoStartPos = 14;
 const logoEndPos = 15;
-const slideStart = 100;
+const slideStart = 60;
 const loadBound = 0.93;
 const scrollOffset = 28;
 const endspaceStartHeight = 100;
@@ -85,20 +85,21 @@ function slideUp(elem, opaFlag) {
     var t0 = null;
     var opa = 0;
     if (opaFlag) elem.style.opacity = opa;
-    elem.style.marginTop = slideStart + "px";
+    elem.style.marginTop = "0px";
+    elem.style.transform = "translateY(" + slideStart + "px)";
     elem.style.visibility = "visible";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
-        const marginTop = slideStart - (slideRate * elap);
-        elem.style.marginTop = marginTop + "px";
+        const y = slideStart - (slideRate * elap);
+        elem.style.transform = "translateY(" + y + "px)";
         if (opaFlag && opa < 1) {
             elem.style.opacity = opa;
             opa = opaRate * elap;
         }
-        if (marginTop <= 0 || !elemRunning) {
-            elem.style.marginTop = "0px"; 
+        if (y < 0 || !elemRunning) {
+            elem.style.transform = "translateY(0px)";
             if (opaFlag) elem.style.opacity = 1;
         } else {
             window.requestAnimationFrame(frame);
@@ -222,7 +223,7 @@ function jumpToEntryIdx() {
 
     for (j; j < elems.length; j++) {
         if (j < elemIdx) {
-            elems[j].style.marginTop = "0px"; 
+            elems[j].style.transform = "translateY(0px)";
             elems[j].style.visibility = "visible";
             elems[j].style.opacity = 1;
         } else {
@@ -272,14 +273,14 @@ function revealLogo() {
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
-        const marginTop = logoStartPos+(logoV*elap)+(logoA*(elap*elap));
-        logoElem.style.marginTop = marginTop + "%";
+        const y = (logoV*elap)+(logoA*(elap*elap))-1;
+        logoElem.style.transform = "translateY(" + y + "px)";
         if (opa < 1) {
             opa = logoOpaRate * elap;
             logoElem.style.opacity = opa;
         }
-        if (marginTop >= logoEndPos) {
-            logoElem.style.marginTop = logoEndPos + "%";
+        if (y > 0) {
+            logoElem.style.transform = "translateY(0px)";
             logoElem.style.opacity = 1;
             revealjurgfish();
         } else {
