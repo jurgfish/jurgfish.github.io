@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 167;
+const version = 168;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -25,13 +25,13 @@ const tendElem = document.getElementById("tend");
 const buttElem = document.getElementById("butt");
 
 // settings
-const logoV = -6;
-const logoA = 0.14;
+const logoV = -3;
+const logoA = 0.1;
 const logoOpaRate = 0.005;
 const jurgfishTypeSpeed = 0.2;
 const typeSpeed = 2;
 const wordOpaLen = 0.8;
-const slideRate = 3;
+const slideRate = 1;
 const endspaceSpeed = 1;
 const buttSpeed = 5;
 const buttOpa = 0.8;
@@ -45,7 +45,7 @@ const jumpTimeout = 100;
 
 const logoStartPos = 14;
 const logoEndPos = 15;
-const slideStart = 60;
+const slideStart = 20;
 const loadBound = 0.93;
 const scrollOffset = 28;
 const endspaceStartHeight = 100;
