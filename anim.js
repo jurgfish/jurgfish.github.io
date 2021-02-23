@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 169;
+const version = 171;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -28,7 +28,7 @@ const buttElem = document.getElementById("butt");
 const logoV = -3;
 const logoA = 0.1;
 const logoOpaRate = 0.005;
-const jurgfishTypeSpeed = 0.2;
+const jurgfishTypeSpeed = 0.4;
 const typeSpeed = 2;
 const wordOpaLen = 0.8;
 const slideRate = 0.2;
