@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 177;
+const version = 178;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -169,8 +169,8 @@ function reduceEndSpace() {
 ////////////////////////////////////////////////////////////////////////////
 
 function animateEntry(typeFlag, elem) {
-    var bound = elem.getBoundingClientRect();
-    var validBound = (bound.top < (window.innerHeight * loadBound ||
+    const bound = elem.getBoundingClientRect();
+    const validBound = (bound.top < (window.innerHeight * loadBound ||
         document.documentElement.clientHeight * loadBound));
 
     if (validBound) {
@@ -202,7 +202,7 @@ function animateEntries() {
 
 function scrollToEntryIdx(entryFlag) {
     if (entryFlag) {
-        var elem = elems[elemIdx - 1];
+        const elem = elems[elemIdx - 1];
         window.scroll(0, elem.offsetTop - scrollOffset);
     } else {
         if ('scrollRestoration' in history) 

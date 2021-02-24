@@ -144,7 +144,6 @@ a, a:link, a:visited {
  
 @media print { a, a:link, a:visited, a:focus { color: #555555; } }
 
-#error { visibility: visible; margin-top: 4em; }
 #endspace { height: 100em; }
 
 
