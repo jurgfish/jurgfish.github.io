@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 175;
+const version = 176;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -156,13 +156,6 @@ function setLastEntry() {
         formatNum(novelLength + 1) + "+] will appear when ready";
 }
 
-function resetPosition() {
-    if ('scrollRestoration' in history) 
-        history.scrollRestoration = 'manual';
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-}
-
 function reduceEndSpace() {
     var h = endspaceStartHeight; 
     function frame() {
@@ -199,6 +192,7 @@ function animateEntries() {
 
         } else {
             clearInterval(animator);
+            animator = null;
             reduceEndSpace();
         }
     }, elemTimeout);
@@ -206,21 +200,20 @@ function animateEntries() {
 
 ////////////////////////////////////////////////////////////////////////////
 
-function scrollToEntryIdx() {
-    var elem = elems[elemIdx - 1];
-    window.scroll(0, elem.offsetTop - scrollOffset);
-    animateEntries();
+function scrollToEntryIdx(entryFlag) {
+    if (entryFlag) {
+        var elem = elems[elemIdx - 1];
+        window.scroll(0, elem.offsetTop - scrollOffset);
+    } else {
+        if ('scrollRestoration' in history) 
+            history.scrollRestoration = 'manual';
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
 }
 
-function jumpToEntryIdx() {
-    clearInterval(animator);
-    elemRunning = false;
-
-    if (elemIdx < 1) elemIdx = 1;
-    else if (elemIdx >= elems.length) elemIdx = elems.length - 1;
-    noanimIdx = noanimEntryCnt;
+function resetEntries() {
     var j = 0;
-
     for (j; j < elems.length; j++) {
         if (j < elemIdx) {
             elems[j].style.transform = "translateY(0px)";
@@ -233,9 +226,32 @@ function jumpToEntryIdx() {
     for (j = noanimEntryCnt; j < noanim.length; j++) {
         noanim[j].style.visibility = "hidden";
     }
-    
     endspace.style.height = endspaceStartHeight + "em";
-    setTimeout(scrollToEntryIdx, jumpTimeout);
+}
+
+function jumpToEntryIdx(idx) {
+    if (animator !== null) clearInterval(animator);
+    animator = null;
+    elemRunning = false;
+    elemIdx = idx;
+    noanimIdx = noanimEntryCnt;
+    var entryFlag = true;
+
+    if (elemIdx < 0) {
+        elemIdx = 1;
+        entryFlag = false;
+        scrollToEntryIdx(false);
+    } else if (elemIdx == 0) {
+        elemIdx = 1;
+    } else if (elemIdx > (novelLength + 1)) {
+        elemIdx = novelLength + 1;
+    }
+
+    resetEntries();
+    setTimeout(function() { 
+        if (entryFlag) scrollToEntryIdx(true);
+        animateEntries();
+    }, jumpTimeout);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -341,12 +357,9 @@ window.onscroll = function() {
     }
 };
 
-logoElem.onclick = function() { location.reload(); };
-cpyrElem.onclick = function() { location.reload(); };
-
 buttElem.onclick = function() {
     buttElem.style.display = "none";
-    resetPosition();
+    jumpToEntryIdx(-1);
     toggleJump.focus(); // prevents strange behavior
     document.activeElement.blur();
 };
@@ -362,16 +375,10 @@ jurgfishElem.onclick = function() {
     }
 };
 
-// entry jumping
-tendElem.onclick = function() {
-    elemIdx = novelLength + 1;
-    jumpToEntryIdx();
-};
-
-tbeginElem.onclick = function() {
-    elemIdx = 1;
-    jumpToEntryIdx();
-};
+logoElem.onclick = function() { location.reload(); };
+cpyrElem.onclick = function() { location.reload(); };
+tbeginElem.onclick = function() { jumpToEntryIdx(1); };
+tendElem.onclick = function() { jumpToEntryIdx(novelLength + 1); };
 
 toggleJump.onclick = function() {
     showInput = !showInput;
@@ -390,10 +397,8 @@ toggleJump.onclick = function() {
 jumpGo.onclick = function() {
     var inputEntryVal = parseInt(inputEntry.value);
     if (!(isNaN(inputEntryVal))) {
-        elemIdx = inputEntryVal;
-        if (elemIdx > novelLength) elemIdx = novelLength + 1;
         document.activeElement.blur();
-        jumpToEntryIdx();
+        jumpToEntryIdx(inputEntryVal);
     }
 };
 
@@ -426,7 +431,7 @@ document.onkeydown = function(event) {
 ////////////////////////////////////////////////////////////////////////////
 
 // begin routine
-resetPosition();
+scrollToEntryIdx(false);
 setLastEntry();
 revealLogo();
 
