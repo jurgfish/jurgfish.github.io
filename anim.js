@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 173;
+const version = 174;
 
 // elements
 const logoElem = document.getElementById("logo");
