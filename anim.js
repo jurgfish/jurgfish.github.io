@@ -1,10 +1,10 @@
-// jurgfish
+// © 2021, jurgfish. All rights reserved.
 
 // https://github.com/jurgfish/jurgfish.github.io
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 171;
+const version = 172;
 
 // elements
 const logoElem = document.getElementById("logo");
