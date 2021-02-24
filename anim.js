@@ -395,7 +395,7 @@ toggleJump.onclick = function() {
 };
 
 jumpGo.onclick = function() {
-    var inputEntryVal = parseInt(inputEntry.value);
+    const inputEntryVal = parseInt(inputEntry.value);
     if (!(isNaN(inputEntryVal))) {
         document.activeElement.blur();
         jumpToEntryIdx(inputEntryVal);
