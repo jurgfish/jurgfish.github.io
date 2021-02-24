@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 174;
+const version = 175;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -43,8 +43,8 @@ const elemTimeout = 500;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
 
-const logoStartPos = 14;
-const logoEndPos = 15;
+const logoStartPos = 15;
+const logoEndPos = logoStartPos + 1;
 const slideStart = 5;
 const loadBound = 0.93;
 const scrollOffset = 28;
