@@ -22,7 +22,7 @@ img {
     display: block;
     visibility: hidden;
     cursor: pointer;
-    margin-top: 15%;
+    margin-top: 25vmin;
 }
 
 h2 {
@@ -39,7 +39,7 @@ h2 {
 form {
     display: none;
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 30px;
 }
 
 input {
@@ -76,12 +76,12 @@ input:invalid {
 }
 
 p {
-    line-height: 28px;
+    line-height: 30px;
     overflow: hidden;
     visibility: hidden;
     cursor: default;
     margin-top: 0px;
-    margin-bottom: 28px;
+    margin-bottom: 30px;
 }
 
 a, a:link, a:visited {
