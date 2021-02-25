@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 180;
+const version = 181;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -115,7 +115,7 @@ function typeWords(elem) {
     var wordSetIdx = 0;
     var currSetIdx = 0;
     var t0 = null;
-    var opa = 0.1;
+    var opa = 0;
     elem.textContent = currText;
     elem.style.opacity = opa; 
 
