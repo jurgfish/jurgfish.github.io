@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 179;
+const version = 180;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -357,7 +357,6 @@ window.onscroll = function() {
 };
 
 buttElem.onclick = function() {
-    buttElem.style.display = "none";
     jumpToEntryIdx(-1);
     toggleJump.focus(); // prevents strange behavior
     document.activeElement.blur();
