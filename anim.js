@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 181;
+const version = 182;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -31,7 +31,7 @@ const logoOpaRate = 0.005;
 const jurgfishTypeSpeed = 0.4;
 const typeSpeed = 2;
 const wordOpaLen = 0.8;
-const slideRate = 0.2;
+const slideRate = 0.3;
 const endspaceSpeed = 1;
 const buttSpeed = 5;
 const buttOpa = 0.8;
@@ -43,9 +43,7 @@ const elemTimeout = 500;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
 
-const logoStartPos = 15;
-const logoEndPos = logoStartPos + 1;
-const slideStart = 5;
+const slideStart = 10;
 const loadBound = 0.93;
 const scrollOffset = 28;
 const endspaceStartHeight = 100;
@@ -281,7 +279,6 @@ function revealjurgfish() {
 function revealLogo() {
     var t0 = null;
     var opa = 0;
-    logoElem.style.marginTop = logoStartPos + "%";
     logoElem.style.visibility = "visible";
     logoElem.style.opacity = 0;
 
