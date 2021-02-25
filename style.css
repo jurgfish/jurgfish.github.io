@@ -39,7 +39,7 @@ h2 {
 form {
     display: none;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 29px;
 }
 
 input {
@@ -76,12 +76,12 @@ input:invalid {
 }
 
 p {
-    line-height: 30px;
+    line-height: 29px;
     overflow: hidden;
     visibility: hidden;
     cursor: default;
     margin-top: 0px;
-    margin-bottom: 30px;
+    margin-bottom: 29px;
 }
 
 a, a:link, a:visited {
