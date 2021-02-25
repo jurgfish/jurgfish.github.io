@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 178;
+const version = 179;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -85,7 +85,6 @@ function slideUp(elem, opaFlag) {
     var t0 = null;
     var opa = 0;
     if (opaFlag) elem.style.opacity = opa;
-    elem.style.marginTop = "0px";
     elem.style.transform = "translateY(" + slideStart + "px)";
     elem.style.visibility = "visible";
 

@@ -79,6 +79,7 @@ p {
     overflow: hidden;
     visibility: hidden;
     cursor: default;
+    margin-top: 0px;
     margin-bottom: 28px;
 }
 
