@@ -4,17 +4,17 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 186;
+const version = 187;
 
 // elements
+const allContent = document.getElementById("content");
 const logoElem = document.getElementById("logo");
 const jurgfishElem = document.getElementById("jurgfish");
 const lastEntry = document.getElementById("end");
 const cpyrElem = document.getElementById("copyright");
-const body = document.getElementsByTagName("body")[0];
 const endspace = document.getElementById("endspace");
-const noanim = body.getElementsByClassName("noanim");
-const elems = body.getElementsByClassName("anim");
+const noanim = document.getElementsByClassName("noanim");
+const elems = document.getElementsByClassName("anim");
 
 const jumpGo = document.getElementById("jump");
 const toggleJump = document.getElementById("showjump");
@@ -28,6 +28,7 @@ const buttElem = document.getElementById("butt");
 const logoV = -3;
 const logoA = 0.1;
 const logoOpaRate = 0.005;
+const restartOpaRate = 0.05;
 const jurgfishTypeSpeed = 0.4;
 const typeSpeed = 2;
 const wordOpaLen = 0.8;
@@ -328,6 +329,30 @@ function moveButt(show) {
     window.requestAnimationFrame(frame);
 }
 
+function restartPage() {
+    if (animator !== null) clearInterval(animator);
+    animator = null;
+    elemRunning = false;
+    buttElem.style.display = "none";
+    var t0 = null;
+    var opa = 1;
+
+    function frame(t) {
+        if (!t0) t0 = t;
+        const elap = (t - t0) * animationSpeed;
+        allContent.style.opacity = opa;
+        opa = 1 - restartOpaRate * elap;
+        if (opa < 0) {
+            allContent.style.opacity = 0;
+            location.reload();
+        } else {
+            window.requestAnimationFrame(frame);
+        }
+    }
+    window.requestAnimationFrame(frame);
+
+}
+
 ////////////////////////////////////////////////////////////////////////////
 
 window.onscroll = function() {
@@ -371,8 +396,8 @@ jurgfishElem.onclick = function() {
     }
 };
 
-logoElem.onclick = function() { location.reload(); };
-cpyrElem.onclick = function() { location.reload(); };
+logoElem.onclick = function() { restartPage(); };
+cpyrElem.onclick = function() { restartPage(); };
 tbeginElem.onclick = function() { jumpToEntryIdx(1); };
 tendElem.onclick = function() { jumpToEntryIdx(novelLength + 1); };
 
