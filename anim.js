@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 184;
+const version = 186;
 
 // elements
 const logoElem = document.getElementById("logo");
@@ -38,6 +38,7 @@ const buttOpa = 0.8;
 const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
 
+const logoTimeout = 500;
 const versTimeout = 1500;
 const elemTimeout = 500;
 const scrollTimeout = 400;
@@ -428,7 +429,7 @@ document.onkeydown = function(event) {
 // begin routine
 scrollToEntryIdx(false);
 setLastEntry();
-revealLogo();
+setTimeout(revealLogo, logoTimeout);
 
 ////////////////////////////////////////////////////////////////////////////
 
