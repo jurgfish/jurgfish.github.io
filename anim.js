@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 187;
+const version = 188;
 
 // elements
 const allContent = document.getElementById("content");
@@ -39,7 +39,7 @@ const buttOpa = 0.8;
 const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
 
-const logoTimeout = 500;
+const logoTimeout = 300;
 const versTimeout = 1500;
 const elemTimeout = 500;
 const scrollTimeout = 400;
