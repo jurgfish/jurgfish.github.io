@@ -4,7 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-const version = 188;
+const version = 189;
 
 // elements
 const allContent = document.getElementById("content");
@@ -350,7 +350,6 @@ function restartPage() {
         }
     }
     window.requestAnimationFrame(frame);
-
 }
 
 ////////////////////////////////////////////////////////////////////////////
