@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.9.193
+// v0.9.194
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -149,7 +149,7 @@ function formatNum(n) {
 function setDocEntryCount() {
     lastEntry.textContent = "[Island of Mind " +
         formatNum(novelLength + 1) + "+] will appear when ready";
-    inputEntry.placeholder = "1 to " + novelLength;
+    inputEntry.placeholder = "1 ~ " + novelLength;
 }
 
 function reduceEndSpace() {
