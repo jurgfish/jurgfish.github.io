@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.9.191
+// v0.9.192
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -381,7 +381,6 @@ buttElem.onclick = function() {
 };
 
 logoElem.onclick = function() { restartPage(); };
-jurgfishElem.onclick = function() { restartPage(); };
 cpyrElem.onclick = function() { restartPage(); };
 tbeginElem.onclick = function() { jumpToEntryIdx(1); };
 tendElem.onclick = function() { jumpToEntryIdx(novelLength + 1); };
