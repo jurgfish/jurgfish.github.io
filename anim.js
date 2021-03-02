@@ -1,10 +1,8 @@
 // © 2021, jurgfish. All rights reserved.
-
+//
 // https://github.com/jurgfish/jurgfish.github.io
-
+// v0.9.190
 ////////////////////////////////////////////////////////////////////////////
-
-const version = 189;
 
 // elements
 const allContent = document.getElementById("content");
@@ -40,7 +38,6 @@ const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
 
 const logoTimeout = 300;
-const versTimeout = 1500;
 const elemTimeout = 500;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
@@ -60,7 +57,6 @@ const noanimEntryCnt = 1;
 const nonNovelEndCnt = 2;
 const novelLength = elems.length - nonNovelEndCnt;
 
-var showVer = false;
 var showInput = false;
 var elemRunning = true;
 var showRunning = false;
@@ -150,9 +146,10 @@ function formatNum(n) {
     return res.substring(res.length - entryIdxLen);
 }
 
-function setLastEntry() {
+function setDocEntryCount() {
     lastEntry.textContent = "[Island of Mind " +
         formatNum(novelLength + 1) + "+] will appear when ready";
+    inputEntry.placeholder = "0 to " + novelLength;
 }
 
 function reduceEndSpace() {
@@ -269,7 +266,6 @@ function revealjurgfish() {
         jurgfishElem.textContent = word.substring(0, c);
         if (c >= word.length) {
             jurgfishElem.textContent = word;
-            showVer = true;
             animateEntries();
         } else {
             window.requestAnimationFrame(frame);
@@ -384,18 +380,8 @@ buttElem.onclick = function() {
     document.activeElement.blur();
 };
 
-jurgfishElem.onclick = function() {
-    if (showVer) {
-        showVer = false;
-        jurgfishElem.textContent = "j"+version+"."+formatNum(novelLength);
-        setTimeout(function() {
-            jurgfishElem.textContent = "jurgfish";
-            showVer = true;
-        }, versTimeout);
-    }
-};
-
 logoElem.onclick = function() { restartPage(); };
+jurgfishElem.onclick = function() { restartPage(); };
 cpyrElem.onclick = function() { restartPage(); };
 tbeginElem.onclick = function() { jumpToEntryIdx(1); };
 tendElem.onclick = function() { jumpToEntryIdx(novelLength + 1); };
@@ -419,6 +405,7 @@ jumpGo.onclick = function() {
     if (!(isNaN(inputEntryVal))) {
         document.activeElement.blur();
         jumpToEntryIdx(inputEntryVal);
+        inputEntry.value = "";
     }
 };
 
@@ -452,7 +439,7 @@ document.onkeydown = function(event) {
 
 // begin routine
 scrollToEntryIdx(false);
-setLastEntry();
+setDocEntryCount();
 setTimeout(revealLogo, logoTimeout);
 
 ////////////////////////////////////////////////////////////////////////////
