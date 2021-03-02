@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.9.195
+// v0.9.196
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -233,12 +233,10 @@ function jumpToEntryIdx(idx) {
     noanimIdx = noanimEntryCnt;
     var entryFlag = true;
 
-    if (elemIdx < 0) {
+    if (elemIdx < 1) {
         elemIdx = 1;
         entryFlag = false;
         scrollToEntryIdx(false);
-    } else if (elemIdx == 0) {
-        elemIdx = 1;
     } else if (elemIdx > (novelLength + 1)) {
         elemIdx = novelLength + 1;
     }
