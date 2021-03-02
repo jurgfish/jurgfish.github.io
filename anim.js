@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.9.196
+// v0.9.197
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -357,12 +357,10 @@ window.onscroll = function() {
             buttShown = true;
         }
         buttElem.style.opacity = buttOpa;
-        buttElem.style.color = "#eae0d6";
 
         if (scrollTimer !== null) clearTimeout(scrollTimer);
         scrollTimer = setTimeout(function() {
             buttElem.style.opacity = 1;
-            buttElem.style.color = "#48c1cc";
         }, scrollTimeout);
 
     } else if (buttShown && !showRunning) {
