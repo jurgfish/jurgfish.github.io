@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.9.197
+// v0.10.198
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -28,17 +28,17 @@ const logoA = 0.1;
 const logoOpaRate = 0.005;
 const restartOpaRate = 0.05;
 const jurgfishTypeSpeed = 0.4;
-const typeSpeed = 2;
+const typeSpeed = 6;
 const wordOpaLen = 0.8;
 const slideRate = 0.3;
-const endspaceSpeed = 1;
+const endspaceSpeed = 2;
 const buttSpeed = 5;
 const buttOpa = 0.8;
 const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
 
 const logoTimeout = 300;
-const elemTimeout = 500;
+const elemTimeout = 150;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
 
@@ -80,7 +80,8 @@ function slideUp(elem, opaFlag) {
     const opaRate = slideRate / slideStart;
     var t0 = null;
     var opa = 0;
-    if (opaFlag) elem.style.opacity = opa;
+    //if (opaFlag) elem.style.opacity = opa;
+    elem.style.opacity = opa;
     elem.style.transform = "translateY(" + slideStart + "px)";
     elem.style.visibility = "visible";
 
@@ -89,13 +90,13 @@ function slideUp(elem, opaFlag) {
         const elap = (t - t0) * animationSpeed;
         const y = slideStart - (slideRate * elap);
         elem.style.transform = "translateY(" + y + "px)";
-        if (opaFlag && opa < 1) {
+        if (opa < 1) {
             elem.style.opacity = opa;
             opa = opaRate * elap;
         }
         if (y < 0 || !elemRunning) {
             elem.style.transform = "translateY(0px)";
-            if (opaFlag) elem.style.opacity = 1;
+            elem.style.opacity = 1;
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -106,14 +107,11 @@ function slideUp(elem, opaFlag) {
 function typeWords(elem) {
     const fullText = elem.textContent.trim();
     const wordSet = fullText.split(" ");
-    const opaRate = typeSpeed / (wordSet.length * wordOpaLen);
     var currText = "";
     var wordSetIdx = 0;
     var currSetIdx = 0;
     var t0 = null;
-    var opa = 0;
     elem.textContent = currText;
-    elem.style.opacity = opa; 
 
     function frame(t) {
         if (!t0) t0 = t;
@@ -125,13 +123,8 @@ function typeWords(elem) {
             currSetIdx++;
         }
         elem.textContent = currText;
-        if (opa < 1) {
-            elem.style.opacity = opa;
-            opa = opaRate * elap;
-        }
         if (wordSetIdx >= wordSet.length - 1 || !elemRunning) {
             elem.textContent = fullText;
-            elem.style.opacity = 1;
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -178,7 +171,60 @@ function animateEntry(typeFlag, elem) {
 
 function animateEntries() {
     elemRunning = true;
+
+    /*function queueEntry() {
+        if (noanimIdx < noanimEntryCnt ||
+                (elemIdx >= elems.length && noanimIdx < noanim.length)) {
+            if (animateEntry(false, noanim[noanimIdx])) noanimIdx++;
+
+        } else if (elemIdx < elems.length) {
+            if (animateEntry(true, elems[elemIdx])) elemIdx++;
+           
+            /*const loadElem = elems[elemIdx - 1];
+            const bound = loadElem.getBoundingClientRect();
+            const validBound = (bound.top < (window.innerHeight * loadBound 
+                || document.documentElement.clientHeight * loadBound));
+
+            if (validBound) {
+                elemSpeed = 1;
+            }//
+            if (elemIdx >= loadIdx) elemSpeed = 1;
+            else elemSpeed = 0;
+        } else {
+            //clearInterval(animator);
+            reduceEndSpace();
+            if (animator !== null) clearTimeout(animator);
+            animator = null;
+            return;
+        }
+        console.log("curr timeout", elemTimeout * elemSpeed, elemIdx, loadIdx);
+        animator = setTimeout(queueEntry, elemTimeout * elemSpeed);
+    }
+    animator = setTimeout(queueEntry, elemTimeout * elemSpeed);*/
+    
     animator = setInterval(function() {
+        if (noanimIdx < noanimEntryCnt ||
+                (elemIdx >= elems.length && noanimIdx < noanim.length)) {
+            if (animateEntry(false, noanim[noanimIdx])) noanimIdx++;
+
+        } else if (elemIdx < elems.length) {
+            if (animateEntry(true, elems[elemIdx])) elemIdx++;
+            //console.log("current", elemIdx);
+            /*while (elemIdx <= loadIdx) {
+                console.log("current", elemIdx);
+                elem = elems[elemIdx];
+                slideUp(elem, true);
+                elemIdx++;
+            }*/
+
+        } else {
+            clearInterval(animator);
+            animator = null;
+            reduceEndSpace();
+        }
+    }, elemTimeout);
+
+    /*animator = setInterval(function() {
         if (noanimIdx < noanimEntryCnt ||
                 (elemIdx >= elems.length && noanimIdx < noanim.length)) {
             if (animateEntry(false, noanim[noanimIdx])) noanimIdx++;
@@ -191,7 +237,7 @@ function animateEntries() {
             animator = null;
             reduceEndSpace();
         }
-    }, elemTimeout);
+    }, elemTimeout);*/
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -222,11 +268,13 @@ function resetEntries() {
     for (j = noanimEntryCnt; j < noanim.length; j++) {
         noanim[j].style.visibility = "hidden";
     }
+    //loadIdx = elemIdx;
     endspace.style.height = endspaceStartHeight + "em";
 }
 
 function jumpToEntryIdx(idx) {
     if (animator !== null) clearInterval(animator);
+    //if (animator !== null) clearTimeout(animator);
     animator = null;
     elemRunning = false;
     elemIdx = idx;
@@ -348,6 +396,30 @@ function restartPage() {
 
 ////////////////////////////////////////////////////////////////////////////
 
+function queueLoad() {
+    const checkLoadIdx = Math.min(novelLength, elemIdx + 3);
+    const loadElem = elems[checkLoadIdx];
+        
+    const bound = loadElem.getBoundingClientRect();
+    const validBound = (bound.top < (window.innerHeight * loadBound ||
+        document.documentElement.clientHeight * loadBound));
+
+    if (validBound) {
+        //console.log("validBound", checkLoadIdx, loadIdx);
+        const vis = window.getComputedStyle(loadElem).visibility;
+        if (vis === "hidden") {
+            //loadIdx = checkLoadIdx;
+            //console.log(loadIdx);
+            //jumpToEntryIdx(checkLoadIdx);
+            //console.log("faster", checkLoadIdx, loadIdx);
+        }
+        //if (vis === "visible") {
+            //elemSpeed = 1;
+            //console.log("already seen", checkLoadIdx, loadIdx);
+       // }
+    } 
+}
+
 window.onscroll = function() {
     if (document.body.scrollTop > buttScroll ||
             document.documentElement.scrollTop > buttScroll) {
@@ -361,6 +433,7 @@ window.onscroll = function() {
         if (scrollTimer !== null) clearTimeout(scrollTimer);
         scrollTimer = setTimeout(function() {
             buttElem.style.opacity = 1;
+            //queueLoad();
         }, scrollTimeout);
 
     } else if (buttShown && !showRunning) {
