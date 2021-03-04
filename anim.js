@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.10.199
+// v0.10.202
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -28,7 +28,9 @@ const logoA = 0.1;
 const logoOpaRate = 0.005;
 const restartOpaRate = 0.05;
 const jurgfishTypeSpeed = 0.4;
-const typeSpeed = 4;
+const fastTypeSpeed = 4;
+const slowTypeSpeed = 2;
+var typeSpeed = fastTypeSpeed;
 const wordOpaLen = 0.93;
 const slideRate = 0.3;
 const endspaceSpeed = 1.3;
@@ -37,6 +39,7 @@ const buttOpa = 0.8;
 const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
 const lagBound = 3;
+const widthBound = 660;
 
 const logoTimeout = 300;
 const elemTimeout = 200;
@@ -97,7 +100,7 @@ function slideUp(elem, opaFlag) {
         if (y < 0 || !elemRunning) {
             elem.style.transform = "translateY(0px)";
             if (opaFlag) elem.style.opacity = 1;
-            if (!elemRunning) console.log("killed");
+            //if (!elemRunning) console.log("killed");
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -134,7 +137,7 @@ function typeWords(elem) {
         if (wordSetIdx >= wordSet.length - 1 || !elemRunning) {
             elem.textContent = fullText;
             elem.style.opacity = 1;
-            if (!elemRunning) console.log("killed");
+            //if (!elemRunning) console.log("killed");
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -171,6 +174,11 @@ function verifyBound(elem) {
     const bound = elem.getBoundingClientRect();
     const validBound = (bound.top < (window.innerHeight * loadBound ||
         document.documentElement.clientHeight * loadBound));
+
+    const width = window.innerWidth || document.documentElemnt.clientWidth;
+    if (width < widthBound) typeSpeed = slowTypeSpeed;
+    else typeSpeed = fastTypeSpeed;
+
     return validBound;
 }
 
@@ -285,7 +293,7 @@ function animateEntries() {
             //const rdx = lag ** 4;
             
             if (lag > lagBound) {
-                console.log("killing?");
+                //console.log("killing?");
                 elemRunning = false;
 
                 if (skipTimer !== null) clearTimeout(skipTimer);
@@ -294,7 +302,7 @@ function animateEntries() {
                         elems[elemIdx].style.visibility = "visible";
                     }
                     elemRunning = true;
-                    console.log("done killing?");
+                    //console.log("done killing?");
                 }, jumpTimeout);
             }
 
@@ -318,7 +326,7 @@ function animateEntries() {
             }*/
  
            
-           console.log("curr", adjElemTimeout, elemIdx, loadIdx);
+           //console.log("curr", adjElemTimeout, elemIdx, loadIdx);
             /*if (loadIdx - elemIdx < 3) {
                 //typeSpeed = 5;
                 typeSpeed = 2;
