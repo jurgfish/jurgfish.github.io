@@ -28,7 +28,7 @@ const logoA = 0.1;
 const logoOpaRate = 0.005;
 const restartOpaRate = 0.05;
 const jurgfishTypeSpeed = 0.4;
-const typeSpeed = 3; //6;
+const typeSpeed = 4;
 const wordOpaLen = 0.93;
 const slideRate = 0.3;
 const endspaceSpeed = 1.3;
@@ -39,7 +39,7 @@ const animationSpeed = 0.1;
 const lagBound = 3;
 
 const logoTimeout = 300;
-const elemTimeout = 300; //150;
+const elemTimeout = 200;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
 
