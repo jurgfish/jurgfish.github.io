@@ -7,7 +7,7 @@
 
 body {
     font-family: "Roboto Slab";
-    font-size: 18px;
+    font-size: 17px;
     color: #555555;
     background-color: #faf0e6;
     -ms-user-select:none;
@@ -39,12 +39,12 @@ h2 {
 form {
     display: none;
     text-align: center;
-    margin-bottom: 29px;
+    margin-bottom: 27px;
 }
 
 input {
     font-family: "Roboto Slab";
-    font-size: 18px;
+    font-size: 17px;
     color: #48c1cc;
     background-color: #faf0e6;
     text-align: left;
@@ -76,12 +76,12 @@ input:invalid {
 }
 
 p {
-    line-height: 29px;
+    line-height: 27px;
     overflow: hidden;
     visibility: hidden;
     cursor: default;
     margin-top: 0px;
-    margin-bottom: 29px;
+    margin-bottom: 27px;
     -webkit-hyphens: auto;
     -ms-hyphens: auto;
     hyphens: auto;
