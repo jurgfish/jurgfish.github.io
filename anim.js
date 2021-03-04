@@ -28,9 +28,7 @@ const logoA = 0.1;
 const logoOpaRate = 0.005;
 const restartOpaRate = 0.05;
 const jurgfishTypeSpeed = 0.4;
-const fastTypeSpeed = 4;
-const slowTypeSpeed = 2;
-var typeSpeed = fastTypeSpeed;
+const typeSpeed = 4;
 const wordOpaLen = 0.93;
 const slideRate = 0.3;
 const endspaceSpeed = 1.3;
@@ -174,11 +172,6 @@ function verifyBound(elem) {
     const bound = elem.getBoundingClientRect();
     const validBound = (bound.top < (window.innerHeight * loadBound ||
         document.documentElement.clientHeight * loadBound));
-
-    const width = window.innerWidth || document.documentElemnt.clientWidth;
-    if (width < widthBound) typeSpeed = slowTypeSpeed;
-    else typeSpeed = fastTypeSpeed;
-
     return validBound;
 }
 
