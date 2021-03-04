@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.12.002
+// v0.12.003
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -26,14 +26,15 @@ const buttElem = document.getElementById("butt");
 const logoV = -3;
 const logoA = 0.1;
 const logoOpaRate = 0.005;
-const restartOpaRate = 0.05;
 const jurgfishTypeSpeed = 0.4;
 const typeSpeed = 4;
 const wordOpaLen = 0.93;
 const slideRate = 0.3;
 const endspaceSpeed = 1.3;
-const buttSpeed = 5;
+const restartOpaRate = 0.05;
 const buttOpa = 0.5;
+const buttOpaRate = 0.05;
+const buttSpeed = 0.3;
 const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
 
@@ -50,7 +51,7 @@ const endspaceStartHeight = 100;
 const endspaceEndHeight = 30; 
 const buttScroll = 540;
 const buttShowPos = 30;
-const buttHidePos = -100;
+const buttHidePos = 20;
 
 const entryIdxLen = 3;
 const entryIdxBuf = "0000";
@@ -187,17 +188,18 @@ function animateEntries() {
             }
 
         } else if (elemIdx < elems.length) {
+            const elem = elems[elemIdx];
+            const valid = verifyBound(elem);
+
+            if (valid) elemIdx++;
             while (loadIdx < novelLength && verifyBound(elems[loadIdx])) {
                 loadIdx++;
             }
-            const elem = elems[elemIdx];
-            const valid = verifyBound(elem);
-            if (valid) elemIdx++;
             while (loadIdx > elemIdx && !verifyBound(elems[loadIdx])) {
                 loadIdx--;
             }
-            
             const lag = loadIdx - elemIdx;
+
             if (lag > lagBound) {
                 elemRunning = false;
                 if (skipTimer !== null) clearTimeout(skipTimer);
@@ -305,8 +307,8 @@ function revealjurgfish() {
 function revealLogo() {
     var t0 = null;
     var opa = 0;
-    logoElem.style.visibility = "visible";
     logoElem.style.opacity = 0;
+    logoElem.style.visibility = "visible";
 
     function frame(t) {
         if (!t0) t0 = t;
@@ -314,8 +316,8 @@ function revealLogo() {
         const y = (logoV*elap)+(logoA*(elap*elap))-1;
         logoElem.style.transform = "translateY(" + y + "px)";
         if (opa < 1) {
-            opa = logoOpaRate * elap;
             logoElem.style.opacity = opa;
+            opa = logoOpaRate * elap;
         }
         if (y > 0) {
             logoElem.style.transform = "translateY(0px)";
@@ -331,8 +333,11 @@ function revealLogo() {
 function moveButt(show) {
     const p0 = (show) ? buttHidePos : buttShowPos;
     const delta = (show) ? buttSpeed : -buttSpeed;
+    const opaRate = buttSpeed / (Math.abs(buttShowPos - buttHidePos));
+    var opa = (show) ? 0 : buttOpa;
     var t0 = null;
     buttElem.style.right = p0 + "px";
+    buttElem.style.opacity = opa;
     buttElem.style.display = "block";
     
     function frame(t) {
@@ -340,12 +345,23 @@ function moveButt(show) {
         const elap = (t - t0) * animationSpeed;
         const right = p0 + (delta * elap);
         buttElem.style.right = right + "px";
+        if (show && opa < buttOpa) {
+            buttElem.style.opacity = opa;
+            opa = opaRate * elap;
+        } else if (!show && opa > 0) {
+            buttElem.style.opacity = opa;
+            opa = buttOpa - opaRate * elap;
+        }
         if (show && right >= buttShowPos) {
             showRunning = false;
             buttElem.style.right = buttShowPos + "px";
+            buttElem.style.opacity = buttOpa;
+            scrollTimer = setTimeout(fullButt, scrollTimeout);
         } else if (!show && right <= buttHidePos) {
             showRunning = false;
             buttElem.style.right = buttHidePos + "px";
+            buttElem.style.opacity = 0;
+            buttElem.style.display = "none";
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -376,22 +392,37 @@ function restartPage() {
     window.requestAnimationFrame(frame);
 }
 
+function fullButt() {
+    var opa = buttOpa;
+    function frame() {
+        buttElem.style.opacity = opa;
+        opa += buttOpaRate;
+        if (opa < 1) {
+            window.requestAnimationFrame(frame);
+        } else {
+            buttElem.style.opacity = 1;
+        }
+    }
+    window.requestAnimationFrame(frame);
+}
+
 ////////////////////////////////////////////////////////////////////////////
 
 window.onscroll = function() {
     if (document.body.scrollTop > buttScroll ||
             document.documentElement.scrollTop > buttScroll) {
-        if (!buttShown && !showRunning) {
-            showRunning = true;
-            moveButt(true);
-            buttShown = true;
-        }
-        buttElem.style.opacity = buttOpa;
 
-        if (scrollTimer !== null) clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(function() {
-            buttElem.style.opacity = 1;
-        }, scrollTimeout);
+        if (!showRunning) {
+            if (scrollTimer !== null) clearTimeout(scrollTimer);
+            if (!buttShown) {
+                showRunning = true;
+                moveButt(true);
+                buttShown = true;
+            } else {
+                buttElem.style.opacity = buttOpa;
+                scrollTimer = setTimeout(fullButt, scrollTimeout);
+            }
+        }
 
     } else if (buttShown && !showRunning) {
         showRunning = true;
