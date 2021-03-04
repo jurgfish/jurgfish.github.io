@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.12.001
+// v0.12.002
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -33,7 +33,7 @@ const wordOpaLen = 0.93;
 const slideRate = 0.3;
 const endspaceSpeed = 1.3;
 const buttSpeed = 5;
-const buttOpa = 0.8;
+const buttOpa = 0.5;
 const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
 
@@ -408,8 +408,14 @@ buttElem.onclick = function() {
 
 logoElem.onclick = function() { restartPage(); };
 cpyrElem.onclick = function() { restartPage(); };
-tbeginElem.onclick = function() { jumpToEntryIdx(1); };
-tendElem.onclick = function() { jumpToEntryIdx(novelLength + 1); };
+tbeginElem.onclick = function() {
+    jumpToEntryIdx(1);
+    document.activeElement.blur();
+};
+tendElem.onclick = function() {
+    jumpToEntryIdx(novelLength + 1);
+    document.activeElement.blur();
+};
 
 toggleJump.onclick = function() {
     showInput = !showInput;
@@ -428,10 +434,10 @@ toggleJump.onclick = function() {
 jumpGo.onclick = function() {
     const inputEntryVal = parseInt(inputEntry.value);
     if (!(isNaN(inputEntryVal))) {
-        document.activeElement.blur();
         jumpToEntryIdx(inputEntryVal);
         inputEntry.value = "";
     }
+    document.activeElement.blur();
 };
 
 document.onkeydown = function(event) {
@@ -441,11 +447,9 @@ document.onkeydown = function(event) {
         if (document.activeElement === tbeginElem) {
             event.preventDefault();
             tbeginElem.click();
-            document.activeElement.blur();
         } else if (document.activeElement === tendElem) {
             event.preventDefault();
             tendElem.click();
-            document.activeElement.blur();
         } else if (document.activeElement === toggleJump) {
             event.preventDefault();
             toggleJump.click();
