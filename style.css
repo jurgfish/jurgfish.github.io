@@ -22,7 +22,8 @@ img {
     display: block;
     visibility: hidden;
     cursor: pointer;
-    margin-top: 24vmin;
+    padding-right: 4px;
+    margin-top: 23vmin;
 }
 
 h2 {
@@ -32,9 +33,8 @@ h2 {
     text-align: center;
     visibility: hidden;
     cursor: default;
-    margin-top: 12px;
-    /*margin-bottom: 2em;*/
-    margin-bottom: 12vmin;
+    margin-top: 6px;
+    margin-bottom: 14vmin;
 }
 
 form {
