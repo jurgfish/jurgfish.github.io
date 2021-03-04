@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.10.208
+// v0.12.000
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -36,8 +36,6 @@ const buttSpeed = 5;
 const buttOpa = 0.8;
 const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
-const lagBound = 3;
-const widthBound = 660;
 
 const logoTimeout = 300;
 const elemTimeout = 200;
@@ -46,6 +44,7 @@ const jumpTimeout = 100;
 
 const slideStart = 10;
 const loadBound = 0.93;
+const lagBound = 3;
 const scrollOffset = 28;
 const endspaceStartHeight = 100;
 const endspaceEndHeight = 30; 
@@ -98,7 +97,6 @@ function slideUp(elem, opaFlag) {
         if (y < 0 || !elemRunning) {
             elem.style.transform = "translateY(0px)";
             if (opaFlag) elem.style.opacity = 1;
-            //if (!elemRunning) console.log("killed");
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -135,7 +133,6 @@ function typeWords(elem) {
         if (wordSetIdx >= wordSet.length - 1 || !elemRunning) {
             elem.textContent = fullText;
             elem.style.opacity = 1;
-            //if (!elemRunning) console.log("killed");
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -175,82 +172,14 @@ function verifyBound(elem) {
     return validBound;
 }
 
-/*function animateEntry(typeFlag, elem) {
-    const validBound = verifyBound(elem);
-    if (validBound) {
-        //if (typeFlag) typeWords(elem);
-        slideUp(elem, !typeFlag);
-    }
-    return validBound;
-}*/
-
-//var queuer = null;
-//var loadIdx = 0;
-//var loadTimeout = 100;
-
-/*function loadQueue() {
-    //if (elemIdx < novelLength && loadIdx < novelLength) {
-    queuer = setInterval(function() {
-        //var checkLoadIdx = loadIdx + 1;
-        //var loadElem = elems[loadIdx];
-        //var vis = window.getComputedStyle(loadElem).visibility;
-    
-        if (loadIdx < novelLength && elemIdx < novelLength) {
-            
-            checkLoadIdx = loadIdx;
-            loadElem = elems[checkLoadIdx];
-            while (checkLoadIdx > elemIdx && 
-                    !verifyBound(elems[checkLoadIdx])) {
-                checkLoadIdx--;
-                //console.log(elemIdx, checkLoadIdx);
-            }
-            //console.log("A");
- 
-            while (checkLoadIdx < novelLength &&
-                    verifyBound(elems[checkLoadIdx])) {
-                checkLoadIdx++;
-            }
-            loadIdx = checkLoadIdx;
-            //console.log("checkidx", checkLoadIdx);
-    
-            /*checkLoadIdx = loadIdx + 4; 
-            loadElem = elems[checkLoadIdx];*/
-
-            /*vis = window.getComputedStyle(loadElem).visibility;
-            if (vis === "hidden") {
-                loadIdx = checkLoadIdx;
-            }//
-       } else {
-            clearInterval(queuer);
-            queuer = null;
-            console.log("complete");
-        }
-        //if (animateEntry(true, elems[elemIdx])) elemIdx++;
-        //console.log("current", elemIdx);
-        /*while (elemIdx <= loadIdx) {
-            console.log("current", elemIdx);
-            elem = elems[elemIdx];
-            slideUp(elem, true);
-            elemIdx++;
-        }//
-    }, loadTimeout);
-}*/
-
-const eS = 0.5;
-const tS = 2;
-
 function animateEntries() {
-    //loadQueue();
     elemRunning = true;
     var loadIdx = 0;
-    //var elemSpeed = 1; 
-    var adjElemTimeout = elemTimeout;
     var skipTimer = null;
 
     function queueEntry() {
         if (noanimIdx < noanimEntryCnt ||
                 (elemIdx >= elems.length && noanimIdx < noanim.length)) {
-            //if (animateEntry(false, noanim[noanimIdx])) noanimIdx++;
             const elem = noanim[noanimIdx];
             if (verifyBound(elem)) {
                 slideUp(elem, true);
@@ -258,118 +187,42 @@ function animateEntries() {
             }
 
         } else if (elemIdx < elems.length) {
-            //if (animateEntry(true, elems[elemIdx])) elemIdx++;
-
-            //if (loadIdx < novelLength) {
-                
-                //checkLoadIdx = loadIdx;
-                //loadElem = elems[checkLoadIdx];
-                //loadElem = elems[loadIdx];
-    
             while (loadIdx < novelLength &&
                     verifyBound(elems[loadIdx])) {
                 loadIdx++;
             }
-                //loadIdx = checkLoadIdx;
-            //}
-           
             const elem = elems[elemIdx];
             const valid = verifyBound(elem);
             if (valid) elemIdx++;
-            
-            while (loadIdx > (elemIdx + 1) && 
-                    !verifyBound(elems[loadIdx])) {
+            while (loadIdx > elemIdx && !verifyBound(elems[loadIdx])) {
                 loadIdx--;
             }
             
             const lag = loadIdx - elemIdx;
-            //const rdx = lag ** 4;
-            
             if (lag > lagBound) {
-                //console.log("killing?");
                 elemRunning = false;
-
                 if (skipTimer !== null) clearTimeout(skipTimer);
                 skipTimer = setTimeout(function() {
                     for (elemIdx; elemIdx < loadIdx - lagBound; elemIdx++) {
                         elems[elemIdx].style.visibility = "visible";
                     }
                     elemRunning = true;
-                    //console.log("done killing?");
                 }, jumpTimeout);
             }
-
-            //const eSpeed = (lag > 1) ? 30 : elemTimeout;
-            //const tBoost = (lag > 1) ? lag : 0;
-            //const adjTypeSpeed = typeSpeed + Math.abs(lag); // move
-            //const adjTypeSpeed = typeSpeed + tBoost; // move
-            //adjElemTimeout = Math.max(elemTimeout - rdx, frameRate * 2);
-            //adjElemTimeout = eSpeed;
-
             if (valid) {
-                //if (lag < 2) typeWords(elem, 2);
                 typeWords(elem);
                 slideUp(elem, false);
             }
-
-            /*if (verifyBound(elem)) {
-                elemIdx++;
-                typeWords(elem, adjTypeSpeed);
-                slideUp(elem, false);
-            }*/
- 
-           
-           //console.log("curr", adjElemTimeout, elemIdx, loadIdx);
-            /*if (loadIdx - elemIdx < 3) {
-                //typeSpeed = 5;
-                typeSpeed = 2;
-                elemSpeed = 1;
-            } else {
-                typeSpeed = 4;
-                elemSpeed = 0.1;
-            }*/
            
         } else {
-            //clearInterval(animator);
             reduceEndSpace();
             if (animator !== null) clearTimeout(animator);
             animator = null;
             return;
         }
-        animator = setTimeout(queueEntry, adjElemTimeout);
+        animator = setTimeout(queueEntry, elemTimeout);
     }
-    animator = setTimeout(queueEntry, adjElemTimeout);
-    
-    /*animator = setInterval(function() {
-        if (noanimIdx < noanimEntryCnt ||
-                (elemIdx >= elems.length && noanimIdx < noanim.length)) {
-            if (animateEntry(false, noanim[noanimIdx])) noanimIdx++;
-
-        } else if (elemIdx < elems.length) {
-            if (animateEntry(true, elems[elemIdx])) elemIdx++;
-            console.log("current", elemIdx, "load", loadIdx);
-
-        } else {
-            clearInterval(animator);
-            animator = null;
-            reduceEndSpace();
-        }
-    }, elemTimeout);
-
-    /*animator = setInterval(function() {
-        if (noanimIdx < noanimEntryCnt ||
-                (elemIdx >= elems.length && noanimIdx < noanim.length)) {
-            if (animateEntry(false, noanim[noanimIdx])) noanimIdx++;
-
-        } else if (elemIdx < elems.length) {
-            if (animateEntry(true, elems[elemIdx])) elemIdx++;
-
-        } else {
-            clearInterval(animator);
-            animator = null;
-            reduceEndSpace();
-        }
-    }, elemTimeout);*/
+    animator = setTimeout(queueEntry, elemTimeout);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -400,17 +253,12 @@ function resetEntries() {
     for (j = noanimEntryCnt; j < noanim.length; j++) {
         noanim[j].style.visibility = "hidden";
     }
-    //loadIdx = elemIdx;
     endspace.style.height = endspaceStartHeight + "em";
 }
 
 function jumpToEntryIdx(idx) {
-    //if (animator !== null) clearInterval(animator);
     if (animator !== null) clearTimeout(animator);
-    //if (queuer !== null) clearInterval(queuer);
-    //if (animator !== null) clearTimeout(animator);
     animator = null;
-    //queuer = null;
     elemRunning = false;
     elemIdx = idx;
     noanimIdx = noanimEntryCnt;
@@ -507,11 +355,8 @@ function moveButt(show) {
 }
 
 function restartPage() {
-    //if (animator !== null) clearInterval(animator);
     if (animator !== null) clearTimeout(animator);
-    //if (queuer !== null) clearInterval(queuer);
     animator = null;
-    //queuer = null;
     elemRunning = false;
     buttElem.style.display = "none";
     var t0 = null;
@@ -534,30 +379,6 @@ function restartPage() {
 
 ////////////////////////////////////////////////////////////////////////////
 
-/*function queueLoad() {
-    const checkLoadIdx = Math.min(novelLength, elemIdx + 3);
-    const loadElem = elems[checkLoadIdx];
-        
-    const bound = loadElem.getBoundingClientRect();
-    const validBound = (bound.top < (window.innerHeight * loadBound ||
-        document.documentElement.clientHeight * loadBound));
-
-    if (validBound) {
-        //console.log("validBound", checkLoadIdx, loadIdx);
-        const vis = window.getComputedStyle(loadElem).visibility;
-        if (vis === "hidden") {
-            //loadIdx = checkLoadIdx;
-            //console.log(loadIdx);
-            //jumpToEntryIdx(checkLoadIdx);
-            //console.log("faster", checkLoadIdx, loadIdx);
-        }
-        //if (vis === "visible") {
-            //elemSpeed = 1;
-            //console.log("already seen", checkLoadIdx, loadIdx);
-       // }
-    } 
-}*/
-
 window.onscroll = function() {
     if (document.body.scrollTop > buttScroll ||
             document.documentElement.scrollTop > buttScroll) {
@@ -571,7 +392,6 @@ window.onscroll = function() {
         if (scrollTimer !== null) clearTimeout(scrollTimer);
         scrollTimer = setTimeout(function() {
             buttElem.style.opacity = 1;
-            //queueLoad();
         }, scrollTimeout);
 
     } else if (buttShown && !showRunning) {
