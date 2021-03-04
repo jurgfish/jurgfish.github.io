@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.10.202
+// v0.10.206
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -28,7 +28,7 @@ const logoA = 0.1;
 const logoOpaRate = 0.005;
 const restartOpaRate = 0.05;
 const jurgfishTypeSpeed = 0.4;
-const typeSpeed = 3;
+const typeSpeed = 4;
 const wordOpaLen = 0.93;
 const slideRate = 0.3;
 const endspaceSpeed = 1.3;
