@@ -77,6 +77,7 @@ input:invalid {
 }
 
 p {
+    text-align: justify;
     line-height: 29px;
     overflow: hidden;
     visibility: hidden;
@@ -110,8 +111,7 @@ a, a:link, a:visited {
 }
 
 @media (min-width: 660px) {
-    h2, form, .space { width: 600px; }
-    p { width: 600px; text-align: justify; }
+    h2, form, p, .space { width: 600px; }
 
     a:hover, a:focus { 
         outline: none;
@@ -136,8 +136,7 @@ a, a:link, a:visited {
 }
 
 @media (max-width: 660px) {
-    h2, form, .space { width: 93%; }
-    p { width: 93%; text-align: justify; }
+    h2, form, p, .space { width: 93%; }
 
     a:hover, a:focus { 
         outline: none;
