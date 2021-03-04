@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.12.000
+// v0.12.001
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -187,8 +187,7 @@ function animateEntries() {
             }
 
         } else if (elemIdx < elems.length) {
-            while (loadIdx < novelLength &&
-                    verifyBound(elems[loadIdx])) {
+            while (loadIdx < novelLength && verifyBound(elems[loadIdx])) {
                 loadIdx++;
             }
             const elem = elems[elemIdx];
