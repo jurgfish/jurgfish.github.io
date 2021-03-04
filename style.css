@@ -23,7 +23,7 @@ img {
     visibility: hidden;
     cursor: pointer;
     padding-right: 4px;
-    margin-top: 23vmin;
+    margin-top: 30vmin;
 }
 
 h2 {
@@ -34,7 +34,7 @@ h2 {
     visibility: hidden;
     cursor: default;
     margin-top: 6px;
-    margin-bottom: 14vmin;
+    margin-bottom: 58px;
 }
 
 form {
