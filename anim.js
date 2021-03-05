@@ -30,7 +30,7 @@ const jurgfishTypeSpeed = 0.4;
 const typeSpeed = 4;
 const wordOpaLen = 0.93;
 const slideRate = 0.3;
-const endspaceSpeed = 1.3;
+const endspaceSpeed = 3;
 const restartOpaRate = 0.05;
 const buttOpa = 0.6;
 const buttOpaRate = 0.015;
@@ -156,11 +156,17 @@ function setDocEntryCount() {
 }
 
 function reduceEndSpace() {
-    var h = endspaceStartHeight; 
-    function frame() {
-        h -= endspaceSpeed;
+    var t0 = null;
+    function frame(t) {
+        if (!t0) t0 = t;
+        const elap = (t - t0) * animationSpeed;
+        const h = endspaceStartHeight - endspaceSpeed * elap;
         endspace.style.height = h + "em";
-        if (h > endspaceEndHeight) window.requestAnimationFrame(frame);
+        if (h < endspaceEndHeight) {
+            endspace.style.height = endspaceEndHeight + "em";
+        } else {
+            window.requestAnimationFrame(frame);
+        }
     }
     window.requestAnimationFrame(frame);
 }
