@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.12.007
+// v0.12.010
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -50,8 +50,8 @@ const scrollOffset = 28;
 const endspaceStartHeight = 100;
 const endspaceEndHeight = 30; 
 const buttScroll = 540;
-const buttShowPos = 30;
-const buttHidePos = 20;
+const buttShowPos = 0;
+const buttHidePos = 10;
 
 const entryIdxLen = 3;
 const entryIdxBuf = "0000";
@@ -339,19 +339,19 @@ function revealLogo() {
 
 function moveButt(show) {
     const p0 = (show) ? buttHidePos : buttShowPos;
-    const delta = (show) ? buttSpeed : -buttSpeed;
+    const delta = (show) ? -buttSpeed : buttSpeed;
     const opaRate = buttSpeed / Math.abs(buttShowPos - buttHidePos);
     var opa = (show) ? 0 : buttOpa;
     var t0 = null;
-    buttElem.style.right = p0 + "px";
     buttElem.style.opacity = opa;
+    buttElem.style.transform = "translateY(" + p0 + "px)";
     buttElem.style.display = "block";
     
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
-        const right = p0 + (delta * elap);
-        buttElem.style.right = right + "px";
+        const y = p0 + (delta * elap);
+        buttElem.style.transform = "translateY(" + y + "px)";
         if (show && opa < buttOpa) {
             buttElem.style.opacity = opa;
             opa = buttOpa * opaRate * elap;
@@ -359,14 +359,14 @@ function moveButt(show) {
             buttElem.style.opacity = opa;
             opa = buttOpa - (buttOpa * opaRate * elap);
         }
-        if (show && right >= buttShowPos) {
+        if (show && y < buttShowPos) {
             showRunning = false;
-            buttElem.style.right = buttShowPos + "px";
+            buttElem.style.transform = "translateY(" + buttShowPos + "px)";
             buttElem.style.opacity = buttOpa;
             scrollTimer = setTimeout(fullButt, scrollTimeout);
-        } else if (!show && right <= buttHidePos) {
+        } else if (!show && y > buttHidePos) {
             showRunning = false;
-            buttElem.style.right = buttHidePos + "px";
+            buttElem.style.transform = "translateY(" + buttHidePos + "px)";
             buttElem.style.opacity = 0;
             buttElem.style.display = "none";
         } else {
