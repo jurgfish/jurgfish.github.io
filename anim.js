@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.12.010
+// v0.12.012
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -171,8 +171,6 @@ function reduceEndSpace() {
     window.requestAnimationFrame(frame);
 }
 
-////////////////////////////////////////////////////////////////////////////
-
 function verifyBound(elem) {
     const bound = elem.getBoundingClientRect();
     const validBound = (bound.top < (window.innerHeight * loadBound ||
@@ -180,12 +178,14 @@ function verifyBound(elem) {
     return validBound;
 }
 
+////////////////////////////////////////////////////////////////////////////
+
 function animateEntries() {
     elemRunning = true;
     var loadIdx = 0;
     var skipTimer = null;
 
-    function queueEntry() {
+    animator = setInterval(function() {
         if (noanimIdx < noanimEntryCnt ||
                 (elemIdx >= elems.length && noanimIdx < noanim.length)) {
             const elem = noanim[noanimIdx];
@@ -197,7 +197,6 @@ function animateEntries() {
         } else if (elemIdx < elems.length) {
             const elem = elems[elemIdx];
             const valid = verifyBound(elem);
-
             if (valid) elemIdx++;
             while (loadIdx < novelLength && verifyBound(elems[loadIdx])) {
                 loadIdx++;
@@ -206,7 +205,6 @@ function animateEntries() {
                 loadIdx--;
             }
             const lag = loadIdx - elemIdx;
-
             if (lag > lagBound) {
                 elemRunning = false;
                 if (skipTimer !== null) clearTimeout(skipTimer);
@@ -224,13 +222,11 @@ function animateEntries() {
            
         } else {
             reduceEndSpace();
-            if (animator !== null) clearTimeout(animator);
+            if (animator !== null) clearInterval(animator);
             animator = null;
             return;
         }
-        animator = setTimeout(queueEntry, elemTimeout);
-    }
-    animator = setTimeout(queueEntry, elemTimeout);
+    }, elemTimeout);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -265,7 +261,7 @@ function resetEntries() {
 }
 
 function jumpToEntryIdx(idx) {
-    if (animator !== null) clearTimeout(animator);
+    if (animator !== null) clearInterval(animator);
     animator = null;
     elemRunning = false;
     elemIdx = idx;
@@ -337,6 +333,28 @@ function revealLogo() {
     window.requestAnimationFrame(frame);
 }
 
+function fillButt() {
+    var t0 = null;
+    var opa = buttOpa;
+    fillRunning = true;
+
+    function frame(t) {
+        if (!t0) t0 = t;
+        const elap = (t - t0) * animationSpeed;
+        buttElem.style.opacity = opa;
+        opa = buttOpa + buttOpaRate * elap;
+        if (!fillRunning) {
+            buttElem.style.opacity = buttOpa;
+        } else if (opa > 1) {
+            fillRunning = false;
+            buttElem.style.opacity = 1;
+        } else {
+            window.requestAnimationFrame(frame);
+        }
+    }
+    window.requestAnimationFrame(frame);
+}
+
 function moveButt(show) {
     const p0 = (show) ? buttHidePos : buttShowPos;
     const delta = (show) ? -buttSpeed : buttSpeed;
@@ -363,7 +381,7 @@ function moveButt(show) {
             showRunning = false;
             buttElem.style.transform = "translateY(" + buttShowPos + "px)";
             buttElem.style.opacity = buttOpa;
-            scrollTimer = setTimeout(fullButt, scrollTimeout);
+            scrollTimer = setTimeout(fillButt, scrollTimeout);
         } else if (!show && y > buttHidePos) {
             showRunning = false;
             buttElem.style.transform = "translateY(" + buttHidePos + "px)";
@@ -377,7 +395,7 @@ function moveButt(show) {
 }
 
 function restartPage() {
-    if (animator !== null) clearTimeout(animator);
+    if (animator !== null) clearInterval(animator);
     animator = null;
     elemRunning = false;
     buttElem.style.display = "none";
@@ -399,34 +417,11 @@ function restartPage() {
     window.requestAnimationFrame(frame);
 }
 
-function fullButt() {
-    var t0 = null;
-    var opa = buttOpa;
-    fillRunning = true;
-
-    function frame(t) {
-        if (!t0) t0 = t;
-        const elap = (t - t0) * animationSpeed;
-        buttElem.style.opacity = opa;
-        opa = buttOpa + buttOpaRate * elap;
-        if (!fillRunning) {
-            buttElem.style.opacity = buttOpa;
-        } else if (opa > 1) {
-            fillRunning = false;
-            buttElem.style.opacity = 1;
-        } else {
-            window.requestAnimationFrame(frame);
-        }
-    }
-    window.requestAnimationFrame(frame);
-}
-
 ////////////////////////////////////////////////////////////////////////////
 
 window.onscroll = function() {
     if (document.body.scrollTop > buttScroll ||
             document.documentElement.scrollTop > buttScroll) {
-
         if (!showRunning) {
             if (scrollTimer !== null) clearTimeout(scrollTimer);
             fillRunning = false;
@@ -436,7 +431,7 @@ window.onscroll = function() {
                 buttShown = true;
             } else {
                 buttElem.style.opacity = buttOpa;
-                scrollTimer = setTimeout(fullButt, scrollTimeout);
+                scrollTimer = setTimeout(fillButt, scrollTimeout);
             }
         }
 
