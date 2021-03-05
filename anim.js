@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.12.003
+// v0.12.005
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -32,8 +32,8 @@ const wordOpaLen = 0.93;
 const slideRate = 0.3;
 const endspaceSpeed = 1.3;
 const restartOpaRate = 0.05;
-const buttOpa = 0.5;
-const buttOpaRate = 0.05;
+const buttOpa = 0.6;
+const buttOpaRate = 0.015;
 const buttSpeed = 0.3;
 const frameRate = 1000 / 60;
 const animationSpeed = 0.1;
@@ -62,6 +62,7 @@ const novelLength = elems.length - nonNovelEndCnt;
 var showInput = false;
 var elemRunning = true;
 var showRunning = false;
+var fillRunning = false;
 var buttShown = false;
 var elemIdx = 0;
 var noanimIdx = 0;
@@ -333,7 +334,7 @@ function revealLogo() {
 function moveButt(show) {
     const p0 = (show) ? buttHidePos : buttShowPos;
     const delta = (show) ? buttSpeed : -buttSpeed;
-    const opaRate = buttSpeed / (Math.abs(buttShowPos - buttHidePos));
+    const opaRate = buttSpeed / Math.abs(buttShowPos - buttHidePos);
     var opa = (show) ? 0 : buttOpa;
     var t0 = null;
     buttElem.style.right = p0 + "px";
@@ -347,10 +348,10 @@ function moveButt(show) {
         buttElem.style.right = right + "px";
         if (show && opa < buttOpa) {
             buttElem.style.opacity = opa;
-            opa = opaRate * elap;
+            opa = buttOpa * opaRate * elap;
         } else if (!show && opa > 0) {
             buttElem.style.opacity = opa;
-            opa = buttOpa - opaRate * elap;
+            opa = buttOpa - (buttOpa * opaRate * elap);
         }
         if (show && right >= buttShowPos) {
             showRunning = false;
@@ -393,14 +394,22 @@ function restartPage() {
 }
 
 function fullButt() {
+    var t0 = null;
     var opa = buttOpa;
-    function frame() {
+    fillRunning = true;
+
+    function frame(t) {
+        if (!t0) t0 = t;
+        const elap = (t - t0) * animationSpeed;
         buttElem.style.opacity = opa;
-        opa += buttOpaRate;
-        if (opa < 1) {
-            window.requestAnimationFrame(frame);
-        } else {
+        opa = buttOpa + buttOpaRate * elap;
+        if (!fillRunning) {
+            buttElem.style.opacity = buttOpa;
+        } else if (opa > 1) {
+            fillRunning = false;
             buttElem.style.opacity = 1;
+        } else {
+            window.requestAnimationFrame(frame);
         }
     }
     window.requestAnimationFrame(frame);
@@ -414,6 +423,7 @@ window.onscroll = function() {
 
         if (!showRunning) {
             if (scrollTimer !== null) clearTimeout(scrollTimer);
+            fillRunning = false;
             if (!buttShown) {
                 showRunning = true;
                 moveButt(true);
@@ -425,6 +435,8 @@ window.onscroll = function() {
         }
 
     } else if (buttShown && !showRunning) {
+        if (scrollTimer !== null) clearTimeout(scrollTimer);
+        fillRunning = false;
         showRunning = true;
         moveButt(false);
         buttShown = false;
