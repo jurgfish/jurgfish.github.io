@@ -33,6 +33,7 @@ img.noanim {
     border-color: #555555;
     margin-bottom: 29px;
     box-sizing: border-box;
+    box-shadow: none;
 }
 
 h2 {
@@ -52,7 +53,10 @@ form {
     margin-bottom: 29px;
 }
 
-input {
+input[type=number] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     font-family: "Roboto Slab";
     font-size: 18px;
     color: #48c1cc;
