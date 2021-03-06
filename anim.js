@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.12.012
+// v0.13.001
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -20,6 +20,7 @@ const inputEntry = document.getElementById("entry");
 const divForm = document.getElementById("form");
 const tbeginElem = document.getElementById("tbegin");
 const tendElem = document.getElementById("tend");
+const homeElem = document.getElementById("home");
 const buttElem = document.getElementById("butt");
 
 // settings
@@ -150,9 +151,9 @@ function formatNum(n) {
 }
 
 function setDocEntryCount() {
-    lastEntry.textContent = "[Island of Mind " +
+    if (lastEntry) lastEntry.textContent = "[Island of Mind " +
         formatNum(novelLength + 1) + "+] will appear when ready";
-    inputEntry.placeholder = "1~ " + novelLength;
+    if (inputEntry) inputEntry.placeholder = "1~ " + novelLength;
 }
 
 function reduceEndSpace() {
@@ -394,7 +395,7 @@ function moveButt(show) {
     window.requestAnimationFrame(frame);
 }
 
-function restartPage() {
+function refreshPage() {
     if (animator !== null) clearInterval(animator);
     animator = null;
     elemRunning = false;
@@ -446,22 +447,23 @@ window.onscroll = function() {
 
 buttElem.onclick = function() {
     jumpToEntryIdx(-1);
-    toggleJump.focus(); // prevents strange behavior
+    if (toggleJump) toggleJump.focus(); // prevents strange behavior
+    else homeElem.focus();
     document.activeElement.blur();
 };
 
-logoElem.onclick = function() { restartPage(); };
-cpyrElem.onclick = function() { restartPage(); };
-tbeginElem.onclick = function() {
+logoElem.onclick = function() { refreshPage(); };
+if (cpyrElem) cpyrElem.onclick = function() { refreshPage(); };
+if (tbeginElem) tbeginElem.onclick = function() {
     jumpToEntryIdx(1);
     document.activeElement.blur();
 };
-tendElem.onclick = function() {
+if (tendElem) tendElem.onclick = function() {
     jumpToEntryIdx(novelLength + 1);
     document.activeElement.blur();
 };
 
-toggleJump.onclick = function() {
+if (toggleJump) toggleJump.onclick = function() {
     showInput = !showInput;
     if (showInput) {
         toggleJump.textContent = "(hide jump)";
@@ -475,7 +477,7 @@ toggleJump.onclick = function() {
     }
 };
 
-jumpGo.onclick = function() {
+if (jumpGo) jumpGo.onclick = function() {
     const inputEntryVal = parseInt(inputEntry.value);
     if (!(isNaN(inputEntryVal))) {
         jumpToEntryIdx(inputEntryVal);
