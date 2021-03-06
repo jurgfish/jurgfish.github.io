@@ -29,11 +29,10 @@ img {
 img.noanim {
     outline: none;
     border: 2px;
-    border-radius: 8px;
+    border-radius: 18px;
     border-style: solid;
-    border-color: #555555;
+    border-color: #faf0e6;
     margin-bottom: 29px;
-    box-sizing: border-box;
 }
 
 h2 {
