@@ -1,7 +1,7 @@
 // © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
-// v0.13.001
+//
 ////////////////////////////////////////////////////////////////////////////
 
 // elements
@@ -151,9 +151,9 @@ function formatNum(n) {
 }
 
 function setDocEntryCount() {
-    if (lastEntry) lastEntry.textContent = "[Island of Mind " +
+    lastEntry.textContent = "[Island of Mind " +
         formatNum(novelLength + 1) + "+] will appear when ready";
-    if (inputEntry) inputEntry.placeholder = "1~ " + novelLength;
+    inputEntry.placeholder = "1~ " + novelLength;
 }
 
 function reduceEndSpace() {
@@ -514,10 +514,14 @@ document.onkeydown = function(event) {
 
 // begin routine
 scrollToEntryIdx(false);
-setDocEntryCount();
+if (lastEntry) setDocEntryCount();
 setTimeout(revealLogo, logoTimeout);
 
 ////////////////////////////////////////////////////////////////////////////
+//
+// buried forever
+// this little island of mine
+// mogami river
 
 
 
