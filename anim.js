@@ -4,7 +4,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-// elements
 const allContent = document.getElementById("content");
 const logoElem = document.getElementById("logo");
 const jurgfishElem = document.getElementById("jurgfish");
@@ -13,7 +12,6 @@ const cpyrElem = document.getElementById("copyright");
 const endspace = document.getElementById("endspace");
 const noanim = document.getElementsByClassName("noanim");
 const elems = document.getElementsByClassName("anim");
-
 const jumpGo = document.getElementById("jump");
 const toggleJump = document.getElementById("showjump");
 const inputEntry = document.getElementById("entry");
@@ -23,11 +21,11 @@ const tendElem = document.getElementById("tend");
 const homeElem = document.getElementById("home");
 const buttElem = document.getElementById("butt");
 
-// settings
+const animationSpeed = 0.1;
 const logoV = -3;
 const logoA = 0.1;
 const logoOpaRate = 0.005;
-const jurgfishTypeSpeed = 0.4;
+const titleTypeSpeed = 0.4;
 const typeSpeed = 4;
 const wordOpaLen = 0.93;
 const slideRate = 0.3;
@@ -37,29 +35,33 @@ const buttOpa = 0.6;
 const buttOpaRate = 0.015;
 const buttSpeed = 0.3;
 const frameRate = 1000 / 60;
-const animationSpeed = 0.1;
 
 const logoTimeout = 300;
 const elemTimeout = 200;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
-
 const slideStart = 10;
 const loadBound = 0.93;
 const lagBound = 3;
 const scrollOffset = 28;
 const endspaceStartHeight = 100;
-const endspaceEndHeight = 30; 
+const endspaceEndHeight = 30;
 const buttScroll = 540;
 const buttShowPos = 0;
 const buttHidePos = 10;
-
 const entryIdxLen = 3;
-const entryIdxBuf = "0000";
 const noanimEntryCnt = 1;
 const nonNovelEndCnt = 2;
 const novelLength = elems.length - nonNovelEndCnt;
 
+const entryIdxBuf = "0000";
+const txy = "translateY(";
+const tpy = "px)";
+const endTxtA = "[Island of Mind ";
+const endTxtB = "+] will appear when ready";
+const placeTxt = "1~ ";
+const toggleTxtHide = "(hide jump)";
+const toggleTxtShow = "use jump";
 var showInput = false;
 var elemRunning = true;
 var showRunning = false;
@@ -85,20 +87,20 @@ function slideUp(elem, opaFlag) {
     var t0 = null;
     var opa = 0;
     if (opaFlag) elem.style.opacity = opa;
-    elem.style.transform = "translateY(" + slideStart + "px)";
+    elem.style.transform = txy + slideStart + tpy;
     elem.style.visibility = "visible";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = slideStart - (slideRate * elap);
-        elem.style.transform = "translateY(" + y + "px)";
+        elem.style.transform = txy + y + tpy;
         if (opaFlag && opa < 1) {
             elem.style.opacity = opa;
             opa = opaRate * elap;
         }
         if (y < 0 || !elemRunning) {
-            elem.style.transform = "translateY(0px)";
+            elem.style.transform = txy + 0 + tpy;
             if (opaFlag) elem.style.opacity = 1;
         } else {
             window.requestAnimationFrame(frame);
@@ -151,9 +153,8 @@ function formatNum(n) {
 }
 
 function setDocEntryCount() {
-    lastEntry.textContent = "[Island of Mind " +
-        formatNum(novelLength + 1) + "+] will appear when ready";
-    inputEntry.placeholder = "1~ " + novelLength;
+    lastEntry.textContent = endTxtA + formatNum(novelLength + 1) + endTxtB;
+    inputEntry.placeholder = placeTxt + novelLength;
 }
 
 function reduceEndSpace() {
@@ -210,7 +211,8 @@ function animateEntries() {
                 elemRunning = false;
                 if (skipTimer !== null) clearTimeout(skipTimer);
                 skipTimer = setTimeout(function() {
-                    for (elemIdx; elemIdx < loadIdx - lagBound; elemIdx++) {
+                    const k = loadIdx - lagBound;
+                    for (elemIdx; elemIdx < k; elemIdx++) {
                         elems[elemIdx].style.visibility = "visible";
                     }
                     elemRunning = true;
@@ -220,7 +222,7 @@ function animateEntries() {
                 typeWords(elem);
                 slideUp(elem, false);
             }
-           
+
         } else {
             reduceEndSpace();
             if (animator !== null) clearInterval(animator);
@@ -237,8 +239,8 @@ function scrollToEntryIdx(entryFlag) {
         const elem = elems[elemIdx - 1];
         window.scroll(0, elem.offsetTop - scrollOffset);
     } else {
-        if ('scrollRestoration' in history) 
-            history.scrollRestoration = 'manual';
+        if ("scrollRestoration" in history)
+            history.scrollRestoration = "manual";
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
@@ -246,16 +248,18 @@ function scrollToEntryIdx(entryFlag) {
 
 function resetEntries() {
     var j = 0;
-    for (j; j < elems.length; j++) {
+    const k = elems.length;
+    const kk = noanim.length;
+    for (j; j < k; j++) {
         if (j < elemIdx) {
-            elems[j].style.transform = "translateY(0px)";
+            elems[j].style.transform = txy + 0 + tpy;
             elems[j].style.visibility = "visible";
             elems[j].style.opacity = 1;
         } else {
             elems[j].style.visibility = "hidden";
         }
     }
-    for (j = noanimEntryCnt; j < noanim.length; j++) {
+    for (j = noanimEntryCnt; j < kk; j++) {
         noanim[j].style.visibility = "hidden";
     }
     endspace.style.height = endspaceStartHeight + "em";
@@ -278,7 +282,7 @@ function jumpToEntryIdx(idx) {
     }
 
     resetEntries();
-    setTimeout(function() { 
+    setTimeout(function() {
         if (entryFlag) scrollToEntryIdx(true);
         animateEntries();
     }, jumpTimeout);
@@ -290,13 +294,13 @@ function revealjurgfish() {
     const word = jurgfishElem.textContent;
     var t0 = null;
     var c = 0;
-    jurgfishElem.textContent = ""; 
+    jurgfishElem.textContent = "";
     jurgfishElem.style.visibility = "visible";
-    
+
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
-        c = Math.floor(jurgfishTypeSpeed * elap);
+        c = Math.floor(titleTypeSpeed * elap);
         jurgfishElem.textContent = word.substring(0, c);
         if (c >= word.length) {
             jurgfishElem.textContent = word;
@@ -318,13 +322,13 @@ function revealLogo() {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = (logoV*elap)+(logoA*(elap*elap))-1;
-        logoElem.style.transform = "translateY(" + y + "px)";
+        logoElem.style.transform = txy + y + tpy;
         if (opa < 1) {
             logoElem.style.opacity = opa;
             opa = logoOpaRate * elap;
         }
         if (y > 0) {
-            logoElem.style.transform = "translateY(0px)";
+            logoElem.style.transform = txy + 0 + tpy;
             logoElem.style.opacity = 1;
             revealjurgfish();
         } else {
@@ -363,14 +367,14 @@ function moveButt(show) {
     var opa = (show) ? 0 : buttOpa;
     var t0 = null;
     buttElem.style.opacity = opa;
-    buttElem.style.transform = "translateY(" + p0 + "px)";
+    buttElem.style.transform = txy + p0 + tpy;
     buttElem.style.display = "block";
-    
+
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = p0 + (delta * elap);
-        buttElem.style.transform = "translateY(" + y + "px)";
+        buttElem.style.transform = txy + y + tpy;
         if (show && opa < buttOpa) {
             buttElem.style.opacity = opa;
             opa = buttOpa * opaRate * elap;
@@ -380,12 +384,12 @@ function moveButt(show) {
         }
         if (show && y < buttShowPos) {
             showRunning = false;
-            buttElem.style.transform = "translateY(" + buttShowPos + "px)";
+            buttElem.style.transform = txy + buttShowPos + tpy;
             buttElem.style.opacity = buttOpa;
             scrollTimer = setTimeout(fillButt, scrollTimeout);
         } else if (!show && y > buttHidePos) {
             showRunning = false;
-            buttElem.style.transform = "translateY(" + buttHidePos + "px)";
+            buttElem.style.transform = txy + buttHidePos + tpy;
             buttElem.style.opacity = 0;
             buttElem.style.display = "none";
         } else {
@@ -447,7 +451,7 @@ window.onscroll = function() {
 
 buttElem.onclick = function() {
     jumpToEntryIdx(-1);
-    if (toggleJump) toggleJump.focus(); // prevents strange behavior
+    if (toggleJump) toggleJump.focus();
     else homeElem.focus();
     document.activeElement.blur();
 };
@@ -466,11 +470,11 @@ if (tendElem) tendElem.onclick = function() {
 if (toggleJump) toggleJump.onclick = function() {
     showInput = !showInput;
     if (showInput) {
-        toggleJump.textContent = "(hide jump)";
+        toggleJump.textContent = toggleTxtHide;
         divForm.style.display = "block";
         setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
     } else {
-        toggleJump.textContent = "use jump";
+        toggleJump.textContent = toggleTxtShow;
         divForm.style.display = "none";
         inputEntry.value = "";
         document.activeElement.blur();
@@ -499,7 +503,7 @@ document.onkeydown = function(event) {
         } else if (document.activeElement === toggleJump) {
             event.preventDefault();
             toggleJump.click();
-        } else if ((document.activeElement === inputEntry) || 
+        } else if ((document.activeElement === inputEntry) ||
                  (document.activeElement === jumpGo)) {
             event.preventDefault();
             jumpGo.click();
@@ -507,7 +511,7 @@ document.onkeydown = function(event) {
             event.preventDefault();
             cpyrElem.click();
         }
-    } 
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////////
