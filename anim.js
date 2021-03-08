@@ -206,10 +206,12 @@ function animateEntries() {
             while (loadIdx > elemIdx && !verifyBound(elems[loadIdx])) {
                 loadIdx--;
             }
+
             const lag = loadIdx - elemIdx;
             if (lag > lagBound) {
                 elemRunning = false;
                 if (skipTimer !== null) clearTimeout(skipTimer);
+
                 skipTimer = setTimeout(function() {
                     const k = loadIdx - lagBound;
                     for (elemIdx; elemIdx < k; elemIdx++) {
@@ -218,6 +220,7 @@ function animateEntries() {
                     elemRunning = true;
                 }, jumpTimeout);
             }
+
             if (valid) {
                 typeWords(elem);
                 slideUp(elem, false);
@@ -375,6 +378,7 @@ function moveButt(show) {
         const elap = (t - t0) * animationSpeed;
         const y = p0 + (delta * elap);
         buttElem.style.transform = txy + y + tpy;
+
         if (show && opa < buttOpa) {
             buttElem.style.opacity = opa;
             opa = buttOpa * opaRate * elap;
@@ -493,7 +497,6 @@ if (jumpGo) jumpGo.onclick = function() {
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 ||
             event.which === 13) {
-
         if (document.activeElement === tbeginElem) {
             event.preventDefault();
             tbeginElem.click();
