@@ -1,4 +1,4 @@
-// © 2021, jurgfish. All rights reserved.
+// Copyright © 2021, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
 //
