@@ -37,6 +37,7 @@ img.noanim {
 h2 {
     font-weight: bold;
     font-size: 36px;
+    letter-spacing: -1px;
     color: #000000;
     text-align: center;
     visibility: hidden;
