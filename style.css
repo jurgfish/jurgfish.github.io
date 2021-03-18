@@ -144,7 +144,7 @@ a:active {
 }
 @media (max-width: 662px) {
     body { width: 90%; }
-    img { max-width: 90%; height: auto; }
+    img { max-width: 100%; height: auto; }
     #butt { bottom: 69px; }
     #butt:hover {
         outline: none;
