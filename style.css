@@ -1,10 +1,5 @@
 /* jurgfish */
 
-.centered > * {
-    margin-left: auto;
-    margin-right: auto;
-}
-
 body {
     font-family: "Roboto Slab";
     font-size: 18px;
@@ -16,15 +11,19 @@ body {
     -webkit-touch-callout: none;
     -khtml-user-select: none;
     user-select:none;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 img {
     display: block;
     visibility: hidden;
+    margin-left: auto;
+    margin-right: auto;
 }
 #logo {
     cursor: pointer;
-    margin-top: 30vmin;
+    margin-top: 29vmin;
 }
 img.noanim {
     outline: none;
@@ -42,7 +41,7 @@ h2 {
     text-align: center;
     visibility: hidden;
     cursor: default;
-    margin-top: 6px;
+    margin-top: 18px;
     margin-bottom: 58px;
 }
 
@@ -134,7 +133,7 @@ a:active {
 }
 
 @media (min-width: 660px) {
-    h2, form, p, .space { width: 600px; }
+    body { width: 600px; }
     #butt { bottom: 30px }
     #butt:hover {
         outline: none;
@@ -144,7 +143,7 @@ a:active {
     }
 }
 @media (max-width: 660px) {
-    h2, form, p, .space { width: 93%; }
+    body { width: 93%; }
     img { max-width: 93%; height: auto; }
     #butt { bottom: 69px; }
     #butt:hover {
