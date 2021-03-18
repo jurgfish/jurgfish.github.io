@@ -132,7 +132,7 @@ a:active {
     cursor: pointer;
 }
 
-@media (min-width: 660px) {
+@media (min-width: 662px) {
     body { width: 600px; }
     #butt { bottom: 30px }
     #butt:hover {
@@ -142,9 +142,9 @@ a:active {
         text-decoration: none;
     }
 }
-@media (max-width: 660px) {
-    body { width: 93%; }
-    img { max-width: 93%; height: auto; }
+@media (max-width: 662px) {
+    body { width: 90%; }
+    img { max-width: 90%; height: auto; }
     #butt { bottom: 69px; }
     #butt:hover {
         outline: none;
