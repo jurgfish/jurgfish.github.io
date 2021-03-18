@@ -3,7 +3,7 @@
 body {
     font-family: "Roboto Slab";
     font-size: 18px;
-    color: #555555;
+    color: #515151;
     background-color: #faf0e6;
     -ms-user-select:none;
     -moz-user-select:none;
@@ -35,9 +35,8 @@ img.noanim {
 }
 
 h2 {
-    font-weight: bold;
-    font-size: 36px;
-    letter-spacing: -0.01618em;
+    font-weight: normal;
+    font-size: 38px;
     color: #000000;
     text-align: center;
     visibility: hidden;
@@ -153,7 +152,7 @@ a:active {
         text-decoration: none;
     }
 }
-@media print { a, a:link, a:visited, a:focus { color: #555555; } }
+@media print { a, a:link, a:visited, a:focus { color: #515151; } }
 
 #endspace { height: 100em; }
 
