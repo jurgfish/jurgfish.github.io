@@ -46,6 +46,7 @@ const lagBound = 3;
 const scrollOffset = 28;
 const endspaceStartHeight = 100;
 const endspaceEndHeight = 30;
+const jumpScroll = 30;
 const buttScroll = 540;
 const buttShowPos = 0;
 const buttHidePos = 10;
@@ -62,7 +63,7 @@ const endTxtB = "+] will appear when ready";
 const placeTxt = "1~ ";
 const toggleTxtHide = "(hide jump)";
 const toggleTxtShow = "use jump";
-var showInput = true;
+var inputHidden = true;
 var elemRunning = true;
 var showRunning = false;
 var fillRunning = false;
@@ -473,26 +474,25 @@ if (tendElem) tendElem.onclick = function() {
 };
 
 if (toggleJump) toggleJump.onclick = function() {
-    const bound = toggleJump.getBoundingClientRect();
-    const validBound = bound.top > 0;
+    const validBound = elems[0].getBoundingClientRect().top > jumpScroll;
 
-    if (showInput) {
+    if (inputHidden) {
         toggleJump.textContent = toggleTxtHide;
         divForm.style.display = "block";
-        showInput = !showInput;
+        inputHidden = false;
         if (!validBound) {
-            window.scroll(0, toggleJump.offsetTop - scrollOffset);
+            window.scroll(0, inputEntry.offsetTop - scrollOffset);
         }
         setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
-   } else {
+    } else {
         if (validBound) {
             toggleJump.textContent = toggleTxtShow;
             divForm.style.display = "none";
             inputEntry.value = "";
-            showInput = !showInput;
+            inputHidden = true;
             document.activeElement.blur();
         } else {
-            window.scroll(0, toggleJump.offsetTop - scrollOffset);
+            window.scroll(0, inputEntry.offsetTop - scrollOffset);
             setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
         }
     }
