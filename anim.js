@@ -62,7 +62,7 @@ const endTxtB = "+] will appear when ready";
 const placeTxt = "1~ ";
 const toggleTxtHide = "(hide jump)";
 const toggleTxtShow = "use jump";
-var showInput = false;
+var showInput = true;
 var elemRunning = true;
 var showRunning = false;
 var fillRunning = false;
@@ -462,6 +462,7 @@ buttElem.onclick = function() {
 
 logoElem.onclick = function() { refreshPage(); };
 if (cpyrElem) cpyrElem.onclick = function() { refreshPage(); };
+
 if (tbeginElem) tbeginElem.onclick = function() {
     jumpToEntryIdx(1);
     document.activeElement.blur();
@@ -472,16 +473,28 @@ if (tendElem) tendElem.onclick = function() {
 };
 
 if (toggleJump) toggleJump.onclick = function() {
-    showInput = !showInput;
+    const bound = toggleJump.getBoundingClientRect();
+    const validBound = bound.top > 0;
+
     if (showInput) {
         toggleJump.textContent = toggleTxtHide;
         divForm.style.display = "block";
+        showInput = !showInput;
+        if (!validBound) {
+            window.scroll(0, toggleJump.offsetTop - scrollOffset);
+        }
         setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
-    } else {
-        toggleJump.textContent = toggleTxtShow;
-        divForm.style.display = "none";
-        inputEntry.value = "";
-        document.activeElement.blur();
+   } else {
+        if (validBound) {
+            toggleJump.textContent = toggleTxtShow;
+            divForm.style.display = "none";
+            inputEntry.value = "";
+            showInput = !showInput;
+            document.activeElement.blur();
+        } else {
+            window.scroll(0, toggleJump.offsetTop - scrollOffset);
+            setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
+        }
     }
 };
 
@@ -514,6 +527,9 @@ document.onkeydown = function(event) {
             event.preventDefault();
             cpyrElem.click();
         }
+    } else if (toggleJump && (event.keyCode === 65 || event.which === 65)) {
+        event.preventDefault();
+        toggleJump.click();
     }
 };
 
