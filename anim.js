@@ -527,7 +527,8 @@ document.onkeydown = function(event) {
             event.preventDefault();
             cpyrElem.click();
         }
-    } else if (toggleJump && (event.keyCode === 65 || event.which === 65)) {
+    } else if (toggleJump && elemIdx > 0 &&
+            (event.keyCode === 65 || event.which === 65)) {
         event.preventDefault();
         toggleJump.click();
     }
