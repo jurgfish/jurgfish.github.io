@@ -27,10 +27,8 @@ img {
 }
 img.noanim {
     outline: none;
-    border: 2px;
     border-radius: 18px;
-    border-style: solid;
-    border-color: #faf0e6;
+    border-style: none;
     margin-bottom: 29px;
 }
 
