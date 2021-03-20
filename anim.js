@@ -9,7 +9,6 @@ const logoElem = document.getElementById("logo");
 const jurgfishElem = document.getElementById("jurgfish");
 const lastEntry = document.getElementById("end");
 const cpyrElem = document.getElementById("copyright");
-const endspace = document.getElementById("endspace");
 const noanim = document.getElementsByClassName("noanim");
 const elems = document.getElementsByClassName("anim");
 const jumpGo = document.getElementById("jump");
@@ -26,10 +25,9 @@ const logoV = -3;
 const logoA = 0.1;
 const logoOpaRate = 0.005;
 const titleTypeSpeed = 0.4;
-const typeSpeed = 4;
+const typeSpeed = 5;
 const wordOpaLen = 0.93;
 const slideRate = 0.3;
-const endspaceSpeed = 1.3;
 const restartOpaRate = 0.05;
 const buttOpa = 0.6;
 const buttOpaRate = 0.015;
@@ -44,8 +42,6 @@ const slideStart = 10;
 const loadBound = 0.93;
 const lagBound = 3;
 const scrollOffset = 28;
-/*const endspaceStartHeight = 30;
-const endspaceEndHeight = 30;*/
 const jumpScroll = scrollOffset + 2;
 const buttScroll = 540;
 const buttShowPos = 0;
@@ -158,22 +154,6 @@ function setDocEntryCount() {
     inputEntry.placeholder = placeTxt + novelLength;
 }
 
-function reduceEndSpace() {
-    var t0 = null;
-    function frame(t) {
-        if (!t0) t0 = t;
-        const elap = (t - t0) * animationSpeed;
-        const h = endspaceStartHeight - endspaceSpeed * elap;
-        endspace.style.height = h + "em";
-        if (h < endspaceEndHeight) {
-            endspace.style.height = endspaceEndHeight + "em";
-        } else {
-            window.requestAnimationFrame(frame);
-        }
-    }
-    window.requestAnimationFrame(frame);
-}
-
 function verifyBound(elem) {
     const bound = elem.getBoundingClientRect();
     const validBound = (bound.top < (window.innerHeight * loadBound ||
@@ -228,7 +208,6 @@ function animateEntries() {
             }
 
         } else {
-            //reduceEndSpace();
             if (animator !== null) clearInterval(animator);
             animator = null;
             return;
@@ -266,7 +245,6 @@ function resetEntries() {
     for (j = noanimEntryCnt; j < kk; j++) {
         noanim[j].style.visibility = "hidden";
     }
-    //endspace.style.height = endspaceStartHeight + "em";
 }
 
 function jumpToEntryIdx(idx) {
