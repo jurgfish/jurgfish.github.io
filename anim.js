@@ -44,8 +44,8 @@ const slideStart = 10;
 const loadBound = 0.93;
 const lagBound = 3;
 const scrollOffset = 28;
-const endspaceStartHeight = 100;
-const endspaceEndHeight = 30;
+/*const endspaceStartHeight = 30;
+const endspaceEndHeight = 30;*/
 const jumpScroll = scrollOffset + 2;
 const buttScroll = 540;
 const buttShowPos = 0;
@@ -228,7 +228,7 @@ function animateEntries() {
             }
 
         } else {
-            reduceEndSpace();
+            //reduceEndSpace();
             if (animator !== null) clearInterval(animator);
             animator = null;
             return;
@@ -266,7 +266,7 @@ function resetEntries() {
     for (j = noanimEntryCnt; j < kk; j++) {
         noanim[j].style.visibility = "hidden";
     }
-    endspace.style.height = endspaceStartHeight + "em";
+    //endspace.style.height = endspaceStartHeight + "em";
 }
 
 function jumpToEntryIdx(idx) {
