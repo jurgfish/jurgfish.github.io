@@ -43,7 +43,6 @@ const loadBound = 0.93;
 const lagBound = 3;
 const scrollOffset = 28;
 const jumpScroll = scrollOffset + 2;
-const buttScroll = 540;
 const buttShowPos = 0;
 const buttHidePos = 10;
 const entryIdxLen = 3;
@@ -408,9 +407,10 @@ function refreshPage() {
 ////////////////////////////////////////////////////////////////////////////
 
 window.onscroll = function() {
-    if (document.body.scrollTop > buttScroll ||
-            document.documentElement.scrollTop > buttScroll) {
-        if (!showRunning) {
+    if (!showRunning) {
+        const validBound = elems[0].getBoundingClientRect().top <
+            jumpScroll;
+        if (validBound) {
             if (scrollTimer !== null) clearTimeout(scrollTimer);
             fillRunning = false;
             if (!buttShown) {
@@ -421,14 +421,14 @@ window.onscroll = function() {
                 buttElem.style.opacity = buttOpa;
                 scrollTimer = setTimeout(fillButt, scrollTimeout);
             }
-        }
 
-    } else if (buttShown && !showRunning) {
-        if (scrollTimer !== null) clearTimeout(scrollTimer);
-        fillRunning = false;
-        showRunning = true;
-        moveButt(false);
-        buttShown = false;
+        } else if (buttShown) {
+            if (scrollTimer !== null) clearTimeout(scrollTimer);
+            fillRunning = false;
+            showRunning = true;
+            moveButt(false);
+            buttShown = false;
+        }
     }
 };
 
