@@ -408,8 +408,9 @@ function refreshPage() {
 
 window.onscroll = function() {
     if (!showRunning) {
-        const validBound = elems[0].getBoundingClientRect().top <
-            jumpScroll;
+        var check = elems[0] ? elems[0] : noanim[1];
+        const validBound = check.getBoundingClientRect().top < jumpScroll;
+
         if (validBound) {
             if (scrollTimer !== null) clearTimeout(scrollTimer);
             fillRunning = false;
