@@ -33,8 +33,6 @@ const buttOpa = 0.6;
 const buttOpaRate = 0.015;
 const buttSpeed = 0.3;
 const frameRate = 1000 / 60;
-/*const typeSpeedFast = 5;
-const typeSpeedSlow = 3;*/
 
 const logoTimeout = 300;
 const elemTimeout = 200;
@@ -51,7 +49,6 @@ const entryIdxLen = 3;
 const noanimEntryCnt = 1;
 const nonNovelEndCnt = 2;
 const novelLength = elems.length - nonNovelEndCnt;
-/*const typeSpeedWidth = 500;*/
 
 const entryIdxBuf = "0000";
 const txy = "translateY(";
@@ -61,7 +58,6 @@ const endTxtB = "+] will appear when ready";
 const placeTxt = "1~ ";
 const toggleTxtHide = "(hide jump)";
 const toggleTxtShow = "use jump";
-//var typeSpeed = typeSpeedFast;
 var inputHidden = true;
 var elemRunning = true;
 var showRunning = false;
@@ -164,13 +160,6 @@ function verifyBound(elem) {
         document.body.clientHeight;
     return (bound.top < (h * loadBound));
 }
-
-/*function adjustTypeSpeed() {
-    const h = window.innerWidth ||
-        document.documentElement.clientWidth ||
-        document.body.clientWidth;
-    typeSpeed = (h < typeSpeedWidth) ? typeSpeedSlow : typeSpeedFast;
-}*/
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -452,7 +441,6 @@ buttElem.onclick = function() {
     document.activeElement.blur();
 };
 
-//window.onresize = adjustTypeSpeed;
 logoElem.onclick = refreshPage;
 if (cpyrElem) cpyrElem.onclick = refreshPage;
 
@@ -530,7 +518,6 @@ document.onkeydown = function(event) {
 
 // begin routine
 scrollToEntryIdx(false);
-//adjustTypeSpeed();
 if (lastEntry) setDocEntryCount();
 setTimeout(revealLogo, logoTimeout);
 
