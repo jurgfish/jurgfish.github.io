@@ -161,7 +161,7 @@ a:active {
 
 #endspace { height: 100vh; }
 ::-webkit-scrollbar {
-    width: 0px;
+    display: none;
 }
 
 
