@@ -13,6 +13,8 @@ body {
     user-select:none;
     margin-left: auto;
     margin-right: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 img {
@@ -158,6 +160,9 @@ a:active {
 @media print { a, a:link, a:visited, a:focus { color: #515151; } }
 
 #endspace { height: 100vh; }
+::-webkit-scrollbar {
+    width: 0px;
+}
 
 
 
