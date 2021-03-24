@@ -25,7 +25,6 @@ const logoV = -3;
 const logoA = 0.1;
 const logoOpaRate = 0.005;
 const titleTypeSpeed = 0.4;
-const typeSpeed = 5;
 const wordOpaLen = 0.93;
 const slideRate = 0.3;
 const restartOpaRate = 0.05;
@@ -33,6 +32,8 @@ const buttOpa = 0.6;
 const buttOpaRate = 0.015;
 const buttSpeed = 0.3;
 const frameRate = 1000 / 60;
+const typeSpeedFast = 5;
+const typeSpeedSlow = 3;
 
 const logoTimeout = 300;
 const elemTimeout = 200;
@@ -49,6 +50,7 @@ const entryIdxLen = 3;
 const noanimEntryCnt = 1;
 const nonNovelEndCnt = 2;
 const novelLength = elems.length - nonNovelEndCnt;
+const typeSpeedWidth = 600;
 
 const entryIdxBuf = "0000";
 const txy = "translateY(";
@@ -58,6 +60,7 @@ const endTxtB = "+] will appear when ready";
 const placeTxt = "1~ ";
 const toggleTxtHide = "(hide jump)";
 const toggleTxtShow = "use jump";
+var typeSpeed = typeSpeedFast;
 var inputHidden = true;
 var elemRunning = true;
 var showRunning = false;
@@ -155,9 +158,18 @@ function setDocEntryCount() {
 
 function verifyBound(elem) {
     const bound = elem.getBoundingClientRect();
-    const validBound = (bound.top < (window.innerHeight * loadBound ||
-        document.documentElement.clientHeight * loadBound));
-    return validBound;
+    const h = window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight;
+    return (bound.top < (h * loadBound));
+}
+
+function adjustTypeSpeed() {
+    const h = window.innerWidth ||
+        document.documentElement.clientWidth ||
+        document.body.clientWidth;
+    typeSpeed = (h < typeSpeedWidth) ? typeSpeedSlow : typeSpeedFast;
+    console.log(typeSpeed);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -440,8 +452,9 @@ buttElem.onclick = function() {
     document.activeElement.blur();
 };
 
-logoElem.onclick = function() { refreshPage(); };
-if (cpyrElem) cpyrElem.onclick = function() { refreshPage(); };
+window.onresize = adjustTypeSpeed;
+logoElem.onclick = refreshPage;
+if (cpyrElem) cpyrElem.onclick = refreshPage;
 
 if (tbeginElem) tbeginElem.onclick = function() {
     jumpToEntryIdx(1);
@@ -517,6 +530,7 @@ document.onkeydown = function(event) {
 
 // begin routine
 scrollToEntryIdx(false);
+adjustTypeSpeed();
 if (lastEntry) setDocEntryCount();
 setTimeout(revealLogo, logoTimeout);
 
