@@ -25,6 +25,7 @@ const logoV = -3;
 const logoA = 0.1;
 const logoOpaRate = 0.005;
 const titleTypeSpeed = 0.4;
+const typeSpeed = 6;
 const wordOpaLen = 0.93;
 const slideRate = 0.3;
 const restartOpaRate = 0.05;
@@ -32,8 +33,8 @@ const buttOpa = 0.6;
 const buttOpaRate = 0.015;
 const buttSpeed = 0.3;
 const frameRate = 1000 / 60;
-const typeSpeedFast = 5;
-const typeSpeedSlow = 3;
+/*const typeSpeedFast = 5;
+const typeSpeedSlow = 3;*/
 
 const logoTimeout = 300;
 const elemTimeout = 200;
@@ -50,7 +51,7 @@ const entryIdxLen = 3;
 const noanimEntryCnt = 1;
 const nonNovelEndCnt = 2;
 const novelLength = elems.length - nonNovelEndCnt;
-const typeSpeedWidth = 600;
+/*const typeSpeedWidth = 500;*/
 
 const entryIdxBuf = "0000";
 const txy = "translateY(";
@@ -60,7 +61,7 @@ const endTxtB = "+] will appear when ready";
 const placeTxt = "1~ ";
 const toggleTxtHide = "(hide jump)";
 const toggleTxtShow = "use jump";
-var typeSpeed = typeSpeedFast;
+//var typeSpeed = typeSpeedFast;
 var inputHidden = true;
 var elemRunning = true;
 var showRunning = false;
@@ -164,13 +165,12 @@ function verifyBound(elem) {
     return (bound.top < (h * loadBound));
 }
 
-function adjustTypeSpeed() {
+/*function adjustTypeSpeed() {
     const h = window.innerWidth ||
         document.documentElement.clientWidth ||
         document.body.clientWidth;
     typeSpeed = (h < typeSpeedWidth) ? typeSpeedSlow : typeSpeedFast;
-    console.log(typeSpeed);
-}
+}*/
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -452,7 +452,7 @@ buttElem.onclick = function() {
     document.activeElement.blur();
 };
 
-window.onresize = adjustTypeSpeed;
+//window.onresize = adjustTypeSpeed;
 logoElem.onclick = refreshPage;
 if (cpyrElem) cpyrElem.onclick = refreshPage;
 
@@ -530,7 +530,7 @@ document.onkeydown = function(event) {
 
 // begin routine
 scrollToEntryIdx(false);
-adjustTypeSpeed();
+//adjustTypeSpeed();
 if (lastEntry) setDocEntryCount();
 setTimeout(revealLogo, logoTimeout);
 
