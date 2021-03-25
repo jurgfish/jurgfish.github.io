@@ -1,7 +1,13 @@
 /* jurgfish */
 
+@font-face {
+    /* Font Design by Christian Robertson */
+    src: url(vis/roboto-slab.ttf);
+    font-family: RobotoSlab;
+}
+
 body {
-    font-family: "Roboto Slab";
+    font-family: "RobotoSlab";
     font-size: 18px;
     color: #515151;
     background-color: #faf0e6;
@@ -32,7 +38,6 @@ img.noanim {
     border-style: none;
     margin-bottom: 29px;
 }
-
 h2 {
     font-weight: normal;
     font-size: 38px;
@@ -49,7 +54,6 @@ form {
     text-align: center;
     margin-bottom: 29px;
 }
-
 input[type=number] {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -69,7 +73,6 @@ input[type=number] {
     margin-right: 8px;
     box-sizing: border-box;
 }
-
 input:focus {
     outline: none;
     color: #18919c;
@@ -157,7 +160,6 @@ a:active {
     }
 }
 @media print { a, a:link, a:visited, a:focus { color: #515151; } }
-
 #endspace { height: calc(100vh - 87px); }
 
 
