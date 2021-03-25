@@ -34,7 +34,6 @@ const buttOpa = 0.6;
 const buttOpaRate = 0.015;
 const buttSpeed = 0.3;
 const frameRate = 1000 / 60;
-
 const logoTimeout = 300;
 const elemTimeout = 150;
 const scrollTimeout = 400;
@@ -76,8 +75,6 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function(callback) { return setTimeout(callback, frameRate); };
-
-////////////////////////////////////////////////////////////////////////////
 
 function slideUp(elem, opaFlag) {
     const opaRate = slideRate / slideStart;
