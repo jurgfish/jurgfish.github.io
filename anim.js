@@ -5,6 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 const allContent = document.getElementById("content");
+const inContent = document.getElementById("in");
 const logoElem = document.getElementById("logo");
 const jurgfishElem = document.getElementById("jurgfish");
 const lastEntry = document.getElementById("end");
@@ -151,6 +152,11 @@ function formatNum(n) {
 function setDocEntryCount() {
     lastEntry.textContent = endTxtA + formatNum(novelLength + 1) + endTxtB;
     inputEntry.placeholder = placeTxt + novelLength;
+}
+
+function setBodyHeight() {
+    const h = Math.min(allContent.scrollHeight, inContent.scrollHeight);
+    allContent.style.height = h + "px";
 }
 
 function verifyBound(elem) {
@@ -441,6 +447,7 @@ buttElem.onclick = function() {
     document.activeElement.blur();
 };
 
+window.onresize = setBodyHeight;
 logoElem.onclick = refreshPage;
 if (cpyrElem) cpyrElem.onclick = refreshPage;
 
@@ -518,6 +525,7 @@ document.onkeydown = function(event) {
 
 // begin routine
 scrollToEntryIdx(false);
+setBodyHeight();
 if (lastEntry) setDocEntryCount();
 setTimeout(revealLogo, logoTimeout);
 
