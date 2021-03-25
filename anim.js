@@ -36,7 +36,7 @@ const buttSpeed = 0.3;
 const frameRate = 1000 / 60;
 
 const logoTimeout = 300;
-const elemTimeout = 200;
+const elemTimeout = 150;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
 const slideStart = 10;
