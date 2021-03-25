@@ -301,6 +301,7 @@ function revealjurgfish() {
 }
 
 function revealLogo() {
+    setBodyHeight();
     var t0 = null;
     var opa = 0;
     logoElem.style.opacity = 0;
@@ -525,7 +526,6 @@ document.onkeydown = function(event) {
 
 // begin routine
 scrollToEntryIdx(false);
-setBodyHeight();
 if (lastEntry) setDocEntryCount();
 setTimeout(revealLogo, logoTimeout);
 
