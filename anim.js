@@ -490,12 +490,11 @@ window.onscroll = function() {
 };
 
 buttElem.onclick = function() {
-    if (pastFirstBound()) {
-        jumpToEntryIdx(-1);
-        if (toggleJump) toggleJump.focus();
-        else homeElem.focus();
-        document.activeElement.blur();
-    } else if (!showRunning && buttShown) {
+    jumpToEntryIdx(-1);
+    if (toggleJump) toggleJump.focus();
+    else homeElem.focus();
+    document.activeElement.blur();
+    if (!showRunning && buttShown) {
         if (scrollTimer !== null) clearTimeout(scrollTimer);
         fillRunning = false;
         showRunning = true;
