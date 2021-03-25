@@ -468,6 +468,7 @@ if (toggleJump) toggleJump.onclick = function() {
         toggleJump.textContent = toggleTxtHide;
         divForm.style.display = "block";
         inputHidden = false;
+        setBodyHeight();
         if (!validBound) {
             window.scroll(0, inputEntry.offsetTop - scrollOffset);
         }
@@ -478,6 +479,7 @@ if (toggleJump) toggleJump.onclick = function() {
             divForm.style.display = "none";
             inputEntry.value = "";
             inputHidden = true;
+            setBodyHeight();
             document.activeElement.blur();
         } else {
             window.scroll(0, inputEntry.offsetTop - scrollOffset);
