@@ -167,6 +167,11 @@ function verifyBound(elem) {
     return (bound.top < (h * loadBound));
 }
 
+function pastFirstBound() {
+    const check = elems[0] ? elems[0] : noanim[1];
+    return check.getBoundingClientRect().top < jumpScroll;
+}
+
 ////////////////////////////////////////////////////////////////////////////
 
 function animateEntries() {
@@ -414,40 +419,6 @@ function refreshPage() {
 
 ////////////////////////////////////////////////////////////////////////////
 
-window.onscroll = function() {
-    if (!showRunning) {
-        var check = elems[0] ? elems[0] : noanim[1];
-        const validBound = check.getBoundingClientRect().top < jumpScroll;
-
-        if (validBound) {
-            if (scrollTimer !== null) clearTimeout(scrollTimer);
-            fillRunning = false;
-            if (!buttShown) {
-                showRunning = true;
-                moveButt(true);
-                buttShown = true;
-            } else {
-                buttElem.style.opacity = buttOpa;
-                scrollTimer = setTimeout(fillButt, scrollTimeout);
-            }
-
-        } else if (buttShown) {
-            if (scrollTimer !== null) clearTimeout(scrollTimer);
-            fillRunning = false;
-            showRunning = true;
-            moveButt(false);
-            buttShown = false;
-        }
-    }
-};
-
-buttElem.onclick = function() {
-    jumpToEntryIdx(-1);
-    if (toggleJump) toggleJump.focus();
-    else homeElem.focus();
-    document.activeElement.blur();
-};
-
 window.onresize = setBodyHeight;
 logoElem.onclick = refreshPage;
 if (cpyrElem) cpyrElem.onclick = refreshPage;
@@ -495,6 +466,45 @@ if (jumpGo) jumpGo.onclick = function() {
         inputEntry.value = "";
     }
     document.activeElement.blur();
+};
+
+window.onscroll = function() {
+    if (!showRunning) {
+        if (pastFirstBound()) {
+            if (scrollTimer !== null) clearTimeout(scrollTimer);
+            fillRunning = false;
+            if (!buttShown) {
+                showRunning = true;
+                moveButt(true);
+                buttShown = true;
+            } else {
+                buttElem.style.opacity = buttOpa;
+                scrollTimer = setTimeout(fillButt, scrollTimeout);
+            }
+
+        } else if (buttShown) {
+            if (scrollTimer !== null) clearTimeout(scrollTimer);
+            fillRunning = false;
+            showRunning = true;
+            moveButt(false);
+            buttShown = false;
+        }
+    }
+};
+
+buttElem.onclick = function() {
+    if (pastFirstBound()) {
+        jumpToEntryIdx(-1);
+        if (toggleJump) toggleJump.focus();
+        else homeElem.focus();
+        document.activeElement.blur();
+    } else if (!showRunning && buttShown) {
+        if (scrollTimer !== null) clearTimeout(scrollTimer);
+        fillRunning = false;
+        showRunning = true;
+        moveButt(false);
+        buttShown = false;
+    }
 };
 
 document.onkeydown = function(event) {
