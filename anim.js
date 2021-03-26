@@ -494,6 +494,7 @@ buttElem.onclick = function() {
     if (toggleJump) toggleJump.focus();
     else homeElem.focus();
     document.activeElement.blur();
+    setBodyHeight();
     if (!showRunning && buttShown) {
         if (scrollTimer !== null) clearTimeout(scrollTimer);
         fillRunning = false;
