@@ -20,7 +20,6 @@ body {
     margin-left: auto;
     margin-right: auto;
     overflow-anchor: none;
-    overflow-x: hidden;
 }
 
 img {
@@ -94,6 +93,7 @@ p {
     text-align: justify;
     line-height: 29px;
     overflow: hidden;
+    overflow-x: hidden;
     visibility: hidden;
     cursor: default;
     margin-top: 0px;
