@@ -20,6 +20,7 @@ const tbeginElem = document.getElementById("tbegin");
 const tendElem = document.getElementById("tend");
 const homeElem = document.getElementById("home");
 const buttElem = document.getElementById("butt");
+const endspaceElem = document.getElementById("endspace");
 
 const animationSpeed = 0.1;
 const logoV = -3;
@@ -42,6 +43,7 @@ const slideStart = 10;
 const loadBound = 0.93;
 const lagBound = 3;
 const scrollOffset = 28;
+const endspOffset = 87;
 const jumpScroll = scrollOffset + 2;
 const buttShowPos = 0;
 const buttHidePos = 10;
@@ -151,17 +153,21 @@ function setDocEntryCount() {
     inputEntry.placeholder = placeTxt + novelLength;
 }
 
+function getWindowHeight() {
+    return window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight;
+}
+
 function setBodyHeight() {
     const h = Math.min(allContent.scrollHeight, inContent.scrollHeight);
     allContent.style.height = h + "px";
+    endspaceElem.style.height = (getWindowHeight() - endspOffset) + "px";
 }
 
 function verifyBound(elem) {
     const bound = elem.getBoundingClientRect();
-    const h = window.innerHeight ||
-        document.documentElement.clientHeight ||
-        document.body.clientHeight;
-    return (bound.top < (h * loadBound));
+    return (bound.top < (getWindowHeight() * loadBound));
 }
 
 function pastFirstBound() {
