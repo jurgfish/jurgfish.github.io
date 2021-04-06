@@ -27,34 +27,34 @@ const logoV = -3;
 const logoA = 0.1;
 const logoOpaRate = 0.005;
 const titleTypeSpeed = 0.4;
-const typeSpeed = 8;
-const wordOpaLen = 0.93;
-const slideRate = 0.3;
+const typeSpeed = 6;
+const slideStart = 30;
+const slideRate = 2.4;
 const restartOpaRate = 0.05;
 const buttOpa = 0.6;
 const buttOpaRate = 0.015;
 const buttSpeed = 0.3;
+const buttShowPos = 0;
+const buttHidePos = 10;
 const frameRate = 1000 / 60;
 const logoTimeout = 300;
 const elemTimeout = 150;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
-const slideStart = 10;
 const loadBound = 0.93;
 const lagBound = 3;
 const scrollOffset = 28;
 const endspOffset = 87;
 const jumpScroll = scrollOffset + 2;
-const buttShowPos = 0;
-const buttHidePos = 10;
 const entryIdxLen = 3;
 const noanimEntryCnt = 1;
 const nonNovelEndCnt = 2;
 const novelLength = elems.length - nonNovelEndCnt;
 
 const entryIdxBuf = "0000";
+const txx = "translateX(";
 const txy = "translateY(";
-const tpy = "px)";
+const tpx = "px)";
 const endTxtA = "[Island of Mind ";
 const endTxtB = "+] will appear when ready";
 const placeTxt = "1~ ";
@@ -78,26 +78,30 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function(callback) { return setTimeout(callback, frameRate); };
 
-function slideUp(elem, opaFlag) {
+window.innerHeight = window.innerHeight ||
+    document.documentElement.clientHeight ||
+    document.body.clientHeight;
+
+function slideIn(elem) {
     const opaRate = slideRate / slideStart;
     var t0 = null;
     var opa = 0;
-    if (opaFlag) elem.style.opacity = opa;
-    elem.style.transform = txy + slideStart + tpy;
+    elem.style.opacity = opa;
+    elem.style.transform = txx + slideStart + tpx;
     elem.style.visibility = "visible";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
-        const y = slideStart - (slideRate * elap);
-        elem.style.transform = txy + y + tpy;
-        if (opaFlag && opa < 1) {
+        const x = slideStart - (slideRate * elap);
+        elem.style.transform = txx + x + tpx;
+        if (opa < 1) {
             elem.style.opacity = opa;
             opa = opaRate * elap;
         }
-        if (y < 0 || !elemRunning) {
-            elem.style.transform = txy + 0 + tpy;
-            if (opaFlag) elem.style.opacity = 1;
+        if (x < 0 || !elemRunning) {
+            elem.style.transform = txx + 0 + tpx;
+            elem.style.opacity = 1;
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -108,14 +112,12 @@ function slideUp(elem, opaFlag) {
 function typeWords(elem) {
     const fullText = elem.textContent.trim();
     const wordSet = fullText.split(" ");
-    const opaRate = typeSpeed / (wordSet.length * wordOpaLen);
     var currText = "";
     var wordSetIdx = 0;
     var currSetIdx = 0;
     var t0 = null;
-    var opa = 0;
     elem.textContent = currText;
-    elem.style.opacity = opa;
+    elem.style.visibility = "visible";
 
     function frame(t) {
         if (!t0) t0 = t;
@@ -126,14 +128,9 @@ function typeWords(elem) {
             currText += wordSet[currSetIdx] + " ";
             currSetIdx++;
         }
-        if (opa < 1) {
-            elem.style.opacity = opa;
-            opa = opaRate * elap;
-        }
         elem.textContent = currText;
         if (wordSetIdx >= wordSet.length - 1 || !elemRunning) {
             elem.textContent = fullText;
-            elem.style.opacity = 1;
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -153,21 +150,15 @@ function setDocEntryCount() {
     inputEntry.placeholder = placeTxt + novelLength;
 }
 
-function getWindowHeight() {
-    return window.innerHeight ||
-        document.documentElement.clientHeight ||
-        document.body.clientHeight;
-}
-
 function setBodyHeight() {
     const h = Math.min(allContent.scrollHeight, inContent.scrollHeight);
     allContent.style.height = h + "px";
-    endspaceElem.style.height = (getWindowHeight() - endspOffset) + "px";
+    endspaceElem.style.height = (window.innerHeight - endspOffset) + "px";
 }
 
 function verifyBound(elem) {
     const bound = elem.getBoundingClientRect();
-    return (bound.top < (getWindowHeight() * loadBound));
+    return (bound.top < (window.innerHeight * loadBound));
 }
 
 function pastFirstBound() {
@@ -187,7 +178,7 @@ function animateEntries() {
                 (elemIdx >= elems.length && noanimIdx < noanim.length)) {
             const elem = noanim[noanimIdx];
             if (verifyBound(elem)) {
-                slideUp(elem, true);
+                slideIn(elem);
                 noanimIdx++;
             }
 
@@ -218,7 +209,7 @@ function animateEntries() {
 
             if (valid) {
                 typeWords(elem);
-                slideUp(elem, false);
+                slideIn(elem);
             }
 
         } else {
@@ -249,7 +240,7 @@ function resetEntries() {
     const kk = noanim.length;
     for (j; j < k; j++) {
         if (j < elemIdx) {
-            elems[j].style.transform = txy + 0 + tpy;
+            elems[j].style.transform = txx + 0 + tpx;
             elems[j].style.visibility = "visible";
             elems[j].style.opacity = 1;
         } else {
@@ -319,13 +310,13 @@ function revealLogo() {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = (logoV*elap)+(logoA*(elap*elap))-1;
-        logoElem.style.transform = txy + y + tpy;
+        logoElem.style.transform = txy + y + tpx;
         if (opa < 1) {
             logoElem.style.opacity = opa;
             opa = logoOpaRate * elap;
         }
         if (y > 0) {
-            logoElem.style.transform = txy + 0 + tpy;
+            logoElem.style.transform = txy + 0 + tpx;
             logoElem.style.opacity = 1;
             revealjurgfish();
         } else {
@@ -364,14 +355,14 @@ function moveButt(show) {
     var opa = (show) ? 0 : buttOpa;
     var t0 = null;
     buttElem.style.opacity = opa;
-    buttElem.style.transform = txy + p0 + tpy;
+    buttElem.style.transform = txy + p0 + tpx;
     buttElem.style.display = "block";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = p0 + (delta * elap);
-        buttElem.style.transform = txy + y + tpy;
+        buttElem.style.transform = txy + y + tpx;
 
         if (show && opa < buttOpa) {
             buttElem.style.opacity = opa;
@@ -382,12 +373,12 @@ function moveButt(show) {
         }
         if (show && y < buttShowPos) {
             showRunning = false;
-            buttElem.style.transform = txy + buttShowPos + tpy;
+            buttElem.style.transform = txy + buttShowPos + tpx;
             buttElem.style.opacity = buttOpa;
             scrollTimer = setTimeout(fillButt, scrollTimeout);
         } else if (!show && y > buttHidePos) {
             showRunning = false;
-            buttElem.style.transform = txy + buttHidePos + tpy;
+            buttElem.style.transform = txy + buttHidePos + tpx;
             buttElem.style.opacity = 0;
             buttElem.style.display = "none";
         } else {
