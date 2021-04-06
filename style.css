@@ -23,6 +23,7 @@ body {
     overflow-anchor: none;
     overflow-x: visible;
 }
+#in { overflow-x: visible; }
 
 img {
     display: block;
