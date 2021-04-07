@@ -44,7 +44,7 @@ const jumpTimeout = 100;
 const loadBound = 0.93;
 const lagBound = 3;
 const scrollOffset = 28;
-const endspOffset = 87;
+const endspOffset = 20; //87;
 const jumpScroll = scrollOffset + 2;
 const entryIdxLen = 3;
 const noanimEntryCnt = 1;
@@ -152,13 +152,7 @@ function getWindowHeight() {
 }
 
 function setBodyHeight() {
-    var j  = endspaceElem.scrollHeight;
-    const jj = getWindowHeight() - endspOffset;
-    if (j < jj) {
-        for (j; j < jj; j++) { endspaceElem.style.height = j + "px"; }
-    } else {
-        for (j; j > jj; j--) { endspaceElem.style.height = j + "px"; }
-    }
+    endspaceElem.style.height = (getWindowHeight() - endspOffset) + "px";
     const h = Math.min(allContent.scrollHeight, inContent.scrollHeight);
     allContent.style.height = h + "px";
 }
