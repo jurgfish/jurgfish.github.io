@@ -20,10 +20,8 @@ body {
     margin-left: auto;
     margin-right: auto;
     overflow-anchor: none;
-    overflow-x: hidden;
-    border: 1px solid red;
 }
-/*#in { overflow-x: hidden; }*/
+#in { overflow-x: hidden; }
 
 img {
     display: block;

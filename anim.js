@@ -6,6 +6,7 @@
 
 const allContent = document.getElementById("content");
 const inContent = document.getElementById("in");
+const bottomContent = document.getElementById("bottom");
 const logoElem = document.getElementById("logo");
 const jurgfishElem = document.getElementById("jurgfish");
 const lastEntry = document.getElementById("end");
@@ -44,7 +45,7 @@ const jumpTimeout = 100;
 const loadBound = 0.93;
 const lagBound = 3;
 const scrollOffset = 28;
-const endspOffset = 20; //87;
+const endspOffset = 87;
 const jumpScroll = scrollOffset + 2;
 const entryIdxLen = 3;
 const noanimEntryCnt = 1;
@@ -153,8 +154,9 @@ function getWindowHeight() {
 
 function setBodyHeight() {
     endspaceElem.style.height = (getWindowHeight() - endspOffset) + "px";
-    const h = Math.min(allContent.scrollHeight, inContent.scrollHeight);
-    allContent.style.height = h + "px";
+    const h = inContent.scrollHeight + bottomContent.scrollHeight;
+    const hh = Math.min(allContent.scrollHeight, h);
+    allContent.style.height = hh + "px";
 }
 
 function verifyBound(elem) {
