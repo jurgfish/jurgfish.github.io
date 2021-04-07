@@ -78,10 +78,6 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function(callback) { return setTimeout(callback, frameRate); };
 
-window.innerHeight = window.innerHeight ||
-    document.documentElement.clientHeight ||
-    document.body.clientHeight;
-
 function slideIn(elem) {
     const opaRate = slideRate / slideStart;
     var t0 = null;
@@ -150,15 +146,20 @@ function setDocEntryCount() {
     inputEntry.placeholder = placeTxt + novelLength;
 }
 
+function getWindowHeight() {
+    return window.innerHeight || document.documentElement.clientHeight ||
+        document.body.clientHeight;
+}
+
 function setBodyHeight() {
+    endspaceElem.style.height = (getWindowHeight() - endspOffset) + "px";
     const h = Math.min(allContent.scrollHeight, inContent.scrollHeight);
     allContent.style.height = h + "px";
-    endspaceElem.style.height = (window.innerHeight - endspOffset) + "px";
 }
 
 function verifyBound(elem) {
     const bound = elem.getBoundingClientRect();
-    return (bound.top < (window.innerHeight * loadBound));
+    return (bound.top < (getWindowHeight() * loadBound));
 }
 
 function pastFirstBound() {
