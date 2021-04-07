@@ -152,7 +152,13 @@ function getWindowHeight() {
 }
 
 function setBodyHeight() {
-    endspaceElem.style.height = (getWindowHeight() - endspOffset) + "px";
+    var j  = endspaceElem.scrollHeight;
+    const jj = getWindowHeight() - endspOffset;
+    if (j < jj) {
+        for (j; j < jj; j++) { endspaceElem.style.height = j + "px"; }
+    } else {
+        for (j; j > jj; j--) { endspaceElem.style.height = j + "px"; }
+    }
     const h = Math.min(allContent.scrollHeight, inContent.scrollHeight);
     allContent.style.height = h + "px";
 }
