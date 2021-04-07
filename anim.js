@@ -6,7 +6,7 @@
 
 const allContent = document.getElementById("content");
 const inContent = document.getElementById("in");
-const bottomContent = document.getElementById("bottom");
+const outContent = document.getElementById("out");
 const logoElem = document.getElementById("logo");
 const jurgfishElem = document.getElementById("jurgfish");
 const lastEntry = document.getElementById("end");
@@ -79,25 +79,28 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function(callback) { return setTimeout(callback, frameRate); };
 
-function slideIn(elem) {
+function slideIn(elem, left) {
     const opaRate = slideRate / slideStart;
     var t0 = null;
     var opa = 0;
     elem.style.opacity = opa;
-    elem.style.transform = txx + slideStart + tpx;
+    if (left) elem.style.transform = txx + slideStart + tpx;
+    else elem.style.transform = txy + slideStart + tpx;
     elem.style.visibility = "visible";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
-        const x = slideStart - (slideRate * elap);
-        elem.style.transform = txx + x + tpx;
+        const p = slideStart - (slideRate * elap);
+        if (left) elem.style.transform = txx + p + tpx;
+        else elem.style.transform = txy + p + tpx;
         if (opa < 1) {
             elem.style.opacity = opa;
             opa = opaRate * elap;
         }
-        if (x < 0 || !elemRunning) {
-            elem.style.transform = txx + 0 + tpx;
+        if (p < 0 || !elemRunning) {
+            if (left) elem.style.transform = txx + 0 + tpx;
+            else elem.style.transform = txy + 0 + tpx;
             elem.style.opacity = 1;
         } else {
             window.requestAnimationFrame(frame);
@@ -154,7 +157,7 @@ function getWindowHeight() {
 
 function setBodyHeight() {
     endspaceElem.style.height = (getWindowHeight() - endspOffset) + "px";
-    const h = inContent.scrollHeight + bottomContent.scrollHeight;
+    const h = inContent.scrollHeight + outContent.scrollHeight;
     const hh = Math.min(allContent.scrollHeight, h);
     allContent.style.height = hh + "px";
 }
@@ -181,7 +184,7 @@ function animateEntries() {
                 (elemIdx >= elems.length && noanimIdx < noanim.length)) {
             const elem = noanim[noanimIdx];
             if (verifyBound(elem)) {
-                slideIn(elem);
+                slideIn(elem, noanimIdx != noanim.length - 1);
                 noanimIdx++;
             }
 
@@ -212,7 +215,7 @@ function animateEntries() {
 
             if (valid) {
                 typeWords(elem);
-                slideIn(elem);
+                slideIn(elem, true);
             }
 
         } else {
