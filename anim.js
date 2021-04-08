@@ -60,7 +60,9 @@ const endTxtA = "[Island of Mind ";
 const endTxtB = "+] will appear when ready";
 const placeTxt = "1~ ";
 const toggleTxtHide = "(hide jump)";
+const toggleTitleHide = "hide jump ability (press 'a')";
 const toggleTxtShow = "use jump";
+const toggleTitleShow = "show jump ability (press 'a')";
 var inputHidden = true;
 var elemRunning = true;
 var showRunning = false;
@@ -437,6 +439,7 @@ if (toggleJump) toggleJump.onclick = function() {
 
     if (inputHidden) {
         toggleJump.textContent = toggleTxtHide;
+        toggleJump.title = toggleTitleHide;
         divForm.style.display = "block";
         inputHidden = false;
         setBodyHeight();
@@ -447,6 +450,7 @@ if (toggleJump) toggleJump.onclick = function() {
     } else {
         if (validBound) {
             toggleJump.textContent = toggleTxtShow;
+            toggleJump.title = toggleTitleShow;
             divForm.style.display = "none";
             inputEntry.value = "";
             inputHidden = true;
