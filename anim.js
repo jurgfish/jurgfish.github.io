@@ -549,7 +549,7 @@ setTimeout(revealLogo, logoTimeout);
 //
 // buried forever
 // this little island of mine
-// mogami river
+// my lovely sunset
 
 
 
