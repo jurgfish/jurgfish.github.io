@@ -8,7 +8,7 @@ const allContent = document.getElementById("content");
 const inContent = document.getElementById("in");
 const outContent = document.getElementById("out");
 const logoElem = document.getElementById("logo");
-const jurgfishElem = document.getElementById("jurgfish");
+const logoTxtElem = document.getElementById("logotxt");
 const lastEntry = document.getElementById("end");
 const cpyrElem = document.getElementById("copyright");
 const noanim = document.getElementsByClassName("noanim");
@@ -285,20 +285,24 @@ function jumpToEntryIdx(idx) {
 
 ////////////////////////////////////////////////////////////////////////////
 
-function revealjurgfish() {
-    const word = jurgfishElem.textContent;
+function revealLogoTxt() {
     var t0 = null;
-    var c = 0;
-    jurgfishElem.textContent = "";
-    jurgfishElem.style.visibility = "visible";
+    var opa = 0;
+    logoTxtElem.style.opacity = 0;
+    logoTxtElem.style.visibility = "visible";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
-        c = Math.floor(titleTypeSpeed * elap);
-        jurgfishElem.textContent = word.substring(0, c);
-        if (c >= word.length) {
-            jurgfishElem.textContent = word;
+        const y = (-logoV*elap)-(logoA*(elap*elap));
+        logoTxtElem.style.transform = txy + y + tpx;
+        if (opa < 1) {
+            logoTxtElem.style.opacity = opa;
+            opa = logoOpaRate * elap;
+        }
+        if (y < 0) {
+            logoTxtElem.style.transform = txy + 0 + tpx;
+            logoTxtElem.style.opacity = 1;
             animateEntries();
         } else {
             window.requestAnimationFrame(frame);
@@ -306,6 +310,7 @@ function revealjurgfish() {
     }
     window.requestAnimationFrame(frame);
 }
+
 
 function revealLogo() {
     setBodyHeight();
@@ -326,7 +331,7 @@ function revealLogo() {
         if (y > 0) {
             logoElem.style.transform = txy + 0 + tpx;
             logoElem.style.opacity = 1;
-            revealjurgfish();
+            revealLogoTxt();
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -423,6 +428,7 @@ function refreshPage() {
 
 window.onresize = setBodyHeight;
 logoElem.onclick = refreshPage;
+logoTxtElem.onclick = refreshPage;
 if (cpyrElem) cpyrElem.onclick = refreshPage;
 
 if (tbeginElem) tbeginElem.onclick = function() {
