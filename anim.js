@@ -65,8 +65,8 @@ const toggleTxtShow = "use jump";
 const toggleTitleShow = "show jump ability (press 'a')";
 var inputHidden = true;
 var elemRunning = true;
-var showRunning = false;
-var fillRunning = false;
+var buttShowRunning = false;
+var buttFillRunning = false;
 var buttShown = false;
 var elemIdx = 0;
 var noanimIdx = 0;
@@ -142,13 +142,10 @@ function typeWords(elem) {
 
 ////////////////////////////////////////////////////////////////////////////
 
-function formatNum(n) {
-    var res = entryIdxBuf + n;
-    return res.substring(res.length - entryIdxLen);
-}
-
 function setDocEntryCount() {
-    lastEntry.textContent = endTxtA + formatNum(novelLength + 1) + endTxtB;
+    var cntStr = entryIdxBuf + (novelLength + 1);
+    cntStr = cntStr.substring(cntStr.length - entryIdxLen)
+    lastEntry.textContent = endTxtA + cntStr + endTxtB;
     inputEntry.placeholder = placeTxt + novelLength;
 }
 
@@ -167,11 +164,6 @@ function setBodyHeight() {
 function verifyBound(elem) {
     const bound = elem.getBoundingClientRect();
     return (bound.top < (getWindowHeight() * loadBound));
-}
-
-function pastFirstBound() {
-    const check = elems[0] ? elems[0] : noanim[1];
-    return check.getBoundingClientRect().top < jumpScroll;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -342,17 +334,17 @@ function revealLogo() {
 function fillButt() {
     var t0 = null;
     var opa = buttOpa;
-    fillRunning = true;
+    buttFillRunning = true;
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         buttElem.style.opacity = opa;
         opa = buttOpa + buttOpaRate * elap;
-        if (!fillRunning) {
+        if (!buttFillRunning) {
             buttElem.style.opacity = buttOpa;
         } else if (opa > 1) {
-            fillRunning = false;
+            buttFillRunning = false;
             buttElem.style.opacity = 1;
         } else {
             window.requestAnimationFrame(frame);
@@ -385,12 +377,12 @@ function moveButt(show) {
             opa = buttOpa - (buttOpa * opaRate * elap);
         }
         if (show && y < buttShowPos) {
-            showRunning = false;
+            buttShowRunning = false;
             buttElem.style.transform = txy + buttShowPos + tpx;
             buttElem.style.opacity = buttOpa;
             scrollTimer = setTimeout(fillButt, scrollTimeout);
         } else if (!show && y > buttHidePos) {
-            showRunning = false;
+            buttShowRunning = false;
             buttElem.style.transform = txy + buttHidePos + tpx;
             buttElem.style.opacity = 0;
             buttElem.style.display = "none";
@@ -479,12 +471,13 @@ if (jumpGo) jumpGo.onclick = function() {
 };
 
 window.onscroll = function() {
-    if (!showRunning) {
-        if (pastFirstBound()) {
+    if (!buttShowRunning) {
+        const check = elems[0] ? elems[0] : noanim[1];
+        if (check.getBoundingClientRect().top < jumpScroll) {
             if (scrollTimer !== null) clearTimeout(scrollTimer);
-            fillRunning = false;
+            buttFillRunning = false;
             if (!buttShown) {
-                showRunning = true;
+                buttShowRunning = true;
                 moveButt(true);
                 buttShown = true;
             } else {
@@ -494,8 +487,8 @@ window.onscroll = function() {
 
         } else if (buttShown) {
             if (scrollTimer !== null) clearTimeout(scrollTimer);
-            fillRunning = false;
-            showRunning = true;
+            buttFillRunning = false;
+            buttShowRunning = true;
             moveButt(false);
             buttShown = false;
         }
@@ -508,10 +501,10 @@ buttElem.onclick = function() {
     else homeElem.focus();
     document.activeElement.blur();
     setBodyHeight();
-    if (!showRunning && buttShown) {
+    if (!buttShowRunning && buttShown) {
         if (scrollTimer !== null) clearTimeout(scrollTimer);
-        fillRunning = false;
-        showRunning = true;
+        buttFillRunning = false;
+        buttShowRunning = true;
         moveButt(false);
         buttShown = false;
     }
