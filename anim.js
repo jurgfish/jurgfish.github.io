@@ -11,8 +11,8 @@ const logoElem = document.getElementById("logo");
 const logoTxtElem = document.getElementById("logotxt");
 const lastEntry = document.getElementById("end");
 const cpyrElem = document.getElementById("copyright");
-const noanim = document.getElementsByClassName("noanim");
-const elems = document.getElementsByClassName("anim");
+const anims = document.getElementsByClassName("anim");
+const noanims = document.getElementsByClassName("noanim");
 const jumpGo = document.getElementById("jump");
 const toggleJump = document.getElementById("showjump");
 const inputEntry = document.getElementById("entry");
@@ -27,7 +27,6 @@ const animationSpeed = 0.1;
 const logoV = -3;
 const logoA = 0.1;
 const logoOpaRate = 0.005;
-const titleTypeSpeed = 0.4;
 const typeSpeed = 6;
 const slideStart = 100;
 const slideRate = 10;
@@ -50,7 +49,7 @@ const jumpScroll = scrollOffset + 2;
 const entryIdxLen = 3;
 const noanimEntryCnt = 1;
 const nonNovelEndCnt = 2;
-const novelLength = elems.length - nonNovelEndCnt;
+const novelLength = anims.length - nonNovelEndCnt;
 
 const entryIdxBuf = "0000";
 const txx = "translateX(";
@@ -68,25 +67,26 @@ var elemRunning = true;
 var buttShowRunning = false;
 var buttFillRunning = false;
 var buttShown = false;
-var elemIdx = 0;
+var animIdx = 0;
 var noanimIdx = 0;
 var animator = null;
 var scrollTimer = null;
 
 ////////////////////////////////////////////////////////////////////////////
 
+// animation compatibility
 window.requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function(callback) { return setTimeout(callback, frameRate); };
 
-function slideIn(elem, left) {
+function slideElemIn(elem, directLeft) {
     const opaRate = slideRate / slideStart;
     var t0 = null;
     var opa = 0;
     elem.style.opacity = opa;
-    if (left) elem.style.transform = txx + slideStart + tpx;
+    if (directLeft) elem.style.transform = txx + slideStart + tpx;
     else elem.style.transform = txy + slideStart + tpx;
     elem.style.visibility = "visible";
 
@@ -94,14 +94,14 @@ function slideIn(elem, left) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const p = slideStart - (slideRate * elap);
-        if (left) elem.style.transform = txx + p + tpx;
+        if (directLeft) elem.style.transform = txx + p + tpx;
         else elem.style.transform = txy + p + tpx;
         if (opa < 1) {
             elem.style.opacity = opa;
             opa = opaRate * elap;
         }
         if (p < 0 || !elemRunning) {
-            if (left) elem.style.transform = txx + 0 + tpx;
+            if (directLeft) elem.style.transform = txx + 0 + tpx;
             else elem.style.transform = txy + 0 + tpx;
             elem.style.opacity = 1;
         } else {
@@ -111,7 +111,7 @@ function slideIn(elem, left) {
     window.requestAnimationFrame(frame);
 }
 
-function typeWords(elem) {
+function typeElemWords(elem) {
     const fullText = elem.textContent.trim();
     const wordSet = fullText.split(" ");
     var currText = "";
@@ -144,7 +144,7 @@ function typeWords(elem) {
 
 function setDocEntryCount() {
     var cntStr = entryIdxBuf + (novelLength + 1);
-    cntStr = cntStr.substring(cntStr.length - entryIdxLen)
+    cntStr = cntStr.substring(cntStr.length - entryIdxLen);
     lastEntry.textContent = endTxtA + cntStr + endTxtB;
     inputEntry.placeholder = placeTxt + novelLength;
 }
@@ -161,7 +161,7 @@ function setBodyHeight() {
     allContent.style.height = hh + "px";
 }
 
-function verifyBound(elem) {
+function isElemVisible(elem) {
     const bound = elem.getBoundingClientRect();
     return (bound.top < (getWindowHeight() * loadBound));
 }
@@ -173,43 +173,59 @@ function animateEntries() {
     var loadIdx = 0;
     var skipTimer = null;
 
+    // an entry has its own animation, and entry animations are triggered
+    // at set intervals depending on entry visibility.
     animator = setInterval(function() {
+
+        // entries with links cannot have typing animations (noanims).
+        // current noanims are the first and last entries. last entry
+        // slides up, all other entries slide left.
         if (noanimIdx < noanimEntryCnt ||
-                (elemIdx >= elems.length && noanimIdx < noanim.length)) {
-            const elem = noanim[noanimIdx];
-            if (verifyBound(elem)) {
-                slideIn(elem, noanimIdx != noanim.length - 1);
+                (animIdx >= anims.length && noanimIdx < noanims.length)) {
+
+            const elem = noanims[noanimIdx];
+            if (isElemVisible(elem)) {
+                slideElemIn(elem, noanimIdx !== noanims.length - 1);
                 noanimIdx++;
             }
 
-        } else if (elemIdx < elems.length) {
-            const elem = elems[elemIdx];
-            const valid = verifyBound(elem);
-            if (valid) elemIdx++;
-            while (loadIdx < novelLength && verifyBound(elems[loadIdx])) {
+        // remaining entries with both slide and typing animations (anims).
+        } else if (animIdx < anims.length) {
+
+            // update the current anim index when the next entry becomes
+            // visible. a separate load index updates what the "real"
+            // visible entry should be (animations on the entries are not
+            // timed for quick scrolling way down). the second loop deducts
+            // the load index when it overestimates (e.g. user quickly
+            // scrolls way back up after quickly scrolling way down in the
+            // previous animation interval).
+            const elem = anims[animIdx];
+            const valid = isElemVisible(elem);
+            if (valid) animIdx++;
+            while (loadIdx < novelLength && isElemVisible(anims[loadIdx])) {
                 loadIdx++;
             }
-            while (loadIdx > elemIdx && !verifyBound(elems[loadIdx])) {
+            while (loadIdx > animIdx && !isElemVisible(anims[loadIdx])) {
                 loadIdx--;
             }
 
-            const lag = loadIdx - elemIdx;
-            if (lag > lagBound) {
+            // if the index lag count is high enough, skip animating and
+            // make the skipped entries visible.
+            if ((loadIdx - animIdx) > lagBound) {
                 elemRunning = false;
                 if (skipTimer !== null) clearTimeout(skipTimer);
-
                 skipTimer = setTimeout(function() {
                     const k = loadIdx - lagBound;
-                    for (elemIdx; elemIdx < k; elemIdx++) {
-                        elems[elemIdx].style.visibility = "visible";
+                    for (animIdx; animIdx < k; animIdx++) {
+                        anims[animIdx].style.visibility = "visible";
                     }
                     elemRunning = true;
                 }, jumpTimeout);
             }
 
             if (valid) {
-                typeWords(elem);
-                slideIn(elem, true);
+                typeElemWords(elem);
+                slideElemIn(elem, true);
             }
 
         } else {
@@ -224,11 +240,12 @@ function animateEntries() {
 
 function scrollToEntryIdx(entryFlag) {
     if (entryFlag) {
-        const elem = elems[elemIdx - 1];
+        const elem = anims[animIdx - 1];
         window.scroll(0, elem.offsetTop - scrollOffset);
     } else {
-        if ("scrollRestoration" in history)
+        if ("scrollRestoration" in history) {
             history.scrollRestoration = "manual";
+        }
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
@@ -236,19 +253,19 @@ function scrollToEntryIdx(entryFlag) {
 
 function resetEntries() {
     var j = 0;
-    const k = elems.length;
-    const kk = noanim.length;
+    const k = anims.length;
+    const kk = noanims.length;
     for (j; j < k; j++) {
-        if (j < elemIdx) {
-            elems[j].style.transform = txx + 0 + tpx;
-            elems[j].style.visibility = "visible";
-            elems[j].style.opacity = 1;
+        if (j < animIdx) {
+            anims[j].style.transform = txx + 0 + tpx;
+            anims[j].style.visibility = "visible";
+            anims[j].style.opacity = 1;
         } else {
-            elems[j].style.visibility = "hidden";
+            anims[j].style.visibility = "hidden";
         }
     }
     for (j = noanimEntryCnt; j < kk; j++) {
-        noanim[j].style.visibility = "hidden";
+        noanims[j].style.visibility = "hidden";
     }
 }
 
@@ -256,16 +273,16 @@ function jumpToEntryIdx(idx) {
     if (animator !== null) clearInterval(animator);
     animator = null;
     elemRunning = false;
-    elemIdx = idx;
+    animIdx = idx;
     noanimIdx = noanimEntryCnt;
     var entryFlag = true;
 
-    if (elemIdx < 1) {
-        elemIdx = 1;
+    if (animIdx < 1) {
+        animIdx = 1;
         entryFlag = false;
         scrollToEntryIdx(false);
-    } else if (elemIdx > (novelLength + 1)) {
-        elemIdx = novelLength + 1;
+    } else if (animIdx > (novelLength + 1)) {
+        animIdx = novelLength + 1;
     }
 
     resetEntries();
@@ -433,7 +450,7 @@ if (tendElem) tendElem.onclick = function() {
 };
 
 if (toggleJump) toggleJump.onclick = function() {
-    const validBound = elems[0].getBoundingClientRect().top > jumpScroll;
+    const validBound = anims[0].getBoundingClientRect().top > jumpScroll;
 
     if (inputHidden) {
         toggleJump.textContent = toggleTxtHide;
@@ -462,7 +479,7 @@ if (toggleJump) toggleJump.onclick = function() {
 };
 
 if (jumpGo) jumpGo.onclick = function() {
-    const inputEntryVal = parseInt(inputEntry.value);
+    const inputEntryVal = parseInt(inputEntry.value, 10);
     if (!(isNaN(inputEntryVal))) {
         jumpToEntryIdx(inputEntryVal);
         inputEntry.value = "";
@@ -470,9 +487,10 @@ if (jumpGo) jumpGo.onclick = function() {
     document.activeElement.blur();
 };
 
+// return to top button
 window.onscroll = function() {
     if (!buttShowRunning) {
-        const check = elems[0] ? elems[0] : noanim[1];
+        const check = anims[0] ? anims[0] : noanims[1];
         if (check.getBoundingClientRect().top < jumpScroll) {
             if (scrollTimer !== null) clearTimeout(scrollTimer);
             buttFillRunning = false;
@@ -530,7 +548,7 @@ document.onkeydown = function(event) {
             event.preventDefault();
             cpyrElem.click();
         }
-    } else if (toggleJump && elemIdx > 0 &&
+    } else if (toggleJump && animIdx > 0 &&
             (event.keyCode === 65 || event.which === 65)) {
         event.preventDefault();
         toggleJump.click();
