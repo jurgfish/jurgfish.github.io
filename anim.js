@@ -41,36 +41,28 @@ const logoTimeout = 300;
 const elemTimeout = 150;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
+const buttTimeout = 1;
 const loadBound = 0.93;
 const lagBound = 3;
 const scrollOffset = 28;
 const endspOffset = 87;
 const jumpScroll = scrollOffset + 2;
-const entryIdxLen = 3;
+
 const noanimEntryCnt = 1;
 const nonNovelEndCnt = 2;
-const novelLength = anims.length - nonNovelEndCnt;
-
-const entryIdxBuf = "0000";
-const txx = "translateX(";
-const txy = "translateY(";
-const tpx = "px)";
-const endTxtA = "[Alka & Allias ";
-const endTxtB = "+] will appear when ready";
-const placeTxt = "1~ ";
-const toggleTxtHide = "(hide jump)";
-const toggleTitleHide = "hide jump ability (press 'a')";
-const toggleTxtShow = "use jump";
-const toggleTitleShow = "show jump ability (press 'a')";
-var inputHidden = true;
-var elemRunning = true;
-var buttShowRunning = false;
-var buttFillRunning = false;
-var buttShown = false;
-var animIdx = 0;
-var noanimIdx = 0;
-var animator = null;
-var scrollTimer = null;
+const entryIdxLen = 3;
+const animsCnt = anims.length;
+const noanimsCnt = noanims.length;
+const novelLength = animsCnt - nonNovelEndCnt;
+let inputHidden = true;
+let elemRunning = true;
+let buttShowRunning = false;
+let buttFillRunning = false;
+let buttShown = false;
+let animIdx = 0;
+let noanimIdx = 0;
+let animator = null;
+let scrollTimer = null;
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -81,28 +73,30 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function(callback) { return setTimeout(callback, frameRate); };
 
-function slideElemIn(elem, directLeft) {
+function translateElem(elem, delta, xdir) {
+    const dir = (xdir) ? 'X' : 'Y';
+    elem.style.transform = `translate${dir}(${delta}px)`;
+}
+
+function slideElemIn(elem, xdir) {
     const opaRate = slideRate / slideStart;
-    var t0 = null;
-    var opa = 0;
+    let t0 = null;
+    let opa = 0;
     elem.style.opacity = opa;
-    if (directLeft) elem.style.transform = txx + slideStart + tpx;
-    else elem.style.transform = txy + slideStart + tpx;
+    translateElem(elem, slideStart, xdir);
     elem.style.visibility = "visible";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const p = slideStart - (slideRate * elap);
-        if (directLeft) elem.style.transform = txx + p + tpx;
-        else elem.style.transform = txy + p + tpx;
+        translateElem(elem, p, xdir);
         if (opa < 1) {
             elem.style.opacity = opa;
             opa = opaRate * elap;
         }
         if (p < 0 || !elemRunning) {
-            if (directLeft) elem.style.transform = txx + 0 + tpx;
-            else elem.style.transform = txy + 0 + tpx;
+            translateElem(elem, 0, xdir);
             elem.style.opacity = 1;
         } else {
             window.requestAnimationFrame(frame);
@@ -114,10 +108,10 @@ function slideElemIn(elem, directLeft) {
 function typeElemWords(elem) {
     const fullText = elem.textContent.trim();
     const wordSet = fullText.split(" ");
-    var currText = "";
-    var wordSetIdx = 0;
-    var currSetIdx = 0;
-    var t0 = null;
+    let currText = "";
+    let wordSetIdx = 0;
+    let currSetIdx = 0;
+    let t0 = null;
     elem.textContent = currText;
     elem.style.visibility = "visible";
 
@@ -143,10 +137,10 @@ function typeElemWords(elem) {
 ////////////////////////////////////////////////////////////////////////////
 
 function setDocEntryCount() {
-    var cntStr = entryIdxBuf + (novelLength + 1);
-    cntStr = cntStr.substring(cntStr.length - entryIdxLen);
-    lastEntry.textContent = endTxtA + cntStr + endTxtB;
-    inputEntry.placeholder = placeTxt + novelLength;
+    const cntStr = `0000${novelLength + 1}`.slice(-entryIdxLen);
+    inputEntry.placeholder = `1~ ${novelLength}`
+    lastEntry.textContent = `[Alka & Allias ${cntStr}+]
+        will appear when ready`;
 }
 
 function getWindowHeight() {
@@ -155,10 +149,9 @@ function getWindowHeight() {
 }
 
 function setBodyHeight() {
-    endspaceElem.style.height = (getWindowHeight() - endspOffset) + "px";
-    const h = inContent.scrollHeight + outContent.scrollHeight;
-    const hh = Math.min(allContent.scrollHeight, h);
-    allContent.style.height = hh + "px";
+    endspaceElem.style.height = `${getWindowHeight() - endspOffset}px`;
+    allContent.style.height = `${Math.min(allContent.scrollHeight,
+        inContent.scrollHeight + outContent.scrollHeight)}px`;
 }
 
 function isElemVisible(elem) {
@@ -170,8 +163,8 @@ function isElemVisible(elem) {
 
 function animateEntries() {
     elemRunning = true;
-    var loadIdx = 0;
-    var skipTimer = null;
+    let loadIdx = 0;
+    let skipTimer = null;
 
     // an entry has its own animation, and entry animations are triggered
     // at set intervals depending on entry visibility.
@@ -181,16 +174,16 @@ function animateEntries() {
         // current noanims are the first and last entries. last entry
         // slides up, all other entries slide left.
         if (noanimIdx < noanimEntryCnt ||
-                (animIdx >= anims.length && noanimIdx < noanims.length)) {
+                (animIdx >= animsCnt && noanimIdx < noanimsCnt)) {
 
             const elem = noanims[noanimIdx];
             if (isElemVisible(elem)) {
-                slideElemIn(elem, noanimIdx !== noanims.length - 1);
+                slideElemIn(elem, noanimIdx !== noanimsCnt- 1);
                 noanimIdx++;
             }
 
         // remaining entries with both slide and typing animations (anims).
-        } else if (animIdx < anims.length) {
+        } else if (animIdx < animsCnt) {
 
             // update the current anim index when the next entry becomes
             // visible. a separate load index updates what the "real"
@@ -215,8 +208,8 @@ function animateEntries() {
                 elemRunning = false;
                 if (skipTimer !== null) clearTimeout(skipTimer);
                 skipTimer = setTimeout(function() {
-                    const k = loadIdx - lagBound;
-                    for (animIdx; animIdx < k; animIdx++) {
+                    const skipIdx = loadIdx - lagBound;
+                    for (animIdx; animIdx < skipIdx; animIdx++) {
                         anims[animIdx].style.visibility = "visible";
                     }
                     elemRunning = true;
@@ -252,20 +245,18 @@ function scrollToEntryIdx(entryFlag) {
 }
 
 function resetEntries() {
-    var j = 0;
-    const k = anims.length;
-    const kk = noanims.length;
-    for (j; j < k; j++) {
-        if (j < animIdx) {
-            anims[j].style.transform = txx + 0 + tpx;
-            anims[j].style.visibility = "visible";
-            anims[j].style.opacity = 1;
+    let idx = 0;
+    for (idx; idx < animsCnt; idx++) {
+        if (idx < animIdx) {
+            translateElem(anims[idx], 0, true);
+            anims[idx].style.visibility = "visible";
+            anims[idx].style.opacity = 1;
         } else {
-            anims[j].style.visibility = "hidden";
+            anims[idx].style.visibility = "hidden";
         }
     }
-    for (j = noanimEntryCnt; j < kk; j++) {
-        noanims[j].style.visibility = "hidden";
+    for (idx = noanimEntryCnt; idx < noanimsCnt; idx++) {
+        noanims[idx].style.visibility = "hidden";
     }
 }
 
@@ -275,7 +266,7 @@ function jumpToEntryIdx(idx) {
     elemRunning = false;
     animIdx = idx;
     noanimIdx = noanimEntryCnt;
-    var entryFlag = true;
+    let entryFlag = true;
 
     if (animIdx < 1) {
         animIdx = 1;
@@ -295,8 +286,8 @@ function jumpToEntryIdx(idx) {
 ////////////////////////////////////////////////////////////////////////////
 
 function revealLogoTxt() {
-    var t0 = null;
-    var opa = 0;
+    let t0 = null;
+    let opa = 0;
     logoTxtElem.style.opacity = 0;
     logoTxtElem.style.visibility = "visible";
 
@@ -304,13 +295,13 @@ function revealLogoTxt() {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = (-logoV*elap)-(logoA*(elap*elap));
-        logoTxtElem.style.transform = txy + y + tpx;
+        translateElem(logoTxtElem, y, false);
         if (opa < 1) {
             logoTxtElem.style.opacity = opa;
             opa = logoOpaRate * elap;
         }
         if (y < 0) {
-            logoTxtElem.style.transform = txy + 0 + tpx;
+            translateElem(logoTxtElem, 0, false);
             logoTxtElem.style.opacity = 1;
             animateEntries();
         } else {
@@ -320,11 +311,10 @@ function revealLogoTxt() {
     window.requestAnimationFrame(frame);
 }
 
-
 function revealLogo() {
     setBodyHeight();
-    var t0 = null;
-    var opa = 0;
+    let t0 = null;
+    let opa = 0;
     logoElem.style.opacity = 0;
     logoElem.style.visibility = "visible";
 
@@ -332,13 +322,13 @@ function revealLogo() {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = (logoV*elap)+(logoA*(elap*elap))-1;
-        logoElem.style.transform = txy + y + tpx;
+        translateElem(logoElem, y, false);
         if (opa < 1) {
             logoElem.style.opacity = opa;
             opa = logoOpaRate * elap;
         }
         if (y > 0) {
-            logoElem.style.transform = txy + 0 + tpx;
+            translateElem(logoElem, 0, false);
             logoElem.style.opacity = 1;
             revealLogoTxt();
         } else {
@@ -348,9 +338,13 @@ function revealLogo() {
     window.requestAnimationFrame(frame);
 }
 
+////////////////////////////////////////////////////////////////////////////
+
+// 'scroll to top' button animation and handling
+
 function fillButt() {
-    var t0 = null;
-    var opa = buttOpa;
+    let t0 = null;
+    let opa = buttOpa;
     buttFillRunning = true;
 
     function frame(t) {
@@ -374,17 +368,17 @@ function moveButt(show) {
     const p0 = (show) ? buttHidePos : buttShowPos;
     const delta = (show) ? -buttSpeed : buttSpeed;
     const opaRate = buttSpeed / Math.abs(buttShowPos - buttHidePos);
-    var opa = (show) ? 0 : buttOpa;
-    var t0 = null;
+    let opa = (show) ? 0 : buttOpa;
+    let t0 = null;
     buttElem.style.opacity = opa;
-    buttElem.style.transform = txy + p0 + tpx;
+    translateElem(buttElem, p0, false);
     buttElem.style.display = "block";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = p0 + (delta * elap);
-        buttElem.style.transform = txy + y + tpx;
+        translateElem(buttElem, y, false);
 
         if (show && opa < buttOpa) {
             buttElem.style.opacity = opa;
@@ -395,12 +389,12 @@ function moveButt(show) {
         }
         if (show && y < buttShowPos) {
             buttShowRunning = false;
-            buttElem.style.transform = txy + buttShowPos + tpx;
+            translateElem(buttElem, buttShowPos, false);
             buttElem.style.opacity = buttOpa;
             scrollTimer = setTimeout(fillButt, scrollTimeout);
         } else if (!show && y > buttHidePos) {
             buttShowRunning = false;
-            buttElem.style.transform = txy + buttHidePos + tpx;
+            translateElem(buttElem, buttHidePos, false);
             buttElem.style.opacity = 0;
             buttElem.style.display = "none";
         } else {
@@ -410,13 +404,57 @@ function moveButt(show) {
     window.requestAnimationFrame(frame);
 }
 
+window.onscroll = function() {
+    setTimeout(function() {
+        if (!buttShowRunning) {
+            const check = anims[0] ? anims[0] : noanims[1];
+            if (check.getBoundingClientRect().top < jumpScroll) {
+                if (scrollTimer !== null) clearTimeout(scrollTimer);
+                buttFillRunning = false;
+                if (!buttShown) {
+                    buttShowRunning = true;
+                    moveButt(true);
+                    buttShown = true;
+                } else {
+                    buttElem.style.opacity = buttOpa;
+                    scrollTimer = setTimeout(fillButt, scrollTimeout);
+                }
+
+            } else if (buttShown) {
+                if (scrollTimer !== null) clearTimeout(scrollTimer);
+                buttFillRunning = false;
+                buttShowRunning = true;
+                moveButt(false);
+                buttShown = false;
+            }
+        }
+    }, buttTimeout);
+};
+
+buttElem.onclick = function() {
+    jumpToEntryIdx(-1);
+    if (toggleJump) toggleJump.focus();
+    else homeElem.focus();
+    document.activeElement.blur();
+    setBodyHeight();
+    if (!buttShowRunning && buttShown) {
+        if (scrollTimer !== null) clearTimeout(scrollTimer);
+        buttFillRunning = false;
+        buttShowRunning = true;
+        moveButt(false);
+        buttShown = false;
+    }
+};
+
+////////////////////////////////////////////////////////////////////////////
+
 function refreshPage() {
     if (animator !== null) clearInterval(animator);
     animator = null;
     elemRunning = false;
     buttElem.style.display = "none";
-    var t0 = null;
-    var opa = 1;
+    let t0 = null;
+    let opa = 1;
 
     function frame(t) {
         if (!t0) t0 = t;
@@ -432,8 +470,6 @@ function refreshPage() {
     }
     window.requestAnimationFrame(frame);
 }
-
-////////////////////////////////////////////////////////////////////////////
 
 window.onresize = setBodyHeight;
 logoElem.onclick = refreshPage;
@@ -453,8 +489,8 @@ if (toggleJump) toggleJump.onclick = function() {
     const validBound = anims[0].getBoundingClientRect().top > jumpScroll;
 
     if (inputHidden) {
-        toggleJump.textContent = toggleTxtHide;
-        toggleJump.title = toggleTitleHide;
+        toggleJump.textContent = "(hide jump)";
+        toggleJump.title = "hide jump ability (press 'a')";
         divForm.style.display = "block";
         inputHidden = false;
         setBodyHeight();
@@ -464,8 +500,8 @@ if (toggleJump) toggleJump.onclick = function() {
         setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
     } else {
         if (validBound) {
-            toggleJump.textContent = toggleTxtShow;
-            toggleJump.title = toggleTitleShow;
+            toggleJump.textContent = "use jump";
+            toggleJump.title = "show jump ability (press 'a')";
             divForm.style.display = "none";
             inputEntry.value = "";
             inputHidden = true;
@@ -485,47 +521,6 @@ if (jumpGo) jumpGo.onclick = function() {
         inputEntry.value = "";
     }
     document.activeElement.blur();
-};
-
-// return to top button
-window.onscroll = function() {
-    if (!buttShowRunning) {
-        const check = anims[0] ? anims[0] : noanims[1];
-        if (check.getBoundingClientRect().top < jumpScroll) {
-            if (scrollTimer !== null) clearTimeout(scrollTimer);
-            buttFillRunning = false;
-            if (!buttShown) {
-                buttShowRunning = true;
-                moveButt(true);
-                buttShown = true;
-            } else {
-                buttElem.style.opacity = buttOpa;
-                scrollTimer = setTimeout(fillButt, scrollTimeout);
-            }
-
-        } else if (buttShown) {
-            if (scrollTimer !== null) clearTimeout(scrollTimer);
-            buttFillRunning = false;
-            buttShowRunning = true;
-            moveButt(false);
-            buttShown = false;
-        }
-    }
-};
-
-buttElem.onclick = function() {
-    jumpToEntryIdx(-1);
-    if (toggleJump) toggleJump.focus();
-    else homeElem.focus();
-    document.activeElement.blur();
-    setBodyHeight();
-    if (!buttShowRunning && buttShown) {
-        if (scrollTimer !== null) clearTimeout(scrollTimer);
-        buttFillRunning = false;
-        buttShowRunning = true;
-        moveButt(false);
-        buttShown = false;
-    }
 };
 
 document.onkeydown = function(event) {
