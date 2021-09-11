@@ -73,30 +73,26 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function(callback) { return setTimeout(callback, frameRate); };
 
-function translateElem(elem, delta, xdir) {
-    const dir = (xdir) ? 'X' : 'Y';
-    elem.style.transform = `translate${dir}(${delta}px)`;
-}
-
 function slideElemIn(elem, xdir) {
     const opaRate = slideRate / slideStart;
+    const dir = (xdir) ? 'X' : 'Y';
     let t0 = null;
     let opa = 0;
     elem.style.opacity = opa;
-    translateElem(elem, slideStart, xdir);
+    elem.style.transform = `translate${dir}(${slideStart}px)`;
     elem.style.visibility = "visible";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const p = slideStart - (slideRate * elap);
-        translateElem(elem, p, xdir);
+        elem.style.transform = `translate${dir}(${p}px)`;
         if (opa < 1) {
             elem.style.opacity = opa;
             opa = opaRate * elap;
         }
         if (p < 0 || !elemRunning) {
-            translateElem(elem, 0, xdir);
+            elem.style.transform = `translate${dir}(0px)`;
             elem.style.opacity = 1;
         } else {
             window.requestAnimationFrame(frame);
@@ -248,7 +244,7 @@ function resetEntries() {
     let idx = 0;
     for (idx; idx < animsCnt; idx++) {
         if (idx < animIdx) {
-            translateElem(anims[idx], 0, true);
+            anims[idx].style.transform = "translateX(0px)";
             anims[idx].style.visibility = "visible";
             anims[idx].style.opacity = 1;
         } else {
@@ -295,13 +291,13 @@ function revealLogoTxt() {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = (-logoV*elap)-(logoA*(elap*elap));
-        translateElem(logoTxtElem, y, false);
+        logoTxtElem.style.transform = `translateY(${y}px)`;
         if (opa < 1) {
             logoTxtElem.style.opacity = opa;
             opa = logoOpaRate * elap;
         }
         if (y < 0) {
-            translateElem(logoTxtElem, 0, false);
+            logoTxtElem.style.transform = "translateY(0px)";
             logoTxtElem.style.opacity = 1;
             animateEntries();
         } else {
@@ -322,13 +318,13 @@ function revealLogo() {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = (logoV*elap)+(logoA*(elap*elap))-1;
-        translateElem(logoElem, y, false);
+        logoElem.style.transform = `translateY(${y}px)`;
         if (opa < 1) {
             logoElem.style.opacity = opa;
             opa = logoOpaRate * elap;
         }
         if (y > 0) {
-            translateElem(logoElem, 0, false);
+            logoElem.style.transform = "translateY(0px)";
             logoElem.style.opacity = 1;
             revealLogoTxt();
         } else {
@@ -371,14 +367,14 @@ function moveButt(show) {
     let opa = (show) ? 0 : buttOpa;
     let t0 = null;
     buttElem.style.opacity = opa;
-    translateElem(buttElem, p0, false);
+    buttElem.style.transform = `translateY(${p0}px)`;
     buttElem.style.display = "block";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = p0 + (delta * elap);
-        translateElem(buttElem, y, false);
+        buttElem.style.transform = `translateY(${y}px)`;
 
         if (show && opa < buttOpa) {
             buttElem.style.opacity = opa;
@@ -389,12 +385,12 @@ function moveButt(show) {
         }
         if (show && y < buttShowPos) {
             buttShowRunning = false;
-            translateElem(buttElem, buttShowPos, false);
+            buttElem.style.transform = `translateY(${buttShowPos}px)`;
             buttElem.style.opacity = buttOpa;
             scrollTimer = setTimeout(fillButt, scrollTimeout);
         } else if (!show && y > buttHidePos) {
             buttShowRunning = false;
-            translateElem(buttElem, buttHidePos, false);
+            buttElem.style.transform = `translateY(${buttHidePos}px)`;
             buttElem.style.opacity = 0;
             buttElem.style.display = "none";
         } else {
