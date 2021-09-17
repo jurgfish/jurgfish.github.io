@@ -24,12 +24,12 @@ const buttElem = document.getElementById("butt");
 const endspaceElem = document.getElementById("endspace");
 
 const animationSpeed = 0.1;
-const logoV = -3;
-const logoA = 0.1;
-const logoOpaRate = 0.005;
+const logoV = -2;
+const logoA = 0.055;
+const logoOpaRate = 0.01;
 const typeSpeed = 6;
-const slideStart = 100;
-const slideRate = 10;
+const slideStart = 10;
+const slideRate = 0.3;
 const restartOpaRate = 0.05;
 const buttOpa = 0.6;
 const buttOpaRate = 0.015;
@@ -78,7 +78,7 @@ function slideElemIn(elem, xdir) {
     const dir = (xdir) ? 'X' : 'Y';
     let t0 = null;
     let opa = 0;
-    elem.style.opacity = opa;
+    elem.style.opacity = 0;
     elem.style.transform = `translate${dir}(${slideStart}px)`;
     elem.style.visibility = "visible";
 
