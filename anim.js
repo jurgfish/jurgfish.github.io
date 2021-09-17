@@ -24,9 +24,9 @@ const buttElem = document.getElementById("butt");
 const endspaceElem = document.getElementById("endspace");
 
 const animationSpeed = 0.1;
-const logoV = -2;
-const logoA = 0.055;
-const logoOpaRate = 0.01;
+const logoV = -1;
+const logoA = 0.025;
+const logoOpaRate = 0.018;
 const typeSpeed = 6;
 const slideStart = 10;
 const slideRate = 0.3;
