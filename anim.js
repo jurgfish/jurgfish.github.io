@@ -183,19 +183,13 @@ function animateEntries() {
 
             // update the current anim index when the next entry becomes
             // visible. a separate load index updates what the "real"
-            // visible entry should be (animations on the entries are not
-            // timed for quick scrolling way down). the second loop deducts
-            // the load index when it overestimates (e.g. user quickly
-            // scrolls way back up after quickly scrolling way down in the
-            // previous animation interval).
+            // visible entry should be (when the user quickly scrolls
+            // down much faster than the set animation timing)
             const elem = anims[animIdx];
             const valid = isElemVisible(elem);
             if (valid) animIdx++;
             while (loadIdx < novelLength && isElemVisible(anims[loadIdx])) {
                 loadIdx++;
-            }
-            while (loadIdx > animIdx && !isElemVisible(anims[loadIdx])) {
-                loadIdx--;
             }
 
             // if the index lag count is high enough, skip animating and
