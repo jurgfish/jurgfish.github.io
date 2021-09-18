@@ -135,6 +135,7 @@ function typeElemWords(elem) {
 function setDocEntryCount() {
     const cntStr = `0000${novelLength + 1}`.slice(-entryIdxLen);
     inputEntry.placeholder = `1~ ${novelLength}`
+    inputEntry.value = "";
     lastEntry.textContent = `[Alka & Allias ${cntStr}+]
         will appear when ready`;
 }
@@ -505,11 +506,13 @@ if (toggleJump) toggleJump.onclick = function() {
 };
 
 if (jumpGo) jumpGo.onclick = function() {
-    const inputEntryVal = parseInt(inputEntry.value, 10);
-    if (!(isNaN(inputEntryVal))) {
-        jumpToEntryIdx(inputEntryVal);
-        inputEntry.value = "";
+    const inputVal = inputEntry.value.trim();
+    const reg = /^\d+$/;
+    if (reg.test(inputVal)) {
+        const inputIdx = parseInt(inputVal, 10);
+        if (!isNaN(inputIdx)) jumpToEntryIdx(inputIdx);
     }
+    inputEntry.value = "";
     document.activeElement.blur();
 };
 
