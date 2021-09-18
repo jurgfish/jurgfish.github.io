@@ -9,7 +9,7 @@
 body {
     font-family: "RobotoSlab";
     font-size: 18px;
-    color: #515151;
+    color: #4a4a4a;
     background-color: #f8e6d3;
     -ms-user-select: none;
     -moz-user-select: none;
@@ -55,14 +55,14 @@ input[type=tel] {
     appearance: none;
     font-family: "RobotoSlab";
     font-size: 18px;
-    color: #515151;
+    color: #4a4a4a;
     background-color: #f8e6d3;
     text-align: left;
     outline: none;
     border: 2px;
     border-radius: 8px;
     border-style: solid;
-    border-color: #515151;
+    border-color: #4a4a4a;
     width: 84px;
     padding: 12px 14px 12px 14px;
     margin-right: 8px;
@@ -105,7 +105,7 @@ p {
 }
 
 a, a:link, a:visited {
-    color: #515151;
+    color: #4a4a4a;
     text-decoration: underline;
     font-style: italic;
 }
@@ -116,12 +116,12 @@ a:hover, a:focus {
 }
 a:active {
     outline: none;
-    color: #515151;
+    color: #4a4a4a;
     cursor: pointer;
 }
 
 #jump, #butt {
-    color: #515151;
+    color: #4a4a4a;
     background-color: #f8e6d3;
     text-align: center;
     text-decoration: none;
@@ -129,7 +129,7 @@ a:active {
     border: 2px;
     border-radius: 8px;
     border-style: solid;
-    border-color: #515151;
+    border-color: #4a4a4a;
     cursor: pointer;
 }
 #jump {
@@ -162,8 +162,8 @@ a:active {
         border-color: #18919c;
     }
     #jump:active, #butt:active {
-        color: #515151;
-        border-color: #515151;
+        color: #4a4a4a;
+        border-color: #4a4a4a;
     }
 }
 @media (max-width: 662px) {
@@ -171,11 +171,11 @@ a:active {
     img { max-width: 100%; height: auto; }
     #butt { bottom: 69px; }
     #jump:hover, #butt:hover, #jump:active, #butt:active  {
-        color: #515151;
-        border-color: #515151;
+        color: #4a4a4a;
+        border-color: #4a4a4a;
     }
 }
-@media print { a, a:focus { color: #515151; } }
+@media print { a, a:focus { color: #4a4a4a; } }
 #endspace { height: 100vh; }
 
 
