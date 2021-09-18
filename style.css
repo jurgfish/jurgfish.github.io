@@ -9,8 +9,8 @@
 body {
     font-family: "RobotoSlab";
     font-size: 18px;
-    color: #3b3b3b;
-    background-color: #eac7aa;
+    color: #515151;
+    background-color: #f8e6d3;
     -ms-user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -55,14 +55,14 @@ input[type=tel] {
     appearance: none;
     font-family: "RobotoSlab";
     font-size: 18px;
-    color: #3b3b3b;
-    background-color: #eac7aa;
+    color: #515151;
+    background-color: #f8e6d3;
     text-align: left;
     outline: none;
     border: 2px;
     border-radius: 8px;
     border-style: solid;
-    border-color: #3b3b3b;
+    border-color: #515151;
     width: 84px;
     padding: 12px 14px 12px 14px;
     margin-right: 8px;
@@ -105,7 +105,7 @@ p {
 }
 
 a, a:link, a:visited {
-    color: #3b3b3b;
+    color: #515151;
     text-decoration: underline;
     font-style: italic;
 }
@@ -116,24 +116,31 @@ a:hover, a:focus {
 }
 a:active {
     outline: none;
-    color: #3b3b3b;
+    color: #515151;
     cursor: pointer;
 }
 
 #jump, #butt {
-    color: #3b3b3b;
-    background-color: #eac7aa;
+    color: #515151;
+    background-color: #f8e6d3;
     text-align: center;
     text-decoration: none;
     outline: none;
     border: 2px;
     border-radius: 8px;
     border-style: solid;
-    border-color: #3b3b3b;
+    border-color: #515151;
     cursor: pointer;
 }
 #jump {
     padding: 12px 14px 12px 14px;
+}
+#jump:focus {
+    outline: none;
+    color: #18919c;
+    border-color: #18919c;
+    text-decoration: none;
+    cursor: pointer;
 }
 #butt {
     display: none;
@@ -142,28 +149,33 @@ a:active {
     z-index: 99;
     padding: 12px 20px 12px 17px;
 }
+#jump:hover, #butt:hover {
+    outline: none;
+    text-decoration: none;
+}
 
 @media (min-width: 662px) {
     body { width: 600px; }
     #butt { bottom: 30px }
     #jump:hover, #butt:hover {
-        outline: none;
         color: #18919c;
         border-color: #18919c;
-        text-decoration: none;
+    }
+    #jump:active, #butt:active {
+        color: #515151;
+        border-color: #515151;
     }
 }
 @media (max-width: 662px) {
     body { width: 90%; }
     img { max-width: 100%; height: auto; }
     #butt { bottom: 69px; }
-    #jump:hover, #butt:hover {
-        outline: none;
-        color: #3b3b3b;
-        text-decoration: none;
+    #jump:hover, #butt:hover, #jump:active, #butt:active  {
+        color: #515151;
+        border-color: #515151;
     }
 }
-@media print { a, a:focus { color: #3b3b3b; } }
+@media print { a, a:focus { color: #515151; } }
 #endspace { height: 100vh; }
 
 
