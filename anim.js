@@ -543,6 +543,22 @@ document.onkeydown = function(event) {
     }
 };
 
+function toggleDarkMode() {
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (dark) {
+        logoElem.src = 'vis/jurgfishdarkmode.png';
+        logoTxtElem.src = 'vis/jurgfishtxtdarkmode.png';
+    } else {
+        logoElem.src = 'vis/jurgfish.png';
+        logoTxtElem.src = 'vis/jurgfishtxt.png';
+    }
+}
+if (window.matchMedia) {
+    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    darkQuery.addEventListener('change', toggleDarkMode);
+    toggleDarkMode();
+}
+
 ////////////////////////////////////////////////////////////////////////////
 
 // begin routine
