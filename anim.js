@@ -175,7 +175,7 @@ function animateEntries() {
 
             const elem = noanims[noanimIdx];
             if (isElemVisible(elem)) {
-                slideElemIn(elem, noanimIdx !== noanimsCnt- 1);
+                slideElemIn(elem, noanimIdx !== noanimsCnt - 1);
                 noanimIdx++;
             }
 
@@ -285,7 +285,7 @@ function revealLogoTxt() {
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
-        const y = (-logoV*elap)-(logoA*(elap*elap));
+        const y = (-logoV * elap) - (logoA * (elap * elap));
         logoTxtElem.style.transform = `translateY(${y}px)`;
         if (opa < 1) {
             logoTxtElem.style.opacity = opa;
@@ -312,7 +312,7 @@ function revealLogo() {
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
-        const y = (logoV*elap)+(logoA*(elap*elap))-1;
+        const y = (logoV * elap) + (logoA * (elap * elap)) - 1;
         logoElem.style.transform = `translateY(${y}px)`;
         if (opa < 1) {
             logoElem.style.opacity = opa;
@@ -451,7 +451,7 @@ function refreshPage() {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         allContent.style.opacity = opa;
-        opa = 1 - restartOpaRate * elap;
+        opa = 1 - (restartOpaRate * elap);
         if (opa < 0) {
             allContent.style.opacity = 0;
             location.reload();
