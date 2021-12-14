@@ -17,6 +17,8 @@ const jumpGo = document.getElementById("jump");
 const toggleJump = document.getElementById("showjump");
 const inputEntry = document.getElementById("entry");
 const divForm = document.getElementById("form");
+const togglePatrons = document.getElementById("showpatrons");
+const patronSpan = document.getElementById("patronlinks");
 const tbeginElem = document.getElementById("tbegin");
 const tendElem = document.getElementById("tend");
 const homeElem = document.getElementById("home");
@@ -55,6 +57,7 @@ const animsCnt = anims.length;
 const noanimsCnt = noanims.length;
 const novelLength = animsCnt - nonNovelEndCnt;
 let inputHidden = true;
+let patronsHidden = true;
 let elemRunning = true;
 let buttShowRunning = false;
 let buttFillRunning = false;
@@ -476,6 +479,20 @@ if (tendElem) tendElem.onclick = function() {
     document.activeElement.blur();
 };
 
+if (togglePatrons) togglePatrons.onclick = function() {
+    if (patronsHidden) {
+        togglePatrons.title = "hide patron links";
+        patronSpan.style.display = "inline";
+        patronsHidden = false;
+    } else {
+        togglePatrons.title = "show patron links";
+        patronSpan.style.display = "none";
+        patronsHidden = true;
+    }
+    document.activeElement.blur();
+    setBodyHeight();
+}
+
 if (toggleJump) toggleJump.onclick = function() {
     const validBound = anims[0].getBoundingClientRect().top > jumpScroll;
 
@@ -516,10 +533,15 @@ if (jumpGo) jumpGo.onclick = function() {
     document.activeElement.blur();
 };
 
+////////////////////////////////////////////////////////////////////////////
+
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 ||
             event.which === 13) {
-        if (document.activeElement === tbeginElem) {
+        if (document.activeElement === togglePatrons) {
+            event.preventDefault();
+            togglePatrons.click();
+        } else if (document.activeElement === tbeginElem) {
             event.preventDefault();
             tbeginElem.click();
         } else if (document.activeElement === tendElem) {
