@@ -9,6 +9,7 @@
         <title>error 404: not found</title>
         <style>
             body {
+                color: #4a4a4a;
                 background-color: #f8e6d3;
                 text-align: center;
                 margin-top: 36vmin;
@@ -31,6 +32,15 @@
                 outline: none;
                 color: #4a4a4a;
                 cursor: pointer;
+            }
+            @media (prefers-color-scheme: dark) {
+                body {
+                    color: #f8e6d3;
+                    background-color: #4a4a4a;
+                }
+                a, a:link, a:visited { color: #f8e6d3; }
+                a:hover, a:focus { color: #89c7cd; }
+                a:active { color: #f8e6d3; }
             }
         </style>
     </head>
