@@ -1,4 +1,4 @@
-// Copyright © 2021, jurgfish. All rights reserved.
+// Copyright © 2021-2022, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
 //
@@ -17,6 +17,8 @@ const jumpGo = document.getElementById("jump");
 const toggleJump = document.getElementById("showjump");
 const inputEntry = document.getElementById("entry");
 const divForm = document.getElementById("form");
+const toggleMusic = document.getElementById("showmusic");
+const musicSpan = document.getElementById("musiclinks");
 const togglePatrons = document.getElementById("showpatrons");
 const patronSpan = document.getElementById("patronlinks");
 const tbeginElem = document.getElementById("tbegin");
@@ -57,6 +59,7 @@ const animsCnt = anims.length;
 const noanimsCnt = noanims.length;
 const novelLength = animsCnt - nonNovelEndCnt;
 let inputHidden = true;
+let musicHidden = true;
 let patronsHidden = true;
 let elemRunning = true;
 let buttShowRunning = false;
@@ -479,6 +482,19 @@ if (tendElem) tendElem.onclick = function() {
     document.activeElement.blur();
 };
 
+if (toggleMusic) toggleMusic.onclick = function() {
+    if (musicHidden) {
+        toggleMusic.title = "hide music links";
+        musicSpan.style.display = "inline";
+        musicHidden = false;
+    } else {
+        toggleMusic.title = "show music links";
+        musicSpan.style.display = "none";
+        musicHidden = true;
+    }
+    document.activeElement.blur();
+    setBodyHeight();
+}
 if (togglePatrons) togglePatrons.onclick = function() {
     if (patronsHidden) {
         togglePatrons.title = "hide patron links";
@@ -538,7 +554,10 @@ if (jumpGo) jumpGo.onclick = function() {
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 ||
             event.which === 13) {
-        if (document.activeElement === togglePatrons) {
+        if (document.activeElement === toggleMusic) {
+            event.preventDefault();
+            toggleMusic.click();
+        } else if (document.activeElement === togglePatrons) {
             event.preventDefault();
             togglePatrons.click();
         } else if (document.activeElement === tbeginElem) {
