@@ -99,18 +99,17 @@ p {
 }
 
 a, a:link, a:visited {
-    color: #4a4a4a;
+    color: #18919c;
     text-decoration: underline;
-    font-style: italic;
 }
 a:hover, a:focus {
     outline: none;
-    color: #18919c;
+    color: #4a4a4a;
     cursor: pointer;
 }
 a:active {
     outline: none;
-    color: #4a4a4a;
+    color: #18919c;
     cursor: pointer;
 }
 
@@ -171,8 +170,8 @@ a:active {
         border-color: #cd5c5c;
     }
 
-    a, a:link, a:visited { color: #f8e6d3; }
-    a:hover, a:focus { color: #89c7cd; }
+    a, a:link, a:visited { color: #89c7cd; }
+    a:hover, a:focus { color: #f8e6d3; }
     a:active { color: #f8e6d3; }
     #jump, #butt {
         color: #f8e6d3;

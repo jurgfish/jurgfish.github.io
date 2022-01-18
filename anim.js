@@ -10,7 +10,6 @@ const outContent = document.getElementById("out");
 const logoElem = document.getElementById("logo");
 const logoTxtElem = document.getElementById("logotxt");
 const lastEntry = document.getElementById("end");
-const cpyrElem = document.getElementById("copyright");
 const anims = document.getElementsByClassName("anim");
 const noanims = document.getElementsByClassName("noanim");
 const jumpGo = document.getElementById("jump");
@@ -471,7 +470,6 @@ function refreshPage() {
 window.onresize = setBodyHeight;
 logoElem.onclick = refreshPage;
 logoTxtElem.onclick = refreshPage;
-if (cpyrElem) cpyrElem.onclick = refreshPage;
 
 if (tbeginElem) tbeginElem.onclick = function() {
     jumpToEntryIdx(1);
@@ -573,9 +571,6 @@ document.onkeydown = function(event) {
                  (document.activeElement === jumpGo)) {
             event.preventDefault();
             jumpGo.click();
-        } else if (document.activeElement === cpyrElem) {
-            event.preventDefault();
-            cpyrElem.click();
         }
     } else if (toggleJump && animIdx > 0 &&
             (event.keyCode === 65 || event.which === 65)) {
