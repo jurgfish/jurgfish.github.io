@@ -24,12 +24,12 @@ img {
 }
 #logo {
     cursor: pointer;
-    margin-top: 26vmin;
+    margin-top: 26vh;
 }
 #logotxt {
     cursor: pointer;
     margin-top: 8px;
-    margin-bottom: 58px;
+    margin-bottom: 26vmin;
 }
 img.noanim {
     outline: none;
@@ -90,12 +90,10 @@ p {
     hyphens: auto;
 }
 #cpr {
+    text-align: center;
     position: -webkit-sticky;
     position: sticky;
     top: 29px;
-}
-#copyright {
-    text-decoration: none;
 }
 
 a, a:link, a:visited {
