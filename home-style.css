@@ -10,7 +10,11 @@ body {
     font-family: "RobotoSlab";
     font-size: 18px;
     color: #4a4a4a;
-    background-color: #f8e6d3;
+    background-color: black;
+    background-image: url('vis/islandofmind-00.png');
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
     margin-left: auto;
     margin-right: auto;
     overflow-anchor: none;
@@ -31,52 +35,6 @@ img {
     margin-top: 8px;
     margin-bottom: 26vmin;
 }
-img.noanim {
-    outline: none;
-    border-radius: 18px;
-    border-style: none;
-    margin-bottom: 29px;
-}
-
-form {
-    display: none;
-    text-align: center;
-    margin-bottom: 29px;
-}
-input[type=tel] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    font-family: "RobotoSlab";
-    font-size: 18px;
-    color: #4a4a4a;
-    background-color: #f8e6d3;
-    text-align: left;
-    outline: none;
-    border: 2px;
-    border-radius: 8px;
-    border-style: solid;
-    border-color: #4a4a4a;
-    width: 84px;
-    padding: 12px 14px 12px 14px;
-    margin-right: 8px;
-    box-sizing: border-box;
-}
-input:focus {
-    outline: none;
-    color: #18919c;
-    border-color: #18919c;
-}
-input:focus:invalid {
-    outline: none;
-    color: #cd5c5c;
-    border-color: #cd5c5c;
-}
-input:invalid {
-    outline: none;
-    color: #ed7c7c;
-    border-color: #ed7c7c;
-}
 
 p {
     text-align: justify;
@@ -91,8 +49,6 @@ p {
 }
 #cpr {
     text-align: center;
-    position: -webkit-sticky;
-    position: sticky;
     top: 29px;
 }
 
@@ -111,117 +67,22 @@ a:active {
     cursor: pointer;
 }
 
-#jump, #butt {
-    color: #4a4a4a;
-    background-color: #f8e6d3;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    border: 2px;
-    border-radius: 8px;
-    border-style: solid;
-    border-color: #4a4a4a;
-    cursor: pointer;
-}
-#jump {
-    padding: 12px 14px 12px 14px;
-}
-#jump:focus {
-    outline: none;
-    color: #18919c;
-    border-color: #18919c;
-    text-decoration: none;
-    cursor: pointer;
-}
-#butt {
-    display: none;
-    position: fixed;
-    right: 30px;
-    z-index: 99;
-    padding: 12px 20px 12px 17px;
-}
-#jump:hover, #butt:hover {
-    outline: none;
-    text-decoration: none;
-}
-
 @media (prefers-color-scheme: dark) {
     body {
         color: #f8e6d3;
         background-color: #4a4a4a;
     }
-    input[type=tel] {
-        color: #f8e6d3;
-        background-color: #4a4a4a;
-        border-color: #f8e6d3;
-    }
-    input:focus {
-        color: #89c7cd;
-        border-color: #89c7cd;
-    }
-    input:focus:invalid {
-        color: #ed7c7c;
-        border-color: #ed7c7c;
-    }
-    input:invalid {
-        color: #cd5c5c;
-        border-color: #cd5c5c;
-    }
-
     a, a:link, a:visited { color: #89c7cd; }
     a:hover, a:focus { color: #f8e6d3; }
     a:active { color: #f8e6d3; }
-    #jump, #butt {
-        color: #f8e6d3;
-        background-color: #4a4a4a;
-        border-color: #f8e6d3;
-    }
-    #jump:focus {
-        color: #89c7cd;
-        border-color: #89c7cd;
-    }
 }
 
 @media (min-width: 662px) {
     body { width: 600px; }
-    #butt { bottom: 30px }
-    #jump:hover, #butt:hover {
-        color: #18919c;
-        border-color: #18919c;
-    }
-    #jump:active, #butt:active {
-        color: #4a4a4a;
-        border-color: #4a4a4a;
-    }
-}
-@media (min-width: 662px) and (prefers-color-scheme: dark) {
-    #jump:hover, #butt:hover {
-        color: #89c7cd;
-        border-color: #89c7cd;
-    }
-    #jump:active, #butt:active {
-        color: #f8e6d3;
-        border-color: #f8e6d3;
-    }
 }
 @media (max-width: 662px) {
     body { width: 90%; }
     img { max-width: 100%; height: auto; }
-    #butt { bottom: 69px; }
-    #jump:hover, #butt:hover, #jump:active, #butt:active  {
-        color: #4a4a4a;
-        border-color: #4a4a4a;
-    }
 }
-@media (max-width: 662px) and (prefers-color-scheme: dark) {
-    #jump:hover, #butt:hover, #jump:active, #butt:active {
-        color: #f8e6d3;
-        border-color: #f8e6d3;
-    }
-}
-
-@media print { a, a:focus { color: #4a4a4a; } }
-#endspace { height: 100vh; }
-
 
 
