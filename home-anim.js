@@ -5,69 +5,67 @@
 ////////////////////////////////////////////////////////////////////////////
 
 const allContent = document.getElementById("content");
-const inContent = document.getElementById("in");
-const outContent = document.getElementById("out");
 const logoElem = document.getElementById("logo");
 const logoTxtElem = document.getElementById("logotxt");
-const lastEntry = document.getElementById("end");
-const anims = document.getElementsByClassName("anim");
-const noanims = document.getElementsByClassName("noanim");
-const jumpGo = document.getElementById("jump");
-const toggleJump = document.getElementById("showjump");
-const inputEntry = document.getElementById("entry");
-const divForm = document.getElementById("form");
+const infoElem = document.getElementById("info");
+const cprElem = document.getElementById("cpr");
+//const anims = document.getElementsByClassName("anim");
+//const noanims = document.getElementsByClassName("noanim");
+//const jumpGo = document.getElementById("jump");
+//const toggleJump = document.getElementById("showjump");
+//const inputEntry = document.getElementById("entry");
+//const divForm = document.getElementById("form");
 const toggleMusic = document.getElementById("showmusic");
 const musicSpan = document.getElementById("musiclinks");
 const togglePatrons = document.getElementById("showpatrons");
 const patronSpan = document.getElementById("patronlinks");
-const tbeginElem = document.getElementById("tbegin");
-const tendElem = document.getElementById("tend");
-const homeElem = document.getElementById("home");
-const buttElem = document.getElementById("butt");
-const endspaceElem = document.getElementById("endspace");
+//const tbeginElem = document.getElementById("tbegin");
+//const tendElem = document.getElementById("tend");
+//const homeElem = document.getElementById("home");
+//const buttElem = document.getElementById("butt");
 
 const animationSpeed = 0.1;
 const logoV = -1;
 const logoA = 0.025;
 const logoOpaRate = 0.025;
-const typeSpeed = 6;
+//const typeSpeed = 6;
 const slideStart = 10;
 const slideRate = 0.3;
 const restartOpaRate = 0.05;
-const buttOpa = 0.6;
+/*const buttOpa = 0.6;
 const buttOpaRate = 0.015;
 const buttSpeed = 0.3;
 const buttShowPos = 0;
-const buttHidePos = 10;
+const buttHidePos = 10;*/
 const frameRate = 1000 / 60;
 const logoTimeout = 300;
-const elemTimeout = 150;
-const scrollTimeout = 400;
-const jumpTimeout = 100;
-const buttTimeout = 1;
-const loadBound = 0.93;
-const lagBound = 3;
-const scrollOffset = 28;
-const endspOffset = 87;
-const jumpScroll = scrollOffset + 2;
+//const elemTimeout = 150;
+//const scrollTimeout = 400;
+//const jumpTimeout = 100;
+//const buttTimeout = 1;
+//const loadBound = 0.93;
+//const lagBound = 3;
+//const scrollOffset = 28;
+//const endspOffset = 87;
+//const jumpScroll = scrollOffset + 2;
 
-const noanimEntryCnt = 1;
-const nonNovelEndCnt = 2;
-const entryIdxLen = 3;
-const animsCnt = anims.length;
-const noanimsCnt = noanims.length;
-const novelLength = animsCnt - nonNovelEndCnt;
-let inputHidden = true;
+//const noanimEntryCnt = 1;
+//const nonNovelEndCnt = 2;
+//const entryIdxLen = 3;
+//const animsCnt = anims.length;
+//const noanimsCnt = noanims.length;
+//const novelLength = animsCnt - nonNovelEndCnt;
+//let inputHidden = true;
 let musicHidden = true;
 let patronsHidden = true;
-let elemRunning = true;
-let buttShowRunning = false;
-let buttFillRunning = false;
-let buttShown = false;
-let animIdx = 0;
-let noanimIdx = 0;
-let animator = null;
-let scrollTimer = null;
+//let elemRunning = true;
+//let buttShowRunning = false;
+//let buttFillRunning = false;
+//let buttShown = false;
+//let animIdx = 0;
+//let noanimIdx = 0;
+//let animator = null;
+//let scrollTimer = null;
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -96,7 +94,7 @@ function slideElemIn(elem, xdir) {
             elem.style.opacity = opa;
             opa = opaRate * elap;
         }
-        if (p < 0 || !elemRunning) {
+        if (p < 0) {
             elem.style.transform = `translate${dir}(0px)`;
             elem.style.opacity = 1;
         } else {
@@ -106,7 +104,7 @@ function slideElemIn(elem, xdir) {
     window.requestAnimationFrame(frame);
 }
 
-function typeElemWords(elem) {
+/*function typeElemWords(elem) {
     const fullText = elem.textContent.trim();
     const wordSet = fullText.split(" ");
     let currText = "";
@@ -133,36 +131,39 @@ function typeElemWords(elem) {
         }
     }
     window.requestAnimationFrame(frame);
-}
+}*/
 
 ////////////////////////////////////////////////////////////////////////////
 
-function setDocEntryCount() {
+/*function setDocEntryCount() {
     const cntStr = `0000${novelLength + 1}`.slice(-entryIdxLen);
     inputEntry.placeholder = `1~ ${novelLength}`
     inputEntry.value = "";
     lastEntry.textContent = `[Alka & Allias ${cntStr}+]
         will appear when ready`;
-}
+}*/
 
-function getWindowHeight() {
+/*function getWindowHeight() {
     return window.innerHeight || document.documentElement.clientHeight ||
         document.body.clientHeight;
-}
+}*/
 
-function setBodyHeight() {
-    endspaceElem.style.height = `${getWindowHeight() - endspOffset}px`;
+//function setBodyHeight() {
+    /*endspaceElem.style.height = `${getWindowHeight() - endspOffset}px`;
     allContent.style.height = `${Math.min(allContent.scrollHeight,
-        inContent.scrollHeight + outContent.scrollHeight)}px`;
-}
+        inContent.scrollHeight + outContent.scrollHeight)}px`;*/
+//}
 
-function isElemVisible(elem) {
+/*function isElemVisible(elem) {
     const bound = elem.getBoundingClientRect();
     return (bound.top < (getWindowHeight() * loadBound));
-}
+}*/
 
 ////////////////////////////////////////////////////////////////////////////
 
+
+
+/*
 function animateEntries() {
     elemRunning = true;
     let loadIdx = 0;
@@ -223,10 +224,19 @@ function animateEntries() {
             return;
         }
     }, elemTimeout);
-}
+}*/
 
 ////////////////////////////////////////////////////////////////////////////
 
+function resetScroll() {
+    if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+    }
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+/*
 function scrollToEntryIdx(entryFlag) {
     if (entryFlag) {
         const elem = anims[animIdx - 1];
@@ -277,9 +287,18 @@ function jumpToEntryIdx(idx) {
         if (entryFlag) scrollToEntryIdx(true);
         animateEntries();
     }, jumpTimeout);
-}
+}*/
 
 ////////////////////////////////////////////////////////////////////////////
+
+function revealCPR() {
+    slideElemIn(cprElem, false);
+}
+
+function revealInfo() {
+    slideElemIn(infoElem, true);
+    setTimeout(revealCPR, logoTimeout);
+}
 
 function revealLogoTxt() {
     let t0 = null;
@@ -299,7 +318,8 @@ function revealLogoTxt() {
         if (y < 0) {
             logoTxtElem.style.transform = "translateY(0px)";
             logoTxtElem.style.opacity = 1;
-            animateEntries();
+            //animateEntries();
+            revealInfo();
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -308,7 +328,7 @@ function revealLogoTxt() {
 }
 
 function revealLogo() {
-    setBodyHeight();
+    //setBodyHeight();
     let t0 = null;
     let opa = 0;
     logoElem.style.opacity = 0;
@@ -338,6 +358,7 @@ function revealLogo() {
 
 // 'scroll to top' button animation and handling
 
+/*
 function fillButt() {
     let t0 = null;
     let opa = buttOpa;
@@ -440,15 +461,15 @@ buttElem.onclick = function() {
         moveButt(false);
         buttShown = false;
     }
-};
+};*/
 
 ////////////////////////////////////////////////////////////////////////////
 
 function refreshPage() {
-    if (animator !== null) clearInterval(animator);
-    animator = null;
-    elemRunning = false;
-    buttElem.style.display = "none";
+    //if (animator !== null) clearInterval(animator);
+    //animator = null;
+    //elemRunning = false;
+    //buttElem.style.display = "none";
     let t0 = null;
     let opa = 1;
 
@@ -467,18 +488,18 @@ function refreshPage() {
     window.requestAnimationFrame(frame);
 }
 
-window.onresize = setBodyHeight;
+//window.onresize = setBodyHeight;
 logoElem.onclick = refreshPage;
 logoTxtElem.onclick = refreshPage;
 
-if (tbeginElem) tbeginElem.onclick = function() {
+/*if (tbeginElem) tbeginElem.onclick = function() {
     jumpToEntryIdx(1);
     document.activeElement.blur();
 };
 if (tendElem) tendElem.onclick = function() {
     jumpToEntryIdx(novelLength + 1);
     document.activeElement.blur();
-};
+};*/
 
 if (toggleMusic) toggleMusic.onclick = function() {
     if (musicHidden) {
@@ -491,7 +512,7 @@ if (toggleMusic) toggleMusic.onclick = function() {
         musicHidden = true;
     }
     document.activeElement.blur();
-    setBodyHeight();
+    //setBodyHeight();
 }
 if (togglePatrons) togglePatrons.onclick = function() {
     if (patronsHidden) {
@@ -504,10 +525,10 @@ if (togglePatrons) togglePatrons.onclick = function() {
         patronsHidden = true;
     }
     document.activeElement.blur();
-    setBodyHeight();
+    //setBodyHeight();
 }
 
-if (toggleJump) toggleJump.onclick = function() {
+/*if (toggleJump) toggleJump.onclick = function() {
     const validBound = anims[0].getBoundingClientRect().top > jumpScroll;
 
     if (inputHidden) {
@@ -545,7 +566,7 @@ if (jumpGo) jumpGo.onclick = function() {
     }
     inputEntry.value = "";
     document.activeElement.blur();
-};
+};*/
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -558,24 +579,7 @@ document.onkeydown = function(event) {
         } else if (document.activeElement === togglePatrons) {
             event.preventDefault();
             togglePatrons.click();
-        } else if (document.activeElement === tbeginElem) {
-            event.preventDefault();
-            tbeginElem.click();
-        } else if (document.activeElement === tendElem) {
-            event.preventDefault();
-            tendElem.click();
-        } else if (document.activeElement === toggleJump) {
-            event.preventDefault();
-            toggleJump.click();
-        } else if ((document.activeElement === inputEntry) ||
-                 (document.activeElement === jumpGo)) {
-            event.preventDefault();
-            jumpGo.click();
         }
-    } else if (toggleJump && animIdx > 0 &&
-            (event.keyCode === 65 || event.which === 65)) {
-        event.preventDefault();
-        toggleJump.click();
     }
 };
 
@@ -598,8 +602,8 @@ if (window.matchMedia) {
 ////////////////////////////////////////////////////////////////////////////
 
 // begin routine
-scrollToEntryIdx(false);
-if (lastEntry) setDocEntryCount();
+resetScroll();
+//if (lastEntry) setDocEntryCount();
 setTimeout(revealLogo, logoTimeout);
 
 ////////////////////////////////////////////////////////////////////////////
