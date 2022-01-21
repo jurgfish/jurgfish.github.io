@@ -1,0 +1,77 @@
+/* jurgfish */
+
+@font-face {
+    /* Font Design by Christian Robertson */
+    src: url(../vis/roboto-slab.ttf);
+    font-family: RobotoSlab;
+}
+
+body {
+    font-family: "RobotoSlab";
+    font-size: 18px;
+    color: #f8e6d3;
+    background-color: black;
+    background-image: url('../vis/background-00.png');
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-anchor: none;
+}
+
+img {
+    display: block;
+    visibility: hidden;
+}
+#hold {
+    height: 100vh;
+    min-height: 36em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#logo { cursor: pointer; }
+#logotxt {
+    cursor: pointer;
+    margin-top: 8px;
+    margin-bottom: 58px;
+}
+p {
+    text-align: justify;
+    line-height: 30px;
+    visibility: hidden;
+    cursor: default;
+    margin-top: 0px;
+    margin-bottom: 30px;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}
+#cpr { text-align: center; }
+
+a, a:link, a:visited {
+    color: #89c7cd;
+    text-decoration: underline;
+}
+a:hover, a:focus {
+    outline: none;
+    color: #f8e6d3;
+    cursor: pointer;
+}
+a:active {
+    outline: none;
+    color: #89c7cd;
+    cursor: pointer;
+}
+
+@media (min-width: 562px) {
+    body { width: 500px; }
+}
+@media (max-width: 562px) {
+    body { width: 90%; }
+    img { max-width: 100%; height: auto; }
+}
+
+
