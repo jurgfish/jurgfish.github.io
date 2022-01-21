@@ -14,10 +14,9 @@ const aaaElem = document.getElementById("aaa");
 const jumpGo = document.getElementById("jump");
 const inputEntry = document.getElementById("entry");
 const divForm = document.getElementById("form");
-const tbeginElem = document.getElementById("tbegin");
-const tendElem = document.getElementById("tend");
+const bottElem = document.getElementById("bott");
 const homeElem = document.getElementById("home");
-const buttElem = document.getElementById("butt");
+const ttopElem = document.getElementById("ttop");
 const endspaceElem = document.getElementById("endspace");
 
 const animationSpeed = 0.1;
@@ -25,16 +24,16 @@ const typeSpeed = 6;
 const slidePStart = 10;
 const slideRate = 0.3;
 const restartOpaRate = 0.05;
-const buttOpa = 0.6;
-const buttOpaRate = 0.015;
-const buttSpeed = 0.3;
-const buttShowPos = 0;
-const buttHidePos = 10;
+const ttopOpa = 0.6;
+const ttopOpaRate = 0.015;
+const ttopSpeed = 0.3;
+const ttopShowPos = 0;
+const ttopHidePos = 10;
 const frameRate = 1000 / 60;
 const elemTimeout = 150;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
-const buttTimeout = 1;
+const ttopTimeout = 1;
 const loadBound = 0.93;
 const lagBound = 3;
 const scrollOffset = 28;
@@ -48,9 +47,9 @@ const typedCnt = typedQueue.length;
 const slideCnt = slideQueue.length;
 const novelLength = typedCnt - nonNovelTypedEndCnt;
 let elemRunning = true;
-let buttShowRunning = false;
-let buttFillRunning = false;
-let buttShown = false;
+let ttopShowRunning = false;
+let ttopFillRunning = false;
+let ttopShown = false;
 let typedIdx = 0;
 let slideIdx = 0;
 let animator = null;
@@ -238,7 +237,7 @@ function resetEntries() {
             typedQueue[idx].style.visibility = "hidden";
         }
     }
-     for (idx = slideIdx; idx < slideCnt; idx++) {
+    for (idx = slideIdx; idx < slideCnt; idx++) {
         slideQueue[idx].style.visibility = "hidden";
     }
 }
@@ -248,11 +247,11 @@ function jumpToEntryIdx(idx) {
     animator = null;
     elemRunning = false;
     typedIdx = idx;
-    slideIdx = slideStartCnt - 1;
+    slideIdx = slideStartCnt;
     let entryFlag = true;
 
     if (idx < 1) {
-        typedIdx = 0;
+        typedIdx = 1;
         entryFlag = false;
         scrollToEntryIdx(false);
     } else if (typedIdx > (novelLength + 1)) {
@@ -270,21 +269,21 @@ function jumpToEntryIdx(idx) {
 
 // 'scroll to top' button animation and handling
 
-function fillButt() {
+function fillTopButton() {
     let t0 = null;
-    let opa = buttOpa;
-    buttFillRunning = true;
+    let opa = ttopOpa;
+    ttopFillRunning = true;
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
-        buttElem.style.opacity = opa;
-        opa = buttOpa + buttOpaRate * elap;
-        if (!buttFillRunning) {
-            buttElem.style.opacity = buttOpa;
+        ttopElem.style.opacity = opa;
+        opa = ttopOpa + ttopOpaRate * elap;
+        if (!ttopFillRunning) {
+            ttopElem.style.opacity = ttopOpa;
         } else if (opa > 1) {
-            buttFillRunning = false;
-            buttElem.style.opacity = 1;
+            ttopFillRunning = false;
+            ttopElem.style.opacity = 1;
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -292,39 +291,39 @@ function fillButt() {
     window.requestAnimationFrame(frame);
 }
 
-function moveButt(show) {
-    const p0 = (show) ? buttHidePos : buttShowPos;
-    const delta = (show) ? -buttSpeed : buttSpeed;
-    const opaRate = buttSpeed / Math.abs(buttShowPos - buttHidePos);
-    let opa = (show) ? 0 : buttOpa;
+function moveTopButton(show) {
+    const p0 = (show) ? ttopHidePos : ttopShowPos;
+    const delta = (show) ? -ttopSpeed : ttopSpeed;
+    const opaRate = ttopSpeed / Math.abs(ttopShowPos - ttopHidePos);
+    let opa = (show) ? 0 : ttopOpa;
     let t0 = null;
-    buttElem.style.opacity = opa;
-    buttElem.style.transform = `translateY(${p0}px)`;
-    buttElem.style.display = "block";
+    ttopElem.style.opacity = opa;
+    ttopElem.style.transform = `translateY(${p0}px)`;
+    ttopElem.style.display = "block";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
         const y = p0 + (delta * elap);
-        buttElem.style.transform = `translateY(${y}px)`;
+        ttopElem.style.transform = `translateY(${y}px)`;
 
-        if (show && opa < buttOpa) {
-            buttElem.style.opacity = opa;
-            opa = buttOpa * opaRate * elap;
+        if (show && opa < ttopOpa) {
+            ttopElem.style.opacity = opa;
+            opa = ttopOpa * opaRate * elap;
         } else if (!show && opa > 0) {
-            buttElem.style.opacity = opa;
-            opa = buttOpa - (buttOpa * opaRate * elap);
+            ttopElem.style.opacity = opa;
+            opa = ttopOpa - (ttopOpa * opaRate * elap);
         }
-        if (show && y < buttShowPos) {
-            buttShowRunning = false;
-            buttElem.style.transform = `translateY(${buttShowPos}px)`;
-            buttElem.style.opacity = buttOpa;
-            scrollTimer = setTimeout(fillButt, scrollTimeout);
-        } else if (!show && y > buttHidePos) {
-            buttShowRunning = false;
-            buttElem.style.transform = `translateY(${buttHidePos}px)`;
-            buttElem.style.opacity = 0;
-            buttElem.style.display = "none";
+        if (show && y < ttopShowPos) {
+            ttopShowRunning = false;
+            ttopElem.style.transform = `translateY(${ttopShowPos}px)`;
+            ttopElem.style.opacity = ttopOpa;
+            scrollTimer = setTimeout(fillTopButton, scrollTimeout);
+        } else if (!show && y > ttopHidePos) {
+            ttopShowRunning = false;
+            ttopElem.style.transform = `translateY(${ttopHidePos}px)`;
+            ttopElem.style.opacity = 0;
+            ttopElem.style.display = "none";
         } else {
             window.requestAnimationFrame(frame);
         }
@@ -334,42 +333,42 @@ function moveButt(show) {
 
 window.onscroll = function() {
     setTimeout(function() {
-        if (!buttShowRunning) {
+        if (!ttopShowRunning) {
             const check = typedQueue[0] ? typedQueue[0] : typedQueue[1];
             if (check.getBoundingClientRect().top < jumpScroll) {
                 if (scrollTimer !== null) clearTimeout(scrollTimer);
-                buttFillRunning = false;
-                if (!buttShown) {
-                    buttShowRunning = true;
-                    moveButt(true);
-                    buttShown = true;
+                ttopFillRunning = false;
+                if (!ttopShown) {
+                    ttopShowRunning = true;
+                    moveTopButton(true);
+                    ttopShown = true;
                 } else {
-                    buttElem.style.opacity = buttOpa;
-                    scrollTimer = setTimeout(fillButt, scrollTimeout);
+                    ttopElem.style.opacity = ttopOpa;
+                    scrollTimer = setTimeout(fillTopButton, scrollTimeout);
                 }
 
-            } else if (buttShown) {
+            } else if (ttopShown) {
                 if (scrollTimer !== null) clearTimeout(scrollTimer);
-                buttFillRunning = false;
-                buttShowRunning = true;
-                moveButt(false);
-                buttShown = false;
+                ttopFillRunning = false;
+                ttopShowRunning = true;
+                moveTopButton(false);
+                ttopShown = false;
             }
         }
-    }, buttTimeout);
+    }, ttopTimeout);
 };
 
-buttElem.onclick = function() {
+ttopElem.onclick = function() {
     jumpToEntryIdx(-1);
     if (jumpGo) jumpGo.focus();
     document.activeElement.blur();
     setBodyHeight();
-    if (!buttShowRunning && buttShown) {
+    if (!ttopShowRunning && ttopShown) {
         if (scrollTimer !== null) clearTimeout(scrollTimer);
-        buttFillRunning = false;
-        buttShowRunning = true;
-        moveButt(false);
-        buttShown = false;
+        ttopFillRunning = false;
+        ttopShowRunning = true;
+        moveTopButton(false);
+        ttopShown = false;
     }
 };
 
@@ -379,7 +378,7 @@ function refreshPage() {
     if (animator !== null) clearInterval(animator);
     animator = null;
     elemRunning = false;
-    buttElem.style.display = "none";
+    ttopElem.style.display = "none";
     let t0 = null;
     let opa = 1;
 
@@ -400,7 +399,7 @@ function refreshPage() {
 
 window.onresize = setBodyHeight;
 aaaElem.onclick = refreshPage;
-tendElem.onclick = function() {
+bottElem.onclick = function() {
     jumpToEntryIdx(novelLength + 1);
     document.activeElement.blur();
 };
@@ -438,9 +437,9 @@ jumpGo.onclick = function() {
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 ||
             event.which === 13) {
-        if (document.activeElement === tendElem) {
+        if (document.activeElement === bottElem) {
             event.preventDefault();
-            tendElem.click();
+            bottElem.click();
         } else if (document.activeElement === homeElem) {
             event.preventDefault();
             homeElem.click();
@@ -453,7 +452,6 @@ document.onkeydown = function(event) {
             (event.keyCode === 65 || event.which === 65)) {
         event.preventDefault();
         takeJumpInput();
-        //toggleJump.click();
     }
 };
 
