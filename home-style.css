@@ -39,15 +39,12 @@ img {
     cursor: pointer;
     margin-top: 8px;
 }
-
 #arrow-hold {
     height: 10vh;
-    text-align: center;
 }
 #info-hold {
     height: 60vh;
 }
-
 p {
     text-align: justify;
     line-height: 29px;
@@ -58,6 +55,9 @@ p {
     -webkit-hyphens: auto;
     -ms-hyphens: auto;
     hyphens: auto;
+}
+#arrow {
+    text-align: center;
 }
 #cpr {
     text-align: center;
