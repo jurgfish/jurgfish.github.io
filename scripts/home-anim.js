@@ -196,9 +196,5 @@ resetScroll();
 setTimeout(revealLogo, logoTimeout);
 
 ////////////////////////////////////////////////////////////////////////////
-//
-// buried forever
-// this little island of mine
-// my lovely sunset
 
 

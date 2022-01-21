@@ -13,9 +13,7 @@ const slideQueue = document.getElementsByClassName("anim-slide");
 const aaaElem = document.getElementById("aaa");
 const jumpGo = document.getElementById("jump");
 const inputEntry = document.getElementById("entry");
-const divForm = document.getElementById("form");
 const bottElem = document.getElementById("bott");
-const homeElem = document.getElementById("home");
 const ttopElem = document.getElementById("ttop");
 const endspaceElem = document.getElementById("endspace");
 
@@ -125,7 +123,7 @@ function typeElemWords(elem) {
 
 function setDocEntryCount() {
     const cntStr = `0000${novelLength + 1}`.slice(-entryIdxLen);
-    inputEntry.placeholder = `1~ ${novelLength}`
+    inputEntry.placeholder = `1~ ${novelLength}`;
     inputEntry.value = "";
     lastEntry.textContent = `[ ${cntStr}+ ] will appear when ready`;
 }
@@ -404,7 +402,6 @@ bottElem.onclick = function() {
     document.activeElement.blur();
 };
 
-
 function takeJumpInput() {
     const validBound = typedQueue[0].getBoundingClientRect().top > jumpScroll;
     if (validBound) {
@@ -432,17 +429,12 @@ jumpGo.onclick = function() {
     setBodyHeight();
 };
 
-////////////////////////////////////////////////////////////////////////////
-
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 ||
             event.which === 13) {
         if (document.activeElement === bottElem) {
             event.preventDefault();
             bottElem.click();
-        } else if (document.activeElement === homeElem) {
-            event.preventDefault();
-            homeElem.click();
         } else if ((document.activeElement === inputEntry) ||
                  (document.activeElement === jumpGo)) {
             event.preventDefault();
@@ -459,7 +451,7 @@ document.onkeydown = function(event) {
 
 // begin routine
 scrollToEntryIdx(false);
-if (lastEntry) setDocEntryCount();
+setDocEntryCount();
 setTimeout(animateEntries, elemTimeout);
 
 ////////////////////////////////////////////////////////////////////////////
@@ -467,6 +459,5 @@ setTimeout(animateEntries, elemTimeout);
 // buried forever
 // this little island of mine
 // my lovely sunset
-
 
 

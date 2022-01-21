@@ -76,13 +76,8 @@ p {
     hyphens: auto;
 }
 
-#author {
-    text-align: center;
-    margin-bottom: 20vmin;
-}
-#dedicate {
-    text-align: center;
-}
+#author, #dedicate { text-align: center; }
+#author { margin-bottom: 20vmin; }
 #cpr {
     position: -webkit-sticky;
     position: sticky;
@@ -116,12 +111,8 @@ a:active {
     border-color: #4a4a4a;
     cursor: pointer;
 }
-#jump {
-    margin-right: 8px;
-}
-#jump, #bott {
-    padding: 12px 14px 12px 14px;
-}
+#jump { margin-right: 8px; }
+#jump, #bott { padding: 12px 14px 12px 14px; }
 #jump:focus #bott:focus {
     outline: none;
     color: #18919c;
@@ -202,7 +193,6 @@ a:active {
 }
 @media (max-width: 662px) {
     body { width: 90%; }
-    img { max-width: 100%; height: auto; }
     #ttop { bottom: 69px; }
     #jump:hover, #bott:hover, #ttop:hover, #jump:active, #bott:active, #ttop:active  {
         color: #4a4a4a;
