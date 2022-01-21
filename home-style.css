@@ -9,9 +9,9 @@
 body {
     font-family: "RobotoSlab";
     font-size: 18px;
-    color: #4a4a4a;
+    color: #f8e6d3;
     background-color: black;
-    background-image: url('vis/islandofmind-00.png');
+    background-image: url('vis/background-00.png');
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
@@ -23,17 +23,29 @@ body {
 img {
     display: block;
     visibility: hidden;
-    margin-left: auto;
-    margin-right: auto;
+}
+#logo-hold {
+    height: 90vh;
+    min-height: 164px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 #logo {
     cursor: pointer;
-    margin-top: 26vh;
 }
 #logotxt {
     cursor: pointer;
     margin-top: 8px;
-    margin-bottom: 26vmin;
+}
+
+#arrow-hold {
+    height: 10vh;
+    text-align: center;
+}
+#info-hold {
+    height: 60vh;
 }
 
 p {
@@ -53,28 +65,18 @@ p {
 }
 
 a, a:link, a:visited {
-    color: #18919c;
+    color: #89c7cd;
     text-decoration: underline;
 }
 a:hover, a:focus {
     outline: none;
-    color: #4a4a4a;
+    color: #f8e6d3;
     cursor: pointer;
 }
 a:active {
     outline: none;
-    color: #18919c;
+    color: #89c7cd;
     cursor: pointer;
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        color: #f8e6d3;
-        background-color: #4a4a4a;
-    }
-    a, a:link, a:visited { color: #89c7cd; }
-    a:hover, a:focus { color: #f8e6d3; }
-    a:active { color: #f8e6d3; }
 }
 
 @media (min-width: 662px) {

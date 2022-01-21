@@ -183,8 +183,6 @@ if (togglePatrons) togglePatrons.onclick = function() {
     document.activeElement.blur();
 }
 
-////////////////////////////////////////////////////////////////////////////
-
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 ||
             event.which === 13) {
@@ -197,22 +195,6 @@ document.onkeydown = function(event) {
         }
     }
 };
-
-function toggleDarkMode() {
-    const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (dark) {
-        logoElem.src = "vis/jurgfishdarkmode.png";
-        logoTxtElem.src = "vis/jurgfishtxtdarkmode.png";
-    } else {
-        logoElem.src = "vis/jurgfish.png";
-        logoTxtElem.src = "vis/jurgfishtxt.png";
-    }
-}
-if (window.matchMedia) {
-    const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    darkQuery.addEventListener("change", toggleDarkMode);
-    toggleDarkMode();
-}
 
 ////////////////////////////////////////////////////////////////////////////
 
