@@ -7,11 +7,9 @@
 const allContent = document.getElementById("content");
 const inContent = document.getElementById("in");
 const outContent = document.getElementById("out");
-const logoElem = document.getElementById("logo");
-const logoTxtElem = document.getElementById("logotxt");
 const lastEntry = document.getElementById("end");
-const anims = document.getElementsByClassName("anim");
-const noanims = document.getElementsByClassName("noanim");
+const typedQueue = document.getElementsByClassName("anim-typed");
+const slideQueue = document.getElementsByClassName("anim-slide");
 const jumpGo = document.getElementById("jump");
 const toggleJump = document.getElementById("showjump");
 const inputEntry = document.getElementById("entry");
@@ -27,11 +25,8 @@ const buttElem = document.getElementById("butt");
 const endspaceElem = document.getElementById("endspace");
 
 const animationSpeed = 0.1;
-const logoV = -1;
-const logoA = 0.025;
-const logoOpaRate = 0.025;
 const typeSpeed = 6;
-const slideStart = 10;
+const slidePStart = 10;
 const slideRate = 0.3;
 const restartOpaRate = 0.05;
 const buttOpa = 0.6;
@@ -40,7 +35,6 @@ const buttSpeed = 0.3;
 const buttShowPos = 0;
 const buttHidePos = 10;
 const frameRate = 1000 / 60;
-const logoTimeout = 300;
 const elemTimeout = 150;
 const scrollTimeout = 400;
 const jumpTimeout = 100;
@@ -51,12 +45,12 @@ const scrollOffset = 28;
 const endspOffset = 87;
 const jumpScroll = scrollOffset + 2;
 
-const noanimEntryCnt = 1;
-const nonNovelEndCnt = 2;
+const slideStartCnt = 3;
+const nonNovelTypedEndCnt = 2;
 const entryIdxLen = 3;
-const animsCnt = anims.length;
-const noanimsCnt = noanims.length;
-const novelLength = animsCnt - nonNovelEndCnt;
+const typedCnt = typedQueue.length;
+const slideCnt = slideQueue.length;
+const novelLength = typedCnt - nonNovelTypedEndCnt;
 let inputHidden = true;
 let musicHidden = true;
 let patronsHidden = true;
@@ -64,8 +58,8 @@ let elemRunning = true;
 let buttShowRunning = false;
 let buttFillRunning = false;
 let buttShown = false;
-let animIdx = 0;
-let noanimIdx = 0;
+let typedIdx = 0;
+let slideIdx = 0;
 let animator = null;
 let scrollTimer = null;
 
@@ -79,18 +73,18 @@ window.requestAnimationFrame = window.requestAnimationFrame ||
     function(callback) { return setTimeout(callback, frameRate); };
 
 function slideElemIn(elem, xdir) {
-    const opaRate = slideRate / slideStart;
+    const opaRate = slideRate / slidePStart;
     const dir = (xdir) ? 'X' : 'Y';
     let t0 = null;
     let opa = 0;
     elem.style.opacity = 0;
-    elem.style.transform = `translate${dir}(${slideStart}px)`;
+    elem.style.transform = `translate${dir}(${slidePStart}px)`;
     elem.style.visibility = "visible";
 
     function frame(t) {
         if (!t0) t0 = t;
         const elap = (t - t0) * animationSpeed;
-        const p = slideStart - (slideRate * elap);
+        const p = slidePStart - (slideRate * elap);
         elem.style.transform = `translate${dir}(${p}px)`;
         if (opa < 1) {
             elem.style.opacity = opa;
@@ -172,41 +166,41 @@ function animateEntries() {
     // at set intervals depending on entry visibility.
     animator = setInterval(function() {
 
-        // entries with links cannot have typing animations (noanims).
-        // current noanims are the first and last entries. last entry
-        // slides up, all other entries slide left.
-        if (noanimIdx < noanimEntryCnt ||
-                (animIdx >= animsCnt && noanimIdx < noanimsCnt)) {
+        // intial entries and the last entry only have slide animations.
+        // the last entry slides up, all other entries slide left.
+        if (slideIdx < slideStartCnt ||
+                (typedIdx >= typedCnt && slideIdx < slideCnt)) {
 
-            const elem = noanims[noanimIdx];
+            const elem = slideQueue[slideIdx];
             if (isElemVisible(elem)) {
-                slideElemIn(elem, noanimIdx !== noanimsCnt - 1);
-                noanimIdx++;
+                slideElemIn(elem, slideIdx !== slideCnt - 1);
+                slideIdx++;
             }
 
-        // remaining entries with both slide and typing animations (anims).
-        } else if (animIdx < animsCnt) {
+        // remaining entries with both slide and typing animations.
+        } else if (typedIdx < typedCnt) {
 
-            // update the current anim index when the next entry becomes
+            // update the current index when the next entry becomes
             // visible. a separate load index updates what the "real"
             // visible entry should be (when the user quickly scrolls
             // down much faster than the set animation timing)
-            const elem = anims[animIdx];
+            const elem = typedQueue[typedIdx];
             const valid = isElemVisible(elem);
-            if (valid) animIdx++;
-            while (loadIdx < novelLength && isElemVisible(anims[loadIdx])) {
+            if (valid) typedIdx++;
+            while (loadIdx < novelLength &&
+                    isElemVisible(typedQueue[loadIdx])) {
                 loadIdx++;
             }
 
             // if the index lag count is high enough, skip animating and
             // make the skipped entries visible.
-            if ((loadIdx - animIdx) > lagBound) {
+            if ((loadIdx - typedIdx) > lagBound) {
                 elemRunning = false;
                 if (skipTimer !== null) clearTimeout(skipTimer);
                 skipTimer = setTimeout(function() {
                     const skipIdx = loadIdx - lagBound;
-                    for (animIdx; animIdx < skipIdx; animIdx++) {
-                        anims[animIdx].style.visibility = "visible";
+                    for (typedIdx; typedIdx < skipIdx; typedIdx++) {
+                        typedQueue[typedIdx].style.visibility = "visible";
                     }
                     elemRunning = true;
                 }, jumpTimeout);
@@ -229,7 +223,7 @@ function animateEntries() {
 
 function scrollToEntryIdx(entryFlag) {
     if (entryFlag) {
-        const elem = anims[animIdx - 1];
+        let elem = typedQueue[typedIdx - 1];
         window.scroll(0, elem.offsetTop - scrollOffset);
     } else {
         if ("scrollRestoration" in history) {
@@ -242,34 +236,45 @@ function scrollToEntryIdx(entryFlag) {
 
 function resetEntries() {
     let idx = 0;
-    for (idx; idx < animsCnt; idx++) {
-        if (idx < animIdx) {
-            anims[idx].style.transform = "translateX(0px)";
-            anims[idx].style.visibility = "visible";
-            anims[idx].style.opacity = 1;
+    for (idx; idx < typedCnt; idx++) {
+        if (idx < typedIdx) {
+            typedQueue[idx].style.transform = "translateX(0px)";
+            typedQueue[idx].style.visibility = "visible";
+            typedQueue[idx].style.opacity = 1;
         } else {
-            anims[idx].style.visibility = "hidden";
+            typedQueue[idx].style.visibility = "hidden";
         }
     }
-    for (idx = noanimEntryCnt; idx < noanimsCnt; idx++) {
-        noanims[idx].style.visibility = "hidden";
+     for (idx = slideIdx; idx < slideCnt; idx++) {
+        slideQueue[idx].style.visibility = "hidden";
     }
 }
+
+    /*for (idx = 0; idx < slideCnt; idx++) {
+        if (idx < slideIdx) {
+            slideQueue[idx].style.transform = "translateX(0px)";
+            slideQueue[idx].style.visibility = "visible";
+            slideQueue[idx].style.opacity = 1;
+        } else {
+            slideQueue[idx].style.visibility = "hidden";
+        }
+    }
+}*/
 
 function jumpToEntryIdx(idx) {
     if (animator !== null) clearInterval(animator);
     animator = null;
     elemRunning = false;
-    animIdx = idx;
-    noanimIdx = noanimEntryCnt;
+    typedIdx = idx;
+    slideIdx = slideStartCnt - 1;
     let entryFlag = true;
 
-    if (animIdx < 1) {
-        animIdx = 1;
+    if (idx < 1) {
+        typedIdx = 0;
         entryFlag = false;
         scrollToEntryIdx(false);
-    } else if (animIdx > (novelLength + 1)) {
-        animIdx = novelLength + 1;
+    } else if (typedIdx > (novelLength + 1)) {
+        typedIdx = novelLength + 1;
     }
 
     resetEntries();
@@ -277,61 +282,6 @@ function jumpToEntryIdx(idx) {
         if (entryFlag) scrollToEntryIdx(true);
         animateEntries();
     }, jumpTimeout);
-}
-
-////////////////////////////////////////////////////////////////////////////
-
-function revealLogoTxt() {
-    let t0 = null;
-    let opa = 0;
-    logoTxtElem.style.opacity = 0;
-    logoTxtElem.style.visibility = "visible";
-
-    function frame(t) {
-        if (!t0) t0 = t;
-        const elap = (t - t0) * animationSpeed;
-        const y = (-logoV * elap) - (logoA * (elap * elap));
-        logoTxtElem.style.transform = `translateY(${y}px)`;
-        if (opa < 1) {
-            logoTxtElem.style.opacity = opa;
-            opa = logoOpaRate * elap;
-        }
-        if (y < 0) {
-            logoTxtElem.style.transform = "translateY(0px)";
-            logoTxtElem.style.opacity = 1;
-            animateEntries();
-        } else {
-            window.requestAnimationFrame(frame);
-        }
-    }
-    window.requestAnimationFrame(frame);
-}
-
-function revealLogo() {
-    setBodyHeight();
-    let t0 = null;
-    let opa = 0;
-    logoElem.style.opacity = 0;
-    logoElem.style.visibility = "visible";
-
-    function frame(t) {
-        if (!t0) t0 = t;
-        const elap = (t - t0) * animationSpeed;
-        const y = (logoV * elap) + (logoA * (elap * elap)) - 1;
-        logoElem.style.transform = `translateY(${y}px)`;
-        if (opa < 1) {
-            logoElem.style.opacity = opa;
-            opa = logoOpaRate * elap;
-        }
-        if (y > 0) {
-            logoElem.style.transform = "translateY(0px)";
-            logoElem.style.opacity = 1;
-            revealLogoTxt();
-        } else {
-            window.requestAnimationFrame(frame);
-        }
-    }
-    window.requestAnimationFrame(frame);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -403,7 +353,7 @@ function moveButt(show) {
 window.onscroll = function() {
     setTimeout(function() {
         if (!buttShowRunning) {
-            const check = anims[0] ? anims[0] : noanims[1];
+            const check = typedQueue[0] ? typedQueue[0] : typedQueue[1];
             if (check.getBoundingClientRect().top < jumpScroll) {
                 if (scrollTimer !== null) clearTimeout(scrollTimer);
                 buttFillRunning = false;
@@ -429,8 +379,7 @@ window.onscroll = function() {
 
 buttElem.onclick = function() {
     jumpToEntryIdx(-1);
-    if (toggleJump) toggleJump.focus();
-    else homeElem.focus();
+    if (jumpGo) jumpGo.focus();
     document.activeElement.blur();
     setBodyHeight();
     if (!buttShowRunning && buttShown) {
@@ -468,8 +417,6 @@ function refreshPage() {
 }
 
 window.onresize = setBodyHeight;
-logoElem.onclick = refreshPage;
-logoTxtElem.onclick = refreshPage;
 
 if (tbeginElem) tbeginElem.onclick = function() {
     jumpToEntryIdx(1);
@@ -507,8 +454,24 @@ if (togglePatrons) togglePatrons.onclick = function() {
     setBodyHeight();
 }
 
+function takeJumpInput() {
+    const validBound = typedQueue[0].getBoundingClientRect().top > jumpScroll;
+    if (validBound) {
+        if (document.activeElement === inputEntry) {
+            inputEntry.value = "";
+            document.activeElement.blur();
+        } else {
+            setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
+        }
+    } else {
+        window.scroll(0, inputEntry.offsetTop - scrollOffset);
+        setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
+    }
+}
+
+/*
 if (toggleJump) toggleJump.onclick = function() {
-    const validBound = anims[0].getBoundingClientRect().top > jumpScroll;
+    const validBound = typedQueue[0].getBoundingClientRect().top > jumpScroll;
 
     if (inputHidden) {
         toggleJump.textContent = "(hide jump)";
@@ -534,7 +497,7 @@ if (toggleJump) toggleJump.onclick = function() {
             setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
         }
     }
-};
+};*/
 
 if (jumpGo) jumpGo.onclick = function() {
     const inputVal = inputEntry.value.trim();
@@ -552,55 +515,31 @@ if (jumpGo) jumpGo.onclick = function() {
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 ||
             event.which === 13) {
-        if (document.activeElement === toggleMusic) {
-            event.preventDefault();
-            toggleMusic.click();
-        } else if (document.activeElement === togglePatrons) {
-            event.preventDefault();
-            togglePatrons.click();
-        } else if (document.activeElement === tbeginElem) {
-            event.preventDefault();
-            tbeginElem.click();
-        } else if (document.activeElement === tendElem) {
+        if (document.activeElement === tendElem) {
             event.preventDefault();
             tendElem.click();
-        } else if (document.activeElement === toggleJump) {
+        } else if (document.activeElement === homeElem) {
             event.preventDefault();
-            toggleJump.click();
+            homeElem.click();
         } else if ((document.activeElement === inputEntry) ||
                  (document.activeElement === jumpGo)) {
             event.preventDefault();
             jumpGo.click();
         }
-    } else if (toggleJump && animIdx > 0 &&
+    } else if (jumpGo && typedIdx > 0 &&
             (event.keyCode === 65 || event.which === 65)) {
         event.preventDefault();
-        toggleJump.click();
+        takeJumpInput();
+        //toggleJump.click();
     }
 };
-
-function toggleDarkMode() {
-    const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (dark) {
-        logoElem.src = "vis/jurgfishdarkmode.png";
-        logoTxtElem.src = "vis/jurgfishtxtdarkmode.png";
-    } else {
-        logoElem.src = "vis/jurgfish.png";
-        logoTxtElem.src = "vis/jurgfishtxt.png";
-    }
-}
-if (window.matchMedia) {
-    const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    darkQuery.addEventListener("change", toggleDarkMode);
-    toggleDarkMode();
-}
 
 ////////////////////////////////////////////////////////////////////////////
 
 // begin routine
 scrollToEntryIdx(false);
 if (lastEntry) setDocEntryCount();
-setTimeout(revealLogo, logoTimeout);
+setTimeout(animateEntries, elemTimeout);
 
 ////////////////////////////////////////////////////////////////////////////
 //

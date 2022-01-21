@@ -16,30 +16,15 @@ body {
     overflow-anchor: none;
 }
 
-img {
-    display: block;
+h2 {
     visibility: hidden;
-    margin-left: auto;
-    margin-right: auto;
-}
-#logo {
-    cursor: pointer;
-    margin-top: 26vmin;
-}
-#logotxt {
-    cursor: pointer;
-    margin-top: 8px;
-    margin-bottom: 58px;
-}
-img.noanim {
-    outline: none;
-    border-radius: 18px;
-    border-style: none;
-    margin-bottom: 30px;
+    text-align: center;
+    margin-top: 30vmin;
 }
 
 form {
-    display: none;
+    display: block;
+    visibility: hidden;
     text-align: center;
     margin-bottom: 30px;
 }
@@ -89,6 +74,10 @@ p {
     -ms-hyphens: auto;
     hyphens: auto;
 }
+#author {
+    text-align: center;
+    margin-bottom: 20vmin;
+}
 #cpr {
     position: -webkit-sticky;
     position: sticky;
@@ -113,7 +102,7 @@ a:active {
     cursor: pointer;
 }
 
-#jump, #butt {
+#jump, #tend, #butt {
     color: #4a4a4a;
     background-color: #f8e6d3;
     text-align: center;
@@ -126,9 +115,12 @@ a:active {
     cursor: pointer;
 }
 #jump {
+    margin-right: 8px;
+}
+#jump, #tend {
     padding: 12px 14px 12px 14px;
 }
-#jump:focus {
+#jump:focus #tend:focus {
     outline: none;
     color: #18919c;
     border-color: #18919c;
@@ -142,7 +134,7 @@ a:active {
     z-index: 99;
     padding: 12px 20px 12px 17px;
 }
-#jump:hover, #butt:hover {
+#jump:hover, #tend:hover, #butt:hover {
     outline: none;
     text-decoration: none;
 }
@@ -172,13 +164,13 @@ a:active {
 
     a, a:link, a:visited { color: #89c7cd; }
     a:hover, a:focus { color: #f8e6d3; }
-    a:active { color: #f8e6d3; }
-    #jump, #butt {
+    a:active { color: #89c7cd; }
+    #jump, #tend, #butt {
         color: #f8e6d3;
         background-color: #4a4a4a;
         border-color: #f8e6d3;
     }
-    #jump:focus {
+    #jump:focus, #tend:focus {
         color: #89c7cd;
         border-color: #89c7cd;
     }
@@ -187,21 +179,21 @@ a:active {
 @media (min-width: 662px) {
     body { width: 600px; }
     #butt { bottom: 30px }
-    #jump:hover, #butt:hover {
+    #jump:hover, #tend:hover, #butt:hover {
         color: #18919c;
         border-color: #18919c;
     }
-    #jump:active, #butt:active {
+    #jump:active, #tend:active, #butt:active {
         color: #4a4a4a;
         border-color: #4a4a4a;
     }
 }
 @media (min-width: 662px) and (prefers-color-scheme: dark) {
-    #jump:hover, #butt:hover {
+    #jump:hover, #tend:hover, #butt:hover {
         color: #89c7cd;
         border-color: #89c7cd;
     }
-    #jump:active, #butt:active {
+    #jump:active, #tend:active, #butt:active {
         color: #f8e6d3;
         border-color: #f8e6d3;
     }
@@ -210,13 +202,15 @@ a:active {
     body { width: 90%; }
     img { max-width: 100%; height: auto; }
     #butt { bottom: 69px; }
-    #jump:hover, #butt:hover, #jump:active, #butt:active  {
+    #jump:hover, #tend:hover, #butt:hover, #jump:active, #tend:active,
+            #butt:active  {
         color: #4a4a4a;
         border-color: #4a4a4a;
     }
 }
 @media (max-width: 662px) and (prefers-color-scheme: dark) {
-    #jump:hover, #butt:hover, #jump:active, #butt:active {
+    #jump:hover, #tend:hover, #butt:hover, #jump:active, #butt:active,
+            #butt:active {
         color: #f8e6d3;
         border-color: #f8e6d3;
     }
