@@ -10,14 +10,10 @@ const outContent = document.getElementById("out");
 const lastEntry = document.getElementById("end");
 const typedQueue = document.getElementsByClassName("anim-typed");
 const slideQueue = document.getElementsByClassName("anim-slide");
+const aaaElem = document.getElementById("aaa");
 const jumpGo = document.getElementById("jump");
-const toggleJump = document.getElementById("showjump");
 const inputEntry = document.getElementById("entry");
 const divForm = document.getElementById("form");
-const toggleMusic = document.getElementById("showmusic");
-const musicSpan = document.getElementById("musiclinks");
-const togglePatrons = document.getElementById("showpatrons");
-const patronSpan = document.getElementById("patronlinks");
 const tbeginElem = document.getElementById("tbegin");
 const tendElem = document.getElementById("tend");
 const homeElem = document.getElementById("home");
@@ -45,15 +41,12 @@ const scrollOffset = 28;
 const endspOffset = 87;
 const jumpScroll = scrollOffset + 2;
 
-const slideStartCnt = 3;
+const slideStartCnt = 4;
 const nonNovelTypedEndCnt = 2;
 const entryIdxLen = 3;
 const typedCnt = typedQueue.length;
 const slideCnt = slideQueue.length;
 const novelLength = typedCnt - nonNovelTypedEndCnt;
-let inputHidden = true;
-let musicHidden = true;
-let patronsHidden = true;
 let elemRunning = true;
 let buttShowRunning = false;
 let buttFillRunning = false;
@@ -135,8 +128,7 @@ function setDocEntryCount() {
     const cntStr = `0000${novelLength + 1}`.slice(-entryIdxLen);
     inputEntry.placeholder = `1~ ${novelLength}`
     inputEntry.value = "";
-    lastEntry.textContent = `[Alka & Allias ${cntStr}+]
-        will appear when ready`;
+    lastEntry.textContent = `[ ${cntStr}+ ] will appear when ready`;
 }
 
 function getWindowHeight() {
@@ -158,6 +150,7 @@ function isElemVisible(elem) {
 ////////////////////////////////////////////////////////////////////////////
 
 function animateEntries() {
+    setBodyHeight();
     elemRunning = true;
     let loadIdx = 0;
     let skipTimer = null;
@@ -249,17 +242,6 @@ function resetEntries() {
         slideQueue[idx].style.visibility = "hidden";
     }
 }
-
-    /*for (idx = 0; idx < slideCnt; idx++) {
-        if (idx < slideIdx) {
-            slideQueue[idx].style.transform = "translateX(0px)";
-            slideQueue[idx].style.visibility = "visible";
-            slideQueue[idx].style.opacity = 1;
-        } else {
-            slideQueue[idx].style.visibility = "hidden";
-        }
-    }
-}*/
 
 function jumpToEntryIdx(idx) {
     if (animator !== null) clearInterval(animator);
@@ -417,42 +399,12 @@ function refreshPage() {
 }
 
 window.onresize = setBodyHeight;
-
-if (tbeginElem) tbeginElem.onclick = function() {
-    jumpToEntryIdx(1);
-    document.activeElement.blur();
-};
-if (tendElem) tendElem.onclick = function() {
+aaaElem.onclick = refreshPage;
+tendElem.onclick = function() {
     jumpToEntryIdx(novelLength + 1);
     document.activeElement.blur();
 };
 
-if (toggleMusic) toggleMusic.onclick = function() {
-    if (musicHidden) {
-        toggleMusic.title = "hide music links";
-        musicSpan.style.display = "inline";
-        musicHidden = false;
-    } else {
-        toggleMusic.title = "show music links";
-        musicSpan.style.display = "none";
-        musicHidden = true;
-    }
-    document.activeElement.blur();
-    setBodyHeight();
-}
-if (togglePatrons) togglePatrons.onclick = function() {
-    if (patronsHidden) {
-        togglePatrons.title = "hide patron links";
-        patronSpan.style.display = "inline";
-        patronsHidden = false;
-    } else {
-        togglePatrons.title = "show patron links";
-        patronSpan.style.display = "none";
-        patronsHidden = true;
-    }
-    document.activeElement.blur();
-    setBodyHeight();
-}
 
 function takeJumpInput() {
     const validBound = typedQueue[0].getBoundingClientRect().top > jumpScroll;
@@ -469,37 +421,7 @@ function takeJumpInput() {
     }
 }
 
-/*
-if (toggleJump) toggleJump.onclick = function() {
-    const validBound = typedQueue[0].getBoundingClientRect().top > jumpScroll;
-
-    if (inputHidden) {
-        toggleJump.textContent = "(hide jump)";
-        toggleJump.title = "hide jump ability (press 'a')";
-        divForm.style.display = "block";
-        inputHidden = false;
-        setBodyHeight();
-        if (!validBound) {
-            window.scroll(0, inputEntry.offsetTop - scrollOffset);
-        }
-        setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
-    } else {
-        if (validBound) {
-            toggleJump.textContent = "use jump";
-            toggleJump.title = "show jump ability (press 'a')";
-            divForm.style.display = "none";
-            inputEntry.value = "";
-            inputHidden = true;
-            setBodyHeight();
-            document.activeElement.blur();
-        } else {
-            window.scroll(0, inputEntry.offsetTop - scrollOffset);
-            setTimeout(function() { inputEntry.focus(); }, jumpTimeout);
-        }
-    }
-};*/
-
-if (jumpGo) jumpGo.onclick = function() {
+jumpGo.onclick = function() {
     const inputVal = inputEntry.value.trim();
     const reg = /^\d+$/;
     if (reg.test(inputVal)) {
@@ -508,6 +430,7 @@ if (jumpGo) jumpGo.onclick = function() {
     }
     inputEntry.value = "";
     document.activeElement.blur();
+    setBodyHeight();
 };
 
 ////////////////////////////////////////////////////////////////////////////
