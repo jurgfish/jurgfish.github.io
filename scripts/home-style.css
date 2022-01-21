@@ -2,7 +2,7 @@
 
 @font-face {
     /* Font Design by Christian Robertson */
-    src: url(vis/roboto-slab.ttf);
+    src: url(../vis/roboto-slab.ttf);
     font-family: RobotoSlab;
 }
 
@@ -11,7 +11,7 @@ body {
     font-size: 18px;
     color: #f8e6d3;
     background-color: black;
-    background-image: url('vis/background-00.png');
+    background-image: url('../vis/background-00.png');
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
@@ -25,7 +25,7 @@ img {
     visibility: hidden;
 }
 #logo-hold {
-    height: 90vh;
+    height: 70vh;
     min-height: 164px;
     display: flex;
     align-items: center;
@@ -40,11 +40,12 @@ img {
     margin-top: 8px;
 }
 #arrow-hold {
+    display: block;
     height: 10vh;
 }
 #info-hold {
-    height: 60vh;
-    min-height: 20em;
+    height: 30vh;
+    min-height: 15em;
 }
 p {
     text-align: justify;

@@ -8,6 +8,7 @@ const allContent = document.getElementById("content");
 const logoElem = document.getElementById("logo");
 const logoTxtElem = document.getElementById("logotxt");
 const arrowElem = document.getElementById("arrow");
+const arrowHoldElem = document.getElementById("arrow-hold");
 const infoElem = document.getElementById("info");
 const cprElem = document.getElementById("cpr");
 const toggleMusic = document.getElementById("showmusic");
@@ -99,7 +100,7 @@ function revealInfo() {
             if (isElemVisible(infoElem)) {
                 slideElemIn(infoElem, true);
                 infoRunning = false;
-                arrowRunning = false;
+                //arrowRunning = false;
             }
         } else {
             if (animator !== null) clearInterval(animator);
@@ -112,9 +113,33 @@ function revealInfo() {
 
 ////////////////////////////////////////////////////////////////////////////
 
+/*
+const arrowHeightStart = 10;
+
+function hideArrow() {
+    let t0 = null;
+    arrowHoldElem.style.visibility = "hidden";
+
+    function frame(t) {
+        if (!t0) t0 = t;
+        const elap = (t - t0) * animationSpeed;
+        const h = arrowHeightStart - (slideRate * elap);
+        arrowHoldElem.style.height = `${h}vh`;
+        if (h < 0) {
+            console.log("A");
+            arrowHoldElem.style.height = "0vh";
+            arrowHoldElem.style.display = "none";
+            //revealInfo();
+            slideElemIn(cprElem, false);
+        } else {
+            window.requestAnimationFrame(frame);
+        }
+    }
+    window.requestAnimationFrame(frame);
+}
 
 function revealArrow() {
-    arrowRunning = true;
+    //arrowRunning = true;
     const opaRate = arrowRate / arrowYDelta;
     const dir = 'Y';
     let t0 = null;
@@ -135,16 +160,19 @@ function revealArrow() {
         } else if (y < 0 && opa > 0) {
             opa = 2 - (opaRate * elap);
         }
-        if (y < -arrowYDelta) {
-            arrowElem.style.transform = `translateY(${arrowYDelta}px)`;
-            t0 = null;
-        }
-        if (arrowRunning || (!arrowRunning && opa > 0)) {
+        if (y > -arrowYDelta) {
+            //arrowElem.style.transform = `translateY(${arrowYDelta}px)`;
+            //t0 = null;
+        //}
+        //if (arrowRunning || (!arrowRunning && opa > 0)) {
             window.requestAnimationFrame(frame);
+        } else {
+            hideArrow();
+            slideElemIn(infoElem, true);
         }
     }
     window.requestAnimationFrame(frame);
-}
+}*/
 
 function revealLogoTxt() {
     let t0 = null;
@@ -164,8 +192,9 @@ function revealLogoTxt() {
         if (y < 0) {
             logoTxtElem.style.transform = "translateY(0px)";
             logoTxtElem.style.opacity = 1;
-            revealArrow();
-            revealInfo();
+            //revealArrow();
+            slideElemIn(infoElem, true);
+            slideElemIn(cprElem, false);
         } else {
             window.requestAnimationFrame(frame);
         }
