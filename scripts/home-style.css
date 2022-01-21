@@ -26,32 +26,18 @@ img {
 }
 #hold {
     height: 100vh;
-    /*min-height: 164px;*/
+    min-height: 36em;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-/*#logo-hold {
-    height: 55vh;
-    min-height: 164px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-}*/
-#logo {
-    cursor: pointer;
-}
+#logo { cursor: pointer; }
 #logotxt {
     cursor: pointer;
     margin-top: 8px;
     margin-bottom: 58px;
 }
-/*#info-hold {
-    height: 45vh;
-    min-height: 15em;
-}*/
 p {
     text-align: justify;
     line-height: 30px;
@@ -63,10 +49,7 @@ p {
     -ms-hyphens: auto;
     hyphens: auto;
 }
-#cpr {
-    text-align: center;
-    top: 30px;
-}
+#cpr { text-align: center; }
 
 a, a:link, a:visited {
     color: #89c7cd;

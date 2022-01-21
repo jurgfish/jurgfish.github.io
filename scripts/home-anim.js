@@ -23,13 +23,9 @@ const slideRate = 0.3;
 const restartOpaRate = 0.05;
 const frameRate = 1000 / 60;
 const logoTimeout = 300;
-const elemTimeout = 150;
-const loadBound = 0.93;
 
 let musicHidden = true;
 let patronsHidden = true;
-let animIdx = 0;
-let animator = null;
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -48,14 +44,7 @@ function resetScroll() {
     document.documentElement.scrollTop = 0;
 }
 
-function getWindowHeight() {
-    return window.innerHeight || document.documentElement.clientHeight ||
-        document.body.clientHeight;
-}
-function isElemVisible(elem) {
-    const bound = elem.getBoundingClientRect();
-    return (bound.top < (getWindowHeight() * loadBound));
-}
+////////////////////////////////////////////////////////////////////////////
 
 function slideElemIn(elem, xdir) {
     const opaRate = slideRate / slideStart;
@@ -84,8 +73,6 @@ function slideElemIn(elem, xdir) {
     }
     window.requestAnimationFrame(frame);
 }
-
-////////////////////////////////////////////////////////////////////////////
 
 function revealLogoTxt() {
     let t0 = null;
@@ -145,7 +132,6 @@ function revealLogo() {
 function refreshPage() {
     let t0 = null;
     let opa = 1;
-    infoRunning = false;
 
     function frame(t) {
         if (!t0) t0 = t;
@@ -176,7 +162,7 @@ if (toggleMusic) toggleMusic.onclick = function() {
         musicHidden = true;
     }
     document.activeElement.blur();
-}
+};
 if (togglePatrons) togglePatrons.onclick = function() {
     if (patronsHidden) {
         togglePatrons.title = "hide patron links";
@@ -188,7 +174,7 @@ if (togglePatrons) togglePatrons.onclick = function() {
         patronsHidden = true;
     }
     document.activeElement.blur();
-}
+};
 
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 ||
@@ -214,6 +200,5 @@ setTimeout(revealLogo, logoTimeout);
 // buried forever
 // this little island of mine
 // my lovely sunset
-
 
 
