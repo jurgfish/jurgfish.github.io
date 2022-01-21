@@ -44,6 +44,7 @@ img {
 }
 #info-hold {
     height: 60vh;
+    min-height: 20em;
 }
 p {
     text-align: justify;
