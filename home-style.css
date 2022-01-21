@@ -47,11 +47,11 @@ img {
 }
 p {
     text-align: justify;
-    line-height: 29px;
+    line-height: 30px;
     visibility: hidden;
     cursor: default;
     margin-top: 0px;
-    margin-bottom: 29px;
+    margin-bottom: 30px;
     -webkit-hyphens: auto;
     -ms-hyphens: auto;
     hyphens: auto;
@@ -61,7 +61,7 @@ p {
 }
 #cpr {
     text-align: center;
-    top: 29px;
+    top: 30px;
 }
 
 a, a:link, a:visited {
