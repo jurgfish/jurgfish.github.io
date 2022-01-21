@@ -7,8 +7,6 @@
 const allContent = document.getElementById("content");
 const logoElem = document.getElementById("logo");
 const logoTxtElem = document.getElementById("logotxt");
-const arrowElem = document.getElementById("arrow");
-const arrowHoldElem = document.getElementById("arrow-hold");
 const infoElem = document.getElementById("info");
 const cprElem = document.getElementById("cpr");
 const toggleMusic = document.getElementById("showmusic");
@@ -24,15 +22,12 @@ const slideStart = 10;
 const slideRate = 0.3;
 const restartOpaRate = 0.05;
 const frameRate = 1000 / 60;
-const arrowRate = 0.25
-const arrowYDelta = 20
 const logoTimeout = 300;
 const elemTimeout = 150;
 const loadBound = 0.93;
 
 let musicHidden = true;
 let patronsHidden = true;
-let arrowRunning = false;
 let animIdx = 0;
 let animator = null;
 
@@ -92,88 +87,6 @@ function slideElemIn(elem, xdir) {
 
 ////////////////////////////////////////////////////////////////////////////
 
-function revealInfo() {
-    infoRunning = true;
-
-    animator = setInterval(function() {
-        if (infoRunning) {
-            if (isElemVisible(infoElem)) {
-                slideElemIn(infoElem, true);
-                infoRunning = false;
-                //arrowRunning = false;
-            }
-        } else {
-            if (animator !== null) clearInterval(animator);
-            animator = null;
-            slideElemIn(cprElem, false);
-            return;
-        }
-    }, elemTimeout);
-}
-
-////////////////////////////////////////////////////////////////////////////
-
-/*
-const arrowHeightStart = 10;
-
-function hideArrow() {
-    let t0 = null;
-    arrowHoldElem.style.visibility = "hidden";
-
-    function frame(t) {
-        if (!t0) t0 = t;
-        const elap = (t - t0) * animationSpeed;
-        const h = arrowHeightStart - (slideRate * elap);
-        arrowHoldElem.style.height = `${h}vh`;
-        if (h < 0) {
-            console.log("A");
-            arrowHoldElem.style.height = "0vh";
-            arrowHoldElem.style.display = "none";
-            //revealInfo();
-            slideElemIn(cprElem, false);
-        } else {
-            window.requestAnimationFrame(frame);
-        }
-    }
-    window.requestAnimationFrame(frame);
-}
-
-function revealArrow() {
-    //arrowRunning = true;
-    const opaRate = arrowRate / arrowYDelta;
-    const dir = 'Y';
-    let t0 = null;
-    let opa = 0;
-    arrowElem.style.opacity = 0;
-    arrowElem.style.transform = `translateY(${arrowYDelta}px)`;
-    arrowElem.style.visibility = "visible";
-
-    function frame(t) {
-        if (!t0) t0 = t;
-        const elap = (t - t0) * animationSpeed;
-        const y = arrowYDelta - (arrowRate * elap);
-        arrowElem.style.transform = `translateY(${y}px)`;
-        arrowElem.style.opacity = opa;
-
-        if (y > 0 && opa < 1) {
-            opa = opaRate * elap;
-        } else if (y < 0 && opa > 0) {
-            opa = 2 - (opaRate * elap);
-        }
-        if (y > -arrowYDelta) {
-            //arrowElem.style.transform = `translateY(${arrowYDelta}px)`;
-            //t0 = null;
-        //}
-        //if (arrowRunning || (!arrowRunning && opa > 0)) {
-            window.requestAnimationFrame(frame);
-        } else {
-            hideArrow();
-            slideElemIn(infoElem, true);
-        }
-    }
-    window.requestAnimationFrame(frame);
-}*/
-
 function revealLogoTxt() {
     let t0 = null;
     let opa = 0;
@@ -192,7 +105,6 @@ function revealLogoTxt() {
         if (y < 0) {
             logoTxtElem.style.transform = "translateY(0px)";
             logoTxtElem.style.opacity = 1;
-            //revealArrow();
             slideElemIn(infoElem, true);
             slideElemIn(cprElem, false);
         } else {
@@ -233,7 +145,6 @@ function revealLogo() {
 function refreshPage() {
     let t0 = null;
     let opa = 1;
-    arrowRunning = false;
     infoRunning = false;
 
     function frame(t) {
