@@ -11,6 +11,8 @@ const infoElem = document.getElementById("info");
 const cprElem = document.getElementById("cpr");
 const toggleMusic = document.getElementById("showmusic");
 const musicSpan = document.getElementById("musiclinks");
+const toggleAnnounce = document.getElementById("showannounce");
+const announceSpan = document.getElementById("announcelinks");
 const togglePatrons = document.getElementById("showpatrons");
 const patronSpan = document.getElementById("patronlinks");
 
@@ -25,6 +27,7 @@ const frameRate = 1000 / 60;
 const logoTimeout = 300;
 
 let musicHidden = true;
+let announceHidden = true;
 let patronsHidden = true;
 
 ////////////////////////////////////////////////////////////////////////////
@@ -151,7 +154,7 @@ function refreshPage() {
 logoElem.onclick = refreshPage;
 logoTxtElem.onclick = refreshPage;
 
-if (toggleMusic) toggleMusic.onclick = function() {
+toggleMusic.onclick = function() {
     if (musicHidden) {
         toggleMusic.title = "hide music links";
         musicSpan.style.display = "inline";
@@ -163,7 +166,19 @@ if (toggleMusic) toggleMusic.onclick = function() {
     }
     document.activeElement.blur();
 };
-if (togglePatrons) togglePatrons.onclick = function() {
+toggleAnnounce.onclick = function() {
+    if (announceHidden) {
+        toggleAnnounce.title = "hide announcement links";
+        announceSpan.style.display = "inline";
+        announceHidden = false;
+    } else {
+        toggleAnnounce.title = "show announcement links";
+        announceSpan.style.display = "none";
+        announceHidden = true;
+    }
+    document.activeElement.blur();
+};
+togglePatrons.onclick = function() {
     if (patronsHidden) {
         togglePatrons.title = "hide patron links";
         patronSpan.style.display = "inline";
@@ -182,6 +197,9 @@ document.onkeydown = function(event) {
         if (document.activeElement === toggleMusic) {
             event.preventDefault();
             toggleMusic.click();
+        } else if (document.activeElement === toggleAnnounce) {
+            event.preventDefault();
+            toggleAnnounce.click();
         } else if (document.activeElement === togglePatrons) {
             event.preventDefault();
             togglePatrons.click();
