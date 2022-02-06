@@ -13,8 +13,8 @@ const toggleMusic = document.getElementById("showmusic");
 const musicSpan = document.getElementById("musiclinks");
 const toggleAnnounce = document.getElementById("showannounce");
 const announceSpan = document.getElementById("announcelinks");
-const togglePatrons = document.getElementById("showpatrons");
-const patronSpan = document.getElementById("patronlinks");
+/*const togglePatrons = document.getElementById("showpatrons");
+const patronSpan = document.getElementById("patronlinks");*/
 
 const animationSpeed = 0.1;
 const logoV = -1;
@@ -28,7 +28,7 @@ const logoTimeout = 300;
 
 let musicHidden = true;
 let announceHidden = true;
-let patronsHidden = true;
+// let patronsHidden = true;
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -178,7 +178,7 @@ toggleAnnounce.onclick = function() {
     }
     document.activeElement.blur();
 };
-togglePatrons.onclick = function() {
+/*togglePatrons.onclick = function() {
     if (patronsHidden) {
         togglePatrons.title = "hide patron links";
         patronSpan.style.display = "inline";
@@ -189,7 +189,7 @@ togglePatrons.onclick = function() {
         patronsHidden = true;
     }
     document.activeElement.blur();
-};
+};*/
 
 document.onkeydown = function(event) {
     if (event.key === "Enter" || event.keyCode === 13 ||
@@ -200,9 +200,9 @@ document.onkeydown = function(event) {
         } else if (document.activeElement === toggleAnnounce) {
             event.preventDefault();
             toggleAnnounce.click();
-        } else if (document.activeElement === togglePatrons) {
+        /*} else if (document.activeElement === togglePatrons) {
             event.preventDefault();
-            togglePatrons.click();
+            togglePatrons.click();*/
         }
     }
 };
