@@ -71,7 +71,6 @@ a:active {
 }
 @media (max-width: 562px) {
     body { width: 90%; }
-    p { text-align: left; }
     img { max-width: 100%; height: auto; }
 }
 
