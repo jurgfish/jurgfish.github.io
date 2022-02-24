@@ -195,6 +195,7 @@ a:active {
 }
 @media (max-width: 662px) {
     body { width: 90%; }
+    p { text-align: left; }
     #ttop { bottom: 69px; }
     #jump:hover, #bott:hover, #ttop:hover, #jump:active, #bott:active, #ttop:active  {
         color: #4a4a4a;
