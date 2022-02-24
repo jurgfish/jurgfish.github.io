@@ -73,9 +73,6 @@ p {
     cursor: default;
     margin-top: 0px;
     margin-bottom: 30px;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
 }
 
 #author, #dedicate { text-align: center; }
@@ -173,6 +170,11 @@ a:active {
 
 @media (min-width: 662px) {
     body { width: 600px; }
+    p {
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+    }
     #ttop { bottom: 30px }
     #jump:hover, #bott:hover, #ttop:hover {
         color: #18919c;
