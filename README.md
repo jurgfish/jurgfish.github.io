@@ -1,4 +1,4 @@
-source code for the jurgfish [website](https://jurgfish.com/)
+source code for the jurgfish [website](https://jurg.fish/)
 
 not expected to work in all browsers
 
