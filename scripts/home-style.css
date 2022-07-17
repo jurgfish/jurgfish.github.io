@@ -9,12 +9,8 @@
 body {
     font-family: "RobotoSlab";
     font-size: 18px;
-    color: #f8e6d3;
-    background-color: black;
-    background-image: url('../vis/background-00.png');
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
+    color: #4a4a4a;
+    background-color: #f8e6d3;
     margin-left: auto;
     margin-right: auto;
     overflow-anchor: none;
@@ -52,18 +48,28 @@ p {
 #cpr { text-align: center; }
 
 a, a:link, a:visited {
-    color: #89c7cd;
+    color: #18919c;
     text-decoration: underline;
 }
 a:hover, a:focus {
     outline: none;
-    color: #f8e6d3;
+    color: #4a4a4a;
     cursor: pointer;
 }
 a:active {
     outline: none;
-    color: #89c7cd;
+    color: #18919c;
     cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        color: #f8e6d3;
+        background-color: #4a4a4a;
+    }
+    a, a:link, a:visited { color: #89c7cd; }
+    a:hover, a:focus { color: #f8e6d3; }
+    a:active { color: #89c7cd; }
 }
 
 @media (min-width: 562px) {
