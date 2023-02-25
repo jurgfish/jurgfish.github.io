@@ -9,7 +9,7 @@
 body {
     font-family: "RobotoSlab";
     font-size: 18px;
-    font-weight: normal;
+    font-weight: 350;
     color: #4a4a4a;
     background-color: #f8e6d3;
     margin-left: auto;
@@ -18,7 +18,7 @@ body {
 }
 
 h2 {
-    font-weight: normal;
+    font-weight: 400;
     font-size: 29px;
     visibility: hidden;
     text-align: center;
@@ -27,6 +27,7 @@ h2 {
 }
 
 form {
+    font-weight: 400;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -77,7 +78,10 @@ p {
     margin-bottom: 30px;
 }
 
-#author, #dedicate { text-align: center; }
+#author, #dedicate {
+    font-weight: 400;
+    text-align: center;
+}
 #author { margin-bottom: 20vmin; }
 #cpr {
     position: -webkit-sticky;
@@ -122,6 +126,7 @@ a:active {
     cursor: pointer;
 }
 #ttop {
+    font-weight: 400;
     display: none;
     position: fixed;
     right: 30px;
