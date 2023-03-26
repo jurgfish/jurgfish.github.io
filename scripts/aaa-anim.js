@@ -1,4 +1,4 @@
-// Copyright © 2021-2022, jurgfish. All rights reserved.
+// Copyright © 2021-2023, jurgfish. All rights reserved.
 //
 // https://github.com/jurgfish/jurgfish.github.io
 //
@@ -125,7 +125,7 @@ function setDocEntryCount() {
     const cntStr = `0000${novelLength + 1}`.slice(-entryIdxLen);
     inputEntry.placeholder = `1~ ${novelLength}`;
     inputEntry.value = "";
-    lastEntry.textContent = `[ ${cntStr}+ ] will appear when ready`;
+    lastEntry.textContent = `[ ${cntStr}+ ] will be released when ready`;
 }
 
 function getWindowHeight() {
