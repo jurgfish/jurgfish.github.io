@@ -36,6 +36,7 @@ const loadBound = 0.93;
 const lagBound = 3;
 const scrollOffset = 28;
 const endspOffset = 87;
+const marginBuff = 30;
 const jumpScroll = scrollOffset + 2;
 
 const slideStartCnt = 4;
@@ -136,7 +137,7 @@ function getWindowHeight() {
 function setBodyHeight() {
     endspaceElem.style.height = `${getWindowHeight() - endspOffset}px`;
     allContent.style.height = `${Math.min(allContent.scrollHeight,
-        inContent.scrollHeight + outContent.scrollHeight)}px`;
+        inContent.scrollHeight + outContent.scrollHeight) + marginBuff}px`;
 }
 
 function isElemVisible(elem) {
