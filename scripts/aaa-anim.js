@@ -8,6 +8,7 @@ const allContent = document.getElementById("content");
 const inContent = document.getElementById("in");
 const outContent = document.getElementById("out");
 const lastEntry = document.getElementById("end");
+const sectionQueue = document.getElementsByClassName("section");
 const typedQueue = document.getElementsByClassName("anim-typed");
 const slideQueue = document.getElementsByClassName("anim-slide");
 const aaaElem = document.getElementById("aaa");
@@ -18,7 +19,7 @@ const ttopElem = document.getElementById("ttop");
 const endspaceElem = document.getElementById("endspace");
 
 const animationSpeed = 0.1;
-const typeSpeed = 6;
+const typeSpeed = 2;
 const slidePStart = 10;
 const slideRate = 0.3;
 const restartOpaRate = 0.05;
@@ -33,18 +34,20 @@ const scrollTimeout = 400;
 const jumpTimeout = 100;
 const ttopTimeout = 1;
 const loadBound = 0.93;
-const lagBound = 3;
+const lagBound = 12;
 const scrollOffset = 28;
 const endspOffset = 87;
 const marginBuff = 30;
 const jumpScroll = scrollOffset + 2;
 
 const slideStartCnt = 4;
-const nonNovelTypedEndCnt = 2;
-const entryIdxLen = 3;
+const nonStoryTypedEndCnt = 2;
+const entryIdxLen = 3; // number of digits in section count
+const sectionCnt = sectionQueue.length;
 const typedCnt = typedQueue.length;
 const slideCnt = slideQueue.length;
-const novelLength = typedCnt - nonNovelTypedEndCnt;
+const storyCnt = typedCnt - nonStoryTypedEndCnt;
+let sectionDict = {}
 let elemRunning = true;
 let ttopShowRunning = false;
 let ttopFillRunning = false;
@@ -123,8 +126,8 @@ function typeElemWords(elem) {
 ////////////////////////////////////////////////////////////////////////////
 
 function setDocEntryCount() {
-    const cntStr = `0000${novelLength + 1}`.slice(-entryIdxLen);
-    inputEntry.placeholder = `1~ ${novelLength}`;
+    const cntStr = `0000${sectionCnt + 1}`.slice(-entryIdxLen);
+    inputEntry.placeholder = `1~ ${sectionCnt}`;
     inputEntry.value = "";
     lastEntry.textContent = `[ ${cntStr}+ ] will be released when ready`;
 }
@@ -178,7 +181,7 @@ function animateEntries() {
             const elem = typedQueue[typedIdx];
             const valid = isElemVisible(elem);
             if (valid) typedIdx++;
-            while (loadIdx < novelLength &&
+            while (loadIdx < storyCnt &&
                     isElemVisible(typedQueue[loadIdx])) {
                 loadIdx++;
             }
@@ -241,11 +244,10 @@ function resetEntries() {
     }
 }
 
-function jumpToEntryIdx(idx) {
+function jumpToSectionIdx(idx) {
     if (animator !== null) clearInterval(animator);
     animator = null;
     elemRunning = false;
-    typedIdx = idx;
     slideIdx = slideStartCnt;
     let entryFlag = true;
 
@@ -253,8 +255,12 @@ function jumpToEntryIdx(idx) {
         typedIdx = 1;
         entryFlag = false;
         scrollToEntryIdx(false);
-    } else if (typedIdx > (novelLength + 1)) {
-        typedIdx = novelLength + 1;
+    } else if (idx > sectionCnt) {
+        // go to end entry (not last section)
+        typedIdx = storyCnt + 1;
+    } else {
+        // section idx is offset from typed idx by 1
+        typedIdx = sectionDict[idx] + 1;
     }
 
     resetEntries();
@@ -262,6 +268,17 @@ function jumpToEntryIdx(idx) {
         if (entryFlag) scrollToEntryIdx(true);
         animateEntries();
     }, jumpTimeout);
+}
+
+function generateSectionDict() {
+    let tIdx = 0;
+    let sIdx = 1;
+    for (tIdx; tIdx < typedCnt; tIdx++) {
+        if (typedQueue[tIdx].className == "anim-typed section") {
+            sectionDict[sIdx] = tIdx;
+            sIdx++;
+        }
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -358,7 +375,7 @@ window.onscroll = function() {
 };
 
 ttopElem.onclick = function() {
-    jumpToEntryIdx(-1);
+    jumpToSectionIdx(-1);
     if (jumpGo) jumpGo.focus();
     document.activeElement.blur();
     setBodyHeight();
@@ -399,7 +416,7 @@ function refreshPage() {
 window.onresize = setBodyHeight;
 aaaElem.onclick = refreshPage;
 bottElem.onclick = function() {
-    jumpToEntryIdx(novelLength + 1);
+    jumpToSectionIdx(storyCnt + 1);
     document.activeElement.blur();
 };
 
@@ -423,7 +440,7 @@ jumpGo.onclick = function() {
     const reg = /^\d+$/;
     if (reg.test(inputVal)) {
         const inputIdx = parseInt(inputVal, 10);
-        if (!isNaN(inputIdx)) jumpToEntryIdx(inputIdx);
+        if (!isNaN(inputIdx)) jumpToSectionIdx(inputIdx);
     }
     inputEntry.value = "";
     document.activeElement.blur();
@@ -452,6 +469,7 @@ document.onkeydown = function(event) {
 
 // begin routine
 scrollToEntryIdx(false);
+generateSectionDict();
 setDocEntryCount();
 setTimeout(animateEntries, elemTimeout);
 

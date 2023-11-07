@@ -81,6 +81,7 @@ p {
     margin-top: 0px;
     margin-bottom: 30px;
 }
+.section { text-align: center; }
 
 #author, #dedicate {
     font-weight: 400;
