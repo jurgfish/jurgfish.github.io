@@ -9,8 +9,6 @@ const logoElem = document.getElementById("logo");
 const logoTxtElem = document.getElementById("logotxt");
 const infoElem = document.getElementById("info");
 const cprElem = document.getElementById("cpr");
-const toggleMusic = document.getElementById("showmusic");
-const musicSpan = document.getElementById("musiclinks");
 const toggleAnnounce = document.getElementById("showannounce");
 const announceSpan = document.getElementById("announcelinks");
 
@@ -24,7 +22,6 @@ const restartOpaRate = 0.05;
 const frameRate = 1000 / 60;
 const logoTimeout = 300;
 
-let musicHidden = true;
 let announceHidden = true;
 
 ////////////////////////////////////////////////////////////////////////////
@@ -151,18 +148,6 @@ function refreshPage() {
 logoElem.onclick = refreshPage;
 logoTxtElem.onclick = refreshPage;
 
-toggleMusic.onclick = function() {
-    if (musicHidden) {
-        toggleMusic.title = "hide music links";
-        musicSpan.style.display = "inline";
-        musicHidden = false;
-    } else {
-        toggleMusic.title = "show music links";
-        musicSpan.style.display = "none";
-        musicHidden = true;
-    }
-    document.activeElement.blur();
-};
 toggleAnnounce.onclick = function() {
     if (announceHidden) {
         toggleAnnounce.title = "hide announcement links";
