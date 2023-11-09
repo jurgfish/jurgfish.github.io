@@ -34,7 +34,8 @@ const scrollTimeout = 400;
 const jumpTimeout = 100;
 const ttopTimeout = 1;
 const loadBound = 0.93;
-const lagBound = 12;
+const lagBound = 6;
+const lagFadeBound = 12;
 const scrollOffset = 28;
 const endspOffset = 87;
 const marginBuff = 30;
@@ -48,7 +49,7 @@ const typedCnt = typedQueue.length;
 const slideCnt = slideQueue.length;
 const storyCnt = typedCnt - nonStoryTypedEndCnt;
 let sectionDict = {}
-let elemRunning = true;
+let typerRunning = true;
 let ttopShowRunning = false;
 let ttopFillRunning = false;
 let ttopShown = false;
@@ -84,7 +85,7 @@ function slideElemIn(elem, xdir) {
             elem.style.opacity = opa;
             opa = opaRate * elap;
         }
-        if (p < 0 || !elemRunning) {
+        if (p < 0) {
             elem.style.transform = `translate${dir}(0px)`;
             elem.style.opacity = 1;
         } else {
@@ -114,7 +115,7 @@ function typeElemWords(elem) {
             currSetIdx++;
         }
         elem.textContent = currText;
-        if (wordSetIdx >= wordSet.length - 1 || !elemRunning) {
+        if (wordSetIdx >= wordSet.length - 1 || !typerRunning) {
             elem.textContent = fullText;
         } else {
             window.requestAnimationFrame(frame);
@@ -152,7 +153,7 @@ function isElemVisible(elem) {
 
 function animateEntries() {
     setBodyHeight();
-    elemRunning = true;
+    typerRunning = true;
     let loadIdx = 0;
     let skipTimer = null;
 
@@ -189,14 +190,21 @@ function animateEntries() {
             // if the index lag count is high enough, skip animating and
             // make the skipped entries visible.
             if ((loadIdx - typedIdx) > lagBound) {
-                elemRunning = false;
+                typerRunning = false;
                 if (skipTimer !== null) clearTimeout(skipTimer);
                 skipTimer = setTimeout(function() {
+
                     const skipIdx = loadIdx - lagBound;
                     for (typedIdx; typedIdx < skipIdx; typedIdx++) {
-                        typedQueue[typedIdx].style.visibility = "visible";
+                        var skpElem = typedQueue[typedIdx]
+                        if ((skipIdx - typedIdx) > lagFadeBound) {
+                            skpElem.style.visibility = "visible";
+                        } else {
+                            slideElemIn(skpElem, true);
+                        }
                     }
-                    elemRunning = true;
+
+                    typerRunning = true;
                 }, jumpTimeout);
             }
 
@@ -247,7 +255,7 @@ function resetEntries() {
 function jumpToSectionIdx(idx) {
     if (animator !== null) clearInterval(animator);
     animator = null;
-    elemRunning = false;
+    typerRunning = false;
     slideIdx = slideStartCnt;
     let entryFlag = true;
 
@@ -393,7 +401,7 @@ ttopElem.onclick = function() {
 function refreshPage() {
     if (animator !== null) clearInterval(animator);
     animator = null;
-    elemRunning = false;
+    typerRunning = false;
     ttopElem.style.display = "none";
     let t0 = null;
     let opa = 1;
