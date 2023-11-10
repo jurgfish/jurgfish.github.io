@@ -428,6 +428,21 @@ bottElem.onclick = function() {
     document.activeElement.blur();
 };
 
+////////////////////////////////////////////////////////////////////////////
+
+// section jump logic
+
+function setJumpGoEnabled(enabled) {
+    jumpGo.disabled = enabled;
+    if (enabled) {
+        jumpGo.classList.remove("disabled");
+    } else {
+        jumpGo.className = "disabled";
+    }
+}
+
+inputEntry.oninput = function() { setJumpGoEnabled(true); }
+
 function takeJumpInput() {
     const validBound = typedQueue[0].getBoundingClientRect().top > jumpScroll;
     if (validBound) {
@@ -451,6 +466,7 @@ jumpGo.onclick = function() {
         if (!isNaN(inputIdx)) jumpToSectionIdx(inputIdx);
     }
     inputEntry.value = "";
+    setJumpGoEnabled(false);
     document.activeElement.blur();
     setBodyHeight();
 };
@@ -479,6 +495,7 @@ document.onkeydown = function(event) {
 scrollToEntryIdx(false);
 generateSectionDict();
 setDocEntryCount();
+setJumpGoEnabled(false);
 setTimeout(animateEntries, elemTimeout);
 
 ////////////////////////////////////////////////////////////////////////////
