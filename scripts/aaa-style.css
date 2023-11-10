@@ -97,9 +97,6 @@ p {
 a, a:link, a:visited {
     color: #18919c;
     text-decoration: underline;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
 a:hover, a:focus {
     outline: none;
@@ -123,6 +120,9 @@ a:active {
     border-style: solid;
     border-color: #4a4a4a;
     cursor: pointer;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 #jump-box { margin: 30px 8px; }
 #jump, #bott { padding: 12px 14px 12px 14px; }
