@@ -83,7 +83,7 @@ p {
 }
 .section { text-align: center; }
 
-#author, #dedicate {
+.center{
     font-weight: 400;
     text-align: center;
 }

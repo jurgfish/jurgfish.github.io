@@ -41,7 +41,7 @@ const endspOffset = 87;
 const marginBuff = 30;
 const jumpScroll = scrollOffset + 2;
 
-const slideStartCnt = 4;
+const slideStartCnt = 6;
 const nonStoryTypedEndCnt = 2;
 const entryIdxLen = 3; // number of digits in section count
 const sectionCnt = sectionQueue.length;
