@@ -10,8 +10,9 @@ body {
     font-family: "RobotoSlab";
     font-size: 18px;
     font-weight: 400;
-    color: #4a4a4a;
-    background-color: #f8e6d3;
+    color: #f8e6d3;
+    background-color: #000000;
+
     margin: 0;
     min-height: 100%;
     overflow-anchor: none;
@@ -59,28 +60,18 @@ p {
 #endspace { height: 30px; }
 
 a, a:link, a:visited {
-    color: #18919c;
+    color: #89c7cd;
     text-decoration: underline;
 }
 a:hover, a:focus {
     outline: none;
-    color: #4a4a4a;
+    color: #f8e6d3;
     cursor: pointer;
 }
 a:active {
     outline: none;
-    color: #18919c;
+    color: #89c7cd;
     cursor: pointer;
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        color: #f8e6d3;
-        background-color: #4a4a4a;
-    }
-    a, a:link, a:visited { color: #89c7cd; }
-    a:hover, a:focus { color: #f8e6d3; }
-    a:active { color: #89c7cd; }
 }
 
 @media (min-width: 562px) {
