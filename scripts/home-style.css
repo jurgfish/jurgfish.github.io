@@ -10,7 +10,7 @@ body {
     font-family: "RobotoSlab";
     font-size: 18px;
     font-weight: 400;
-    color: #a19182;
+    color: #eec38a;
     background-color: #000000;
 
     margin: 0;
@@ -65,7 +65,7 @@ a, a:link, a:visited {
 }
 a:hover, a:focus {
     outline: none;
-    color: #a19182;
+    color: #eec38a;
     cursor: pointer;
 }
 a:active {
