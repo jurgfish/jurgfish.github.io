@@ -10,7 +10,7 @@ body {
     font-family: "RobotoSlab";
     font-size: 18px;
     font-weight: 400;
-    color: #f8e6d3;
+    color: #a19182;
     background-color: #000000;
 
     margin: 0;
@@ -60,7 +60,7 @@ p {
 #endspace { height: 30px; }
 
 a, a:link, a:visited {
-    color: #89c7cd;
+    color: #37857f;
     text-decoration: underline;
 }
 a:hover, a:focus {

@@ -166,8 +166,8 @@ a:active {
         border-color: #a19182;
     }
     input:focus {
-        color: #a19182;
-        border-color: #a19182;
+        color: #37857f;
+        border-color: #37857f;
     }
     input:focus:invalid {
         color: #ed7c7c;
@@ -178,17 +178,17 @@ a:active {
         border-color: #cd5c5c;
     }
 
-    a, a:link, a:visited { color: #89c7cd; }
+    a, a:link, a:visited { color: #37857f; }
     a:hover, a:focus { color: #a19182; }
-    a:active { color: #89c7cd; }
+    a:active { color: #37857f; }
     #jump, #bott, #ttop {
         color: #a19182;
         background-color: #000000;
         border-color: #a19182;
     }
     #jump:focus, #bott:focus {
-        color: #89c7cd;
-        border-color: #89c7cd;
+        color: #37857f;
+        border-color: #37857f;
     }
 }
 
@@ -211,8 +211,8 @@ a:active {
 }
 @media (min-width: 662px) and (prefers-color-scheme: dark) {
     #jump:hover, #bott:hover, #ttop:hover {
-        color: #89c7cd;
-        border-color: #89c7cd;
+        color: #37857f;
+        border-color: #37857f;
     }
     #jump:active, #bott:active, #ttop:active {
         color: #a19182;
