@@ -65,12 +65,12 @@ a, a:link, a:visited {
 }
 a:hover, a:focus {
     outline: none;
-    color: #f8e6d3;
+    color: #a19182;
     cursor: pointer;
 }
 a:active {
     outline: none;
-    color: #89c7cd;
+    color: #37857f;
     cursor: pointer;
 }
 
